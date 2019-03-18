@@ -1,5 +1,7 @@
 \documentclass[acmtog]{acmart}
 
+\usepackage{makecell}
+\renewcommand\cellalign{tl}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em 
 b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -298,5 +300,92 @@ even work? What would it learn that we can't?
 \appendix
 
 \section{Apps and Signatures}
+\begin{table*}
+\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+	\toprule
+	App & Signature & Relevant Info \\
+	\midrule
+	HelloSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net} & Same as TheTruthSpy HTTP \\
+	
+	TheTruthSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net\\ User agent has hellospy in it} & Same as HelloSpy HTTP \\
+	
+	SpyMyFone & \makecell{HTTP 101 Switching Protocols response\\
+	Domain: data-api.spymyfone.com\\SNI my.spymyfone.com.\\
+	Domain: ws.spyzie.com\\SNI ws.spyzie.com\\
+	Domains: app-api.phonedata.me\\ws.phonedata.me\\
+	SNI with unknown domain:\\ app-api.phonedata.me} & Uses WebSocket protocol and HTTP with User agent=aliyun-sdk-android/2.3.0/Dalvik/2.1.0 (Linux; U; Android 7.1.2; Nexus 5X Build/NJH47B \\
 
+	Spyzie & \makecell{The same as SpyMyFone.\\ We are sure that SpyMyPhone\\ talks to spyzie.com} & Same as SpyMyFone \\
+	
+	iSpyoo & probably same signatures as HelloSpy and TheTruthSpy given identical websites, but apk is broken & Nonfunctional \\
+	
+	mSpy & \makecell{POST to pipe.thd.cc\\
+	PUT to a18.dav.mspyonline.com\\
+	Domain: apiv4.alter757.info} & HTTPS \\
+	
+	SMS Tracker (TheHar) & \makecell{Domain:uploads.spy2mobile.com\\ Domain contains sap4mobile} & spytomobile group (does NOT use HTTPS) \\
+	
+	SMS Tracker TM & \makecell{Domain:cust-198-154-111-218.\\corexchange.com \\ SNI:messages02.smstracker.com} & Only tracks text. HTTPS \\
+	
+	Find My Friends & Domain:production-finderapps-lb-1188906093.us-east-1.elb.amazonaws.com & HTTPS\\
+	
+	Avast Anti-Theft & domain:Antitheft.ns1.ff.avast.com& HTTPS. High packet counts\\
+	
+	Family Locator by ZoeMob & SNIs: celulocen.zendesk.com, api.familysafetyproduction.com
+	Domains: proxy.vip.pod5.iad1.zdsys.com, www.zoemob.com & same as Life360
+	HTTPS \\
+	
+	Couple Tracker -Mobile monitor & 162-144-96-67.unifiedlayer.com & HTTPS \\
+	
+	Call and Message Tracker -Remote karanth & \makecell{SNI=www.callsmstracker.com
+	\\Domain contains onlinehome-server.com} & Similar to Cell Tracker, but uses HTTPS instead of HTTP \\
+	
+	Mobile Surveillance and Security
+	by Trackview & \makecell{HTTP req:\\ "GET /create\_session HTTP/1.1"\\ User agent:test \\Host:relay.google.com\\
+	Domains: relay.l.google.com,\\ stun.l.google.com} & Uses STUN protocol \\
+	
+\end{tabular}
+\end{table*}
+
+\begin{table*}
+\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+	\toprule
+	App & Signature & Relevant Info \\
+	\midrule
+	Norton Family parental control & \makecell{domain: spoc-muw1.norton.com,\\spoc-mue1.norton.com\\
+	User-Agent: NOF/4.9.2.12/Android/8.1.0\\
+	SNI: family.norton.com} & HTTP POST with protobufs, or TLS. \\
+	
+	Senior Safety App & \makecell{POST to \\97.logger.mobi/signalr\_v1/<stuff>\\
+	97.logger.mobi/auth/token} & requires payment\\
+	
+	Invisible Mobile GPS Tracker by
+	GPSWOX.COM & \makecell{SNI:dn.gpswox.com\\ Domain:gpswox.\\llcspnavigatio.netdna-cdn.com} & HTTPS \\
+	
+	Family GPS Locator by GeoZilla & \makecell{Domain=static.<some-ip>.\\clients.your-server.de\\
+	SNI contains geozilla w/ aws domains} & NOT HTTPS (wrong ports), but TLS \\
+	
+	Phone Tracker By Number/Phone Tracker Family Locator & http://66.147.232.135:8080/signalr & HTTP \\
+	
+	Automatic Call Recorder & \makecell{Domain: http://winner-lb2-\\f918b4c7bf5ab40c.\\elb.us-east-1.amazonaws.com/ }& HTTPS \\
+	
+	Find my Kids: Child GPS-watch and phone tracker & server name api.findmykids.org & Talks to yandex.net? Russian something. 
+	HTTPS \\
+	
+	Live Mobile Number Tracker & \makecell{GET with host=clk.trkmobi.net\\
+	SNI track.56txs4.com, no domain\\
+	Domain cs156.adn.rhocdn.net\\ with SNI req..startappservice.com,\\
+	domain cs1112.wpc.rhocdn.net\\ with SNI info.startappservice.com} & No actual tracking functions. Sets your location to Fawn creek, KS \\
+	
+	track my phone pro & Domain:trackmyphones.com & HTTPS from the website, HTTP over TLS from the app \\
+	
+	Cell Phone Tracker & Domain:spy2mobile.com & SpyToMobile lookalike \\
+	
+	Cell Tracker - Trackme & Domain:Onlinehome-server.com
+	SNI:www.callsmstracker.com & Similar to Call and Message tracker. Sends a post to a separate service. \\
+	
+	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
+\end{tabular}
+
+\end{table*}
 \end{document}
