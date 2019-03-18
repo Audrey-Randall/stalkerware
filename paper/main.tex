@@ -1,0 +1,210 @@
+\documentclass[acmtog]{acmart}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em 
+b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Towards Detecting Stalkerware Through Network Traces}
+
+
+\author{Audrey Randall}
+\author{Hugh Feng}
+\author{Yu-Wun Wang}
+\affiliation{\institution{UCSD}}
+
+\begin{abstract}
+Spyware is known as unwanted software that sends user state and information to 
+an external party. Often these apps are not inherently malicious to the 
+operating system and are thus difficult to detect. We explore a subset of 
+spyware that are available in the Android Play store intended for spying on 
+another person though his or her cell phone and create a new method of 
+identifying their presence through network signatures.  
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+In a world where technology now pervades every aspect of our lives, some 
+aspects of our relationships with intimate partners have changed too. 
+Specifically, when these relationships become abusive, there are more options 
+available to the abuser for attempting to retain control over their partner. 
+One of these options is the ability to install monitoring software on their 
+partner's phone or computer to record their online activity, communications, 
+and location. We refer to such software as ``stalkerware.''  In a survey of 72 
+domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
+survivors whose abusers had tracked their location using their smartphone's 
+GPS. 75\% said they are working with clients who have had their conversations 
+monitored by hidden stalkerware apps.\cite{shahani_smartphones}
+
+Although stalkerware is superficially similar to other types of malware, a few 
+key differences exist between them. First, stalkerware is meant to be installed 
+deliberately, by someone with physical access to the device that is to be 
+monitored. In the context of intimate partner abuse, this presents an enormous 
+threat. An abuser will often know or be able to coerce passwords to the device 
+from the victim, making traditional defense measures irrelevant. Second, the 
+threat model used by malware developers includes sophisticated antivirus and 
+intrusion detection systems (IDSs). Malware is therefore much more likely to 
+attempt to obfuscate its network traffic. Third, stalkerware falls for the most 
+part into two categories: apps that are explicitly advertised for surveilling 
+spouses and partners, and apps that have a different stated use but can be 
+repurposed to stalk a target. These are usually marketed for theft prevention, 
+parental control of children, and employer control of employees. Previous 
+literature refers to these as "dual-use" apps [5]. Determining how many users 
+of a particular dual-use app are using it for intimate partner surveillance 
+(IPS), and how many for its stated (usually legal) purpose, presents a 
+significant challenge.
+
+Therefore, we start by identifying a set of dual-use apps that appear to be 
+marketed primarily for IPS. Apps that appear in Google searches for terms like 
+"catch a cheating spouse," use vague language that appear to be marketed 
+towards IPS, and label themselves as "spyware" became candidates that we 
+considered. Such apps also differentiated themselves from more innocent apps by 
+their price - they cost much more than a typical app, with monthly 
+subscriptions ranging from \$12 to \$68 per month. We selected several of these 
+to test. All of these apps brand themselves as spyware and advertise that their 
+products are undetectable on the target phone, despite their disclaimers that 
+they should not be used for any illegal activity. Some use language that 
+appears designed to appeal to abusers. For example, underneath one promotional 
+video, the app TheOneSpy has the disclaimer: "Note for this video: Don't 
+confuse with the world "Loved Ones" as spouse or Girl friends! Word Loved ones 
+has used for kids and teens." Many of these apps also refer to the tracked 
+phone as the "target" phone, and advertise that once installed, the app is in 
+"stealth mode," meaning completely undetectable. 
+
+The other category for stalkerware encompasses a large range of quality. Many 
+apps advertised as stalkerware have absolutely no functionality other than 
+advertisement of other apps. The few that are functional are often simplistic 
+in both features and network patterns. Unlike dual-use apps, however, the vast 
+majority are usually free with advertisements. These apps can be easily 
+identified and found with a few keywords such as "spy","track", "locate", or 
+"find". 
+
+\section{Related Work}
+Previous studies [1,2], the media [3,4], and intimate partner violence (IPV) 
+survivors have all reported that spyware is becoming an increasing source of 
+intimate partner surveillance (IPS). Tracking functions supported by spyware 
+allow stalkers to monitor communications, track locations, and remotely 
+activate cameras and microphones [3,4]. In Dr. Ristenpart’s work [5], they 
+proposed methods for searching IPS-related apps. By Google search query 
+expansion and unsupervised classification, they collected 9,224 apps possibly 
+related to IPS on Google play and open-web. They manually selected 70 apps for 
+investigation. They observed the most fundamental functions of these apps are 
+monitoring locations, communication logs and data, media contents, and phone 
+usages. They also found that existing anti-spyware tools cannot effectively 
+detect IPS-related apps.
+Mobile apps are often identified via the User-Agent string of the HTTP request, 
+when one is available [7]. With the increased use of HTTPS this may not always 
+be the case, but we expect to find (based on conversations with authors of 
+previous work) that security and best coding practices are not prioritized by 
+stalkerware developers. Malware identification may be of limited use as well, 
+since techniques are available to cluster malware that comes from the same 
+source code into “families.” [8]
+
+\section{Methodology}
+\subsection{Finding Apps}
+We selected thirty apps from a list provided by the team of Cornell researchers 
+who performed the original large scale study of stalkerware[cite]. An 
+additional fifteen apps were included as they were recently added to the app 
+store. Apps were chosen for their diversity of purpose and the probability that 
+they can be used as stalkerware. These apps are the most likely to be 
+downloaded when a abuser without deep technical knowledge tries to install 
+stalkerware. 
+
+We recognize that there are thousands of apps on the market that can be 
+repurposed as stalkerware. Therefore, any useful process for identifying 
+network signatures will eventually have to cover far more apps than we are 
+starting out with. Our mere forty-five apps barely scratch the surface of the 
+ecosystem, so they certainly do not provide a representative sample. Therefore, 
+we did not employ any vigorous app selection methods, since we know this is 
+just a starting point. Our hope is to eventually find a way to partially 
+automate the signature identification process.
+
+However, some characteristics of the stalkerware apps themselves may aid us in 
+detecting them. For example, similar to malware, some groups of apps appear to 
+be repackaged versions of each other. For example, PhoneSpector, 
+HighsterMobile, AutoForward, EasySpy and Surepoint Spy all have separate 
+websites, but the appearance of each of these sites is nearly identical. Upon 
+closer inspection, although multiple companies are listed as the makers of the 
+apps (Powerline Group Corp., ILF Mobile Apps, and PhoneSpector LLC), all have 
+the same physical address listed. At least one blog that is supposedly run by 
+an independent part reviewed apps that coincidentally were made by the same 
+company [9]. Other app sites appear to be similar to each other in other ways, 
+with many having a large panel with a darkened image background extolling the 
+features of the app above two buttons, one for a “live demo” and the other to 
+“buy now.” This is somewhat circumstantial evidence - it is entirely possible 
+that these manufacturers simply chose similar web templates, or copy each 
+other’s site in an attempt to undercut competition. However, if multiple groups 
+of stalkerware apps are in fact made by only a few manufacturers, it may 
+facilitate app identification. Similarities in network traces may indicate that 
+the code used in the apps was made by the same developers.
+
+\subsection{App Traffic}
+
+Upon identifying the apps and locating them on the app store or app website, we 
+proceeded to install the apps on two phones. One is a (what are our phones). 
+After installing and confirming functionality, we began tracking the phone's 
+network traffic using Wireshark. For the majority of the apps, a network trace 
+of five to ten minutes is enough to detect traffic going to and from the 
+stalkerware app as long as the app's tracked functions like text or GPS are 
+altered or the tracker app or website has a manual update function. Those that 
+do not have such functionality have all been fake stalkerware apps. The network 
+captures themselves contain at least one packet that provides easy manual 
+detection of the related app.
+
+In addition to the above network captures, we also took twenty-four hours of 
+network traffic of our own phones as a baseline for false positive rates. These 
+captures also included periods of time that were deemed high risk for false 
+positives as they emulated behaviour that is most likely to be caught by our 
+signatures. Although this may not be enough to fully emulate an entire network, 
+it is enough to prove the false positive rates on any given phone.
+
+\section{Traffic Results}
+
+The majority of stalkerware apps communicate though HTTP or HTTPS.
+
+\section{temp}
+
+Some examples.  A paginated journal article \cite{Abril07}, an enumerated 
+journal article \cite{Cohen07}, a reference to an entire issue \cite{JCohen96}, 
+a monograph (whole book) \cite{Kosiur01}, a monograph/whole book in a series 
+(see 2a in spec. document)
+\cite{Harel79}, a divisible-book such as an anthology or compilation 
+\cite{Editor00} followed by the same example, however we only output the series 
+if the volume number is given \cite{Editor00a} (so Editor00a's series should 
+NOT be present since it has no vol. no.),
+a chapter in a divisible book \cite{Spector90}, a chapter in a divisible book 
+in a series \cite{Douglass98}, a multi-volume work as book \cite{Knuth97}, an 
+article in a proceedings (of a conference, symposium, workshop for example) 
+(paginated proceedings article) \cite{Andler79}, a proceedings article with all 
+possible elements \cite{Smith10}, an example of an enumerated proceedings 
+article \cite{VanGundy07}, an informally published work \cite{Harel78}, a 
+doctoral dissertation \cite{Clarkson85}, a master's thesis: \cite{anisi03}, an 
+online document / world wide web resource \cite{Thornburg01, Ablamowicz07, 
+Poker06}, a video game (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03} and 
+\cite{Lee05} and (Case 3) a patent \cite{JoeScientist001}, work accepted for 
+publication \cite{rous08}, 'YYYYb'-test for prolific author \cite{SaeediMEJ10} 
+and \cite{SaeediJETC10}. Other cites might contain 'duplicate' DOI and URLs 
+(some SIAM articles) \cite{Kirschmer:2010:AEI:1958016.1958018}. Boris / Barbara 
+Beeton: multi-volume works as books \cite{MR781536} and \cite{MR781537}. A 
+couple of citations with DOIs: 
+\cite{2004:ITE:1009386.1010128,Kirschmer:2010:AEI:1958016.1958018}. Online 
+citations: \cite{TUGInstmem, Thornburg01, CTANacmart}.
+
+
+
+%
+% The next two lines define the bibliography style to be used, and the 
+%bibliography file.
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{IPS_Measurement.bib}
+
+% 
+% If your work has an appendix, this is the place to put it.
+\appendix
+
+\section{Apps and Signatures}
+
+
+
+\end{document}
