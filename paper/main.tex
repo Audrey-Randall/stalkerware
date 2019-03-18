@@ -31,14 +31,10 @@ Specifically, when these relationships become abusive, there are more options
 available to the abuser for attempting to retain control over their partner. 
 One of these options is the ability to install monitoring software on their 
 partner's phone or computer to record their online activity, communications, 
-and location. We refer to such software as ``stalkerware.''  In a survey of 72 
-domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
-survivors whose abusers had tracked their location using their smartphone's 
-GPS. 75\% said they are working with clients who have had their conversations 
-monitored by hidden stalkerware apps.\cite{shahani_smartphones}
+and location. We refer to such software as ``stalkerware.''  
 
-Although stalkerware is superficially similar to other types of malware, a few 
-key differences exist between them. First, stalkerware is meant to be installed 
+Although stalkerware is superficially similar to other types of malware, it has 
+a few key differences. First, stalkerware is meant to be installed 
 deliberately, by someone with physical access to the device that is to be 
 monitored. In the context of intimate partner abuse, this presents an enormous 
 threat. An abuser will often know or be able to coerce passwords to the device 
@@ -50,32 +46,108 @@ part into two categories: apps that are explicitly advertised for surveilling
 spouses and partners, and apps that have a different stated use but can be 
 repurposed to stalk a target. These are usually marketed for theft prevention, 
 parental control of children, and employer control of employees. Previous 
-literature refers to these as "dual-use" apps [5]. Determining how many users 
-of a particular dual-use app are using it for intimate partner surveillance 
-(IPS), and how many for its stated (usually legal) purpose, presents a 
-significant challenge.
+literature refers to these as "dual-use" apps\cite{chatterjee_spyware_2018}. 
+Some dual-use apps are ones that the survivor wants to keep installed, such as 
+``find my phone'' apps or social media apps that leak the user's location. The 
+most troubling example of this is Facebook, which most survivors want to keep 
+so that they can contact their support network for help.  
+Determining if a particular dual-use app is being used for 
+intimate partner surveillance (IPS) presents an enormous challenge. Given the 
+wide spectrum of apps that can be used to facilitate IPS and the limited scope 
+of this project, we chose to focus on more overt spyware.
 
-Therefore, we start by identifying a set of dual-use apps that appear to be 
-marketed primarily for IPS. Apps that appear in Google searches for terms like 
+Largely due to the differences between stalkerware and other malware, most 
+available information on the pervasiveness of stalkerware is anecdotal and 
+piecemeal. Small-scale studies on how widespread spyware is do exist, but they 
+have limitations. For example, in a survey of 72 
+domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
+survivors whose abusers had tracked their location using their smartphone's 
+GPS. 75\% said they are working with clients who have had their conversations 
+monitored by hidden stalkerware apps.\cite{shahani_smartphones_nodate} However, 
+this study does not report how many individual clients experienced being 
+digitally stalked. Additionally, it and similar work relies on 
+reports from domestic violence shelters and health workers, which does not give 
+a complete picture of the situation. Little to no data exist regarding spyware 
+use on IPA victims who never visit a shelter. Traditionally, antivirus vendors 
+collect metrics about 
+malicious software, but antivirus often does not detect spyware 
+\cite{chatterjee_spyware_2018}. Alarmingly, the stalkerware 
+websites themselves claim to have hundreds of thousands of downloads per app, 
+but these numbers are not likely to be trustworthy. The goal of this work is 
+therefore to identify a means of identifying stalkerware in the wild so that it 
+can be enumerated. We collected the network signatures of 24 stalkerware apps 
+and showed that they could be easily distinguished from ordinary smartphone 
+network traffic. We also propose a simple method of generalizing our signatures 
+to spyware that we did not manually examine, and evaluate its robustness.
+
+
+We began by identifying a set of apps that appear to be 
+marketed primarily for IPS. We focused exclusively on Android apps, since our 
+two test phones were both Androids. Apps that appear in Google searches for 
+terms like 
 "catch a cheating spouse," use vague language that appear to be marketed 
 towards IPS, and label themselves as "spyware" became candidates that we 
-considered. Such apps also differentiated themselves from more innocent apps by 
-their price - they cost much more than a typical app, with monthly 
-subscriptions ranging from \$12 to \$68 per month. We selected several of these 
-to test. All of these apps brand themselves as spyware and advertise that their 
-products are undetectable on the target phone, despite their disclaimers that 
-they should not be used for any illegal activity. Some use language that 
-appears designed to appeal to abusers. For example, underneath one promotional 
-video, the app TheOneSpy has the disclaimer: "Note for this video: Don't 
-confuse with the world "Loved Ones" as spouse or Girl friends! Word Loved ones 
-has used for kids and teens." Many of these apps also refer to the tracked 
-phone as the "target" phone, and advertise that once installed, the app is in 
-"stealth mode," meaning completely undetectable. 
+considered. Overt spyware is not generally available from the app store - it 
+must be downloaded from the manufacturer sites. It also costs much more than a 
+typical app, with monthly 
+subscriptions ranging from \$12 to \$70 per month. The exception is an app that 
+we call SpyToMobile, which survives on the app store by frequently 
+``reskinning'' itself (see section \ref{reskinning}).  
+We selected several of these to test. All of these apps brand themselves as 
+spyware and advertise that their products are undetectable on the target phone, 
+despite also having disclaimers in small text that their software should not be 
+used for any illegal activity. Some use language that appears designed to 
+appeal to abusers. For example, underneath one promotional 
+video, the app TheOneSpy has the disclaimer: ``Note for this video: Don't 
+confuse with the world `Loved Ones' as spouse or Girl friends! Word Loved ones 
+has used for kids and teens.'' Many of these apps also refer to the tracked 
+phone as the ``target'' phone, and advertise that once installed, the app is in 
+``stealth mode,'' meaning completely undetectable. None of these required 
+rooting the phone. When installed, they ask for all the permissions they 
+require, including device administrator privileges. They are capable of 
+blocking incoming calls, recording messages that have been deleted, recording 
+the screen of the phone using accessibility features, monitoring apps such as 
+Facebook, WhatsApp, Kik, and Viber, and more.
+
+Other apps were overt spyware, but nevertheless available from the Play Store. 
+They fell into two categories: spyware that reskinned itself to appear to be 
+many different apps, and apps designed for parents to keep track of children 
+(or in one case, for adult children to track elderly parents.) For the most 
+part, this latter category was offered by antivirus companies such as Avast and 
+Norton. These apps offered 
+multiple features, such as call screening, blocking Google search results, 
+recording text messages and call logs, and ``panic buttons'' that would allow 
+the surveilled phone to contact the surveillant and raise an alarm. They do not 
+hide their app icons and generally make an effort to notify the user that the 
+monitoring app is installed on their phone. The spyware that did not notify 
+users of its presence mostly consisted of one app, called SpyToMobile, that was 
+provided on the Play Store under many different names. 
+
+We also identified many apps that were designed to track location or text 
+messages, but were less comprehensive than the overt, off-store spyware. They 
+track one feature each instead of tracking location, communication, and 
+browsing history all at once. For the most part, these apps were free and 
+available on the Google Play Store. Most of these were designed to keep track 
+of the locations of the users' friends. 
+
+\section{The Stalkerware Ecosystem}
+\subsection{The Practice of ``Reskinning''}
+\label{reskinning}
+
+Somewhere: put a note about the weird thing where the paid apps try to make you 
+download stuff again. Maybe it's just us? Maybe they're trying to boost 
+download count?
+
+Some spyware has a notification that the app is running, but that can be 
+disabled. Those ones don't hide their icon, but you might have to go to All 
+Apps to find it.
+
+\subsection{App Quality}
 
 The other category for stalkerware encompasses a large range of quality. Many 
 apps advertised as stalkerware have absolutely no functionality other than 
 advertisement of other apps. The few that are functional are often simplistic 
-in both features and network patterns. Unlike dual-use apps, however, the vast 
+in both features and network patterns. Unlike the overt apps, however, the vast 
 majority are usually free with advertisements. These apps can be easily 
 identified and found with a few keywords such as "spy","track", "locate", or 
 "find". 
@@ -104,12 +176,15 @@ source code into “families.” [8]
 \section{Methodology}
 \subsection{Finding Apps}
 We selected thirty apps from a list provided by the team of Cornell researchers 
-who performed the original large scale study of stalkerware\cite{chatterjee_spyware_2018}. An 
+who performed the original large scale study of 
+stalkerware\cite{chatterjee_spyware_2018}. An 
 additional fifteen apps were included as they were recently added to the app 
 store. Apps were chosen for their diversity of purpose and the probability that 
 they can be used as stalkerware. These apps are the most likely to be 
 downloaded when a abuser without deep technical knowledge tries to install 
-stalkerware since they are either the first result upon searching for stalkerware, or are well known spyware apps due to advertisement or other reasons. 
+stalkerware since they are either the first result upon searching for 
+stalkerware, or are well known spyware apps due to advertisement or other 
+reasons. 
 
 We recognize that there are thousands of apps on the market that can be 
 repurposed as stalkerware. Therefore, any useful process for identifying 
@@ -129,15 +204,16 @@ closer inspection, although multiple companies are listed as the makers of the
 apps (Powerline Group Corp., ILF Mobile Apps, and PhoneSpector LLC), all have 
 the same physical address listed. At least one blog that is supposedly run by 
 an independent part reviewed apps that coincidentally were made by the same 
-company [9]. Other app sites appear to be similar to each other in other ways, 
+company\cite{noauthor_best_nodate}. Other app sites appear to be similar to each other in other ways, 
 with many having a large panel with a darkened image background extolling the 
-features of the app above two buttons, one for a “live demo” and the other to 
-“buy now.” This is somewhat circumstantial evidence - it is entirely possible 
-that these manufacturers simply chose similar web templates, or copy each 
-other’s site in an attempt to undercut competition. However, if multiple groups 
+features of the app above two buttons, one for a "live demo" and the other to 
+"buy now." This is somewhat circumstantial evidence - it is entirely possible 
+that these manufacturers simply chose similar web templates, or copied each 
+other's site in an attempt to undercut competition. However, if multiple groups 
 of stalkerware apps are in fact made by only a few manufacturers, it may 
-facilitate app identification. Similarities in network traces may indicate that 
-the code used in the apps was made by the same developers.
+facilitate app identification. 
+
+After our investigation on these apps, we can confirm that, at least from the few that we have selected, many stalkerware apps are related in some fashion to each other. The most notable being the group of apps stated above, and a single app called spy2mobile. Spy2mobile is an interesting case because it fits the description of a generic stalkerware app so closely that it is the perfect example of spyware on the Play Store. Moreover, this single app has been repackaged multiple times. We have discovered that there are at least 6 copies of the app on the Play store, all with different developers and different names. While this is still circumstantial evidence that most stalkerware often contains copies of each other, we can at least conclue that our forty-five apps constitute a larger percentage than anticipated.
 
 \subsection{App Traffic}
 
@@ -152,6 +228,8 @@ do not have such functionality have all been fake stalkerware apps. The network
 captures themselves contain at least one packet that provides easy manual 
 detection of the related app.
 
+What causes most stalkerware to send packets? Our captures and testing show that there are three main categories of updating tracker state: manual, timed, and on tracked feature. Most free apps fall into the manual update method, where there is a button on a website or on a phone app that will send a signal packet to the stalkerware app that initalizes the upload. Most paid apps also include a timed auto-update feature, where an update will be sent every few minutes. A very small subset of both advertised that it receives a "real time notification" every time email, texts, calls, or GPS, was changed or added to. Our results show that none of the stalkerware apps were able to send in real time.
+
 In addition to the above network captures, we also took twenty-four hours of 
 network traffic of our own phones as a baseline for false positive rates. These 
 captures also included periods of time that were deemed high risk for false 
@@ -159,28 +237,28 @@ positives as they emulated behaviour that is most likely to be caught by our
 signatures. Although this may not be enough to fully emulate an entire network, 
 it is enough to prove the false positive rates on any given phone.
 
+\subsection{Network Signatures}
+
+
 \section{Traffic Results}
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some use their own protocols. We examined the domain, SNI, User-Agent, and HTTP host, for each app. The words “spy,” “find,” and “track” appeared frequently in various fields of the traffic. The most common place to find them was in the destination domain, which we found using Wireshark’s reverse DNS lookup tool. 12 of the 26 apps that we eventually found signatures for contained these spyware keywords in their domains. We identified the following generalized signatures that can be used to identify most of our apps given nothing but information available on the Google Play store.
 
 
 
+\section{Future Work}
 
+Make machine learning identify stalkerware on the app store, download it, 
+profile it. Then train more ML to pick out the malicious signatures? Would that 
+even work? What would it learn that we can't?
 
+\section{Conclusion}
 
-
-%
-% The next two lines define the bibliography style to be used, and the 
-%bibliography file.
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{IPS_Measurement}
 
-% 
-% If your work has an appendix, this is the place to put it.
 \appendix
 
 \section{Apps and Signatures}
-
-
 
 \end{document}
