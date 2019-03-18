@@ -31,14 +31,10 @@ Specifically, when these relationships become abusive, there are more options
 available to the abuser for attempting to retain control over their partner. 
 One of these options is the ability to install monitoring software on their 
 partner's phone or computer to record their online activity, communications, 
-and location. We refer to such software as ``stalkerware.''  In a survey of 72 
-domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
-survivors whose abusers had tracked their location using their smartphone's 
-GPS. 75\% said they are working with clients who have had their conversations 
-monitored by hidden stalkerware apps.\cite{shahani_smartphones}
+and location. We refer to such software as ``stalkerware.''  
 
-Although stalkerware is superficially similar to other types of malware, a few 
-key differences exist between them. First, stalkerware is meant to be installed 
+Although stalkerware is superficially similar to other types of malware, it has 
+a few key differences. First, stalkerware is meant to be installed 
 deliberately, by someone with physical access to the device that is to be 
 monitored. In the context of intimate partner abuse, this presents an enormous 
 threat. An abuser will often know or be able to coerce passwords to the device 
@@ -50,32 +46,108 @@ part into two categories: apps that are explicitly advertised for surveilling
 spouses and partners, and apps that have a different stated use but can be 
 repurposed to stalk a target. These are usually marketed for theft prevention, 
 parental control of children, and employer control of employees. Previous 
-literature refers to these as "dual-use" apps [5]. Determining how many users 
-of a particular dual-use app are using it for intimate partner surveillance 
-(IPS), and how many for its stated (usually legal) purpose, presents a 
-significant challenge.
+literature refers to these as "dual-use" apps\cite{chatterjee_spyware_2018}. 
+Some dual-use apps are ones that the survivor wants to keep installed, such as 
+``find my phone'' apps or social media apps that leak the user's location. The 
+most troubling example of this is Facebook, which most survivors want to keep 
+so that they can contact their support network for help.  
+Determining if a particular dual-use app is being used for 
+intimate partner surveillance (IPS) presents an enormous challenge. Given the 
+wide spectrum of apps that can be used to facilitate IPS and the limited scope 
+of this project, we chose to focus on more overt spyware.
 
-Therefore, we start by identifying a set of dual-use apps that appear to be 
-marketed primarily for IPS. Apps that appear in Google searches for terms like 
+Largely due to the differences between stalkerware and other malware, most 
+available information on the pervasiveness of stalkerware is anecdotal and 
+piecemeal. Small-scale studies on how widespread spyware is do exist, but they 
+have limitations. For example, in a survey of 72 
+domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
+survivors whose abusers had tracked their location using their smartphone's 
+GPS. 75\% said they are working with clients who have had their conversations 
+monitored by hidden stalkerware apps.\cite{shahani_smartphones_nodate} However, 
+this study does not report how many individual clients experienced being 
+digitally stalked. Additionally, it and similar work relies on 
+reports from domestic violence shelters and health workers, which does not give 
+a complete picture of the situation. Little to no data exist regarding spyware 
+use on IPA victims who never visit a shelter. Traditionally, antivirus vendors 
+collect metrics about 
+malicious software, but antivirus often does not detect spyware 
+\cite{chatterjee_spyware_2018}. Alarmingly, the stalkerware 
+websites themselves claim to have hundreds of thousands of downloads per app, 
+but these numbers are not likely to be trustworthy. The goal of this work is 
+therefore to identify a means of identifying stalkerware in the wild so that it 
+can be enumerated. We collected the network signatures of 24 stalkerware apps 
+and showed that they could be easily distinguished from ordinary smartphone 
+network traffic. We also propose a simple method of generalizing our signatures 
+to spyware that we did not manually examine, and evaluate its robustness.
+
+
+We began by identifying a set of apps that appear to be 
+marketed primarily for IPS. We focused exclusively on Android apps, since our 
+two test phones were both Androids. Apps that appear in Google searches for 
+terms like 
 "catch a cheating spouse," use vague language that appear to be marketed 
 towards IPS, and label themselves as "spyware" became candidates that we 
-considered. Such apps also differentiated themselves from more innocent apps by 
-their price - they cost much more than a typical app, with monthly 
-subscriptions ranging from \$12 to \$68 per month. We selected several of these 
-to test. All of these apps brand themselves as spyware and advertise that their 
-products are undetectable on the target phone, despite their disclaimers that 
-they should not be used for any illegal activity. Some use language that 
-appears designed to appeal to abusers. For example, underneath one promotional 
-video, the app TheOneSpy has the disclaimer: "Note for this video: Don't 
-confuse with the world "Loved Ones" as spouse or Girl friends! Word Loved ones 
-has used for kids and teens." Many of these apps also refer to the tracked 
-phone as the "target" phone, and advertise that once installed, the app is in 
-"stealth mode," meaning completely undetectable. 
+considered. Overt spyware is not generally available from the app store - it 
+must be downloaded from the manufacturer sites. It also costs much more than a 
+typical app, with monthly 
+subscriptions ranging from \$12 to \$70 per month. The exception is an app that 
+we call SpyToMobile, which survives on the app store by frequently 
+``reskinning'' itself (see section \ref{reskinning}).  
+We selected several of these to test. All of these apps brand themselves as 
+spyware and advertise that their products are undetectable on the target phone, 
+despite also having disclaimers in small text that their software should not be 
+used for any illegal activity. Some use language that appears designed to 
+appeal to abusers. For example, underneath one promotional 
+video, the app TheOneSpy has the disclaimer: ``Note for this video: Don't 
+confuse with the world `Loved Ones' as spouse or Girl friends! Word Loved ones 
+has used for kids and teens.'' Many of these apps also refer to the tracked 
+phone as the ``target'' phone, and advertise that once installed, the app is in 
+``stealth mode,'' meaning completely undetectable. None of these required 
+rooting the phone. When installed, they ask for all the permissions they 
+require, including device administrator privileges. They are capable of 
+blocking incoming calls, recording messages that have been deleted, recording 
+the screen of the phone using accessibility features, monitoring apps such as 
+Facebook, WhatsApp, Kik, and Viber, and more.
+
+Other apps were overt spyware, but nevertheless available from the Play Store. 
+They fell into two categories: spyware that reskinned itself to appear to be 
+many different apps, and apps designed for parents to keep track of children 
+(or in one case, for adult children to track elderly parents.) For the most 
+part, this latter category was offered by antivirus companies such as Avast and 
+Norton. These apps offered 
+multiple features, such as call screening, blocking Google search results, 
+recording text messages and call logs, and ``panic buttons'' that would allow 
+the surveilled phone to contact the surveillant and raise an alarm. They do not 
+hide their app icons and generally make an effort to notify the user that the 
+monitoring app is installed on their phone. The spyware that did not notify 
+users of its presence mostly consisted of one app, called SpyToMobile, that was 
+provided on the Play Store under many different names. 
+
+We also identified many apps that were designed to track location or text 
+messages, but were less comprehensive than the overt, off-store spyware. They 
+track one feature each instead of tracking location, communication, and 
+browsing history all at once. For the most part, these apps were free and 
+available on the Google Play Store. Most of these were designed to keep track 
+of the locations of the users' friends. 
+
+\section{The Stalkerware Ecosystem}
+\subsection{The Practice of ``Reskinning''}
+\label{reskinning}
+
+Somewhere: put a note about the weird thing where the paid apps try to make you 
+download stuff again. Maybe it's just us? Maybe they're trying to boost 
+download count?
+
+Some spyware has a notification that the app is running, but that can be 
+disabled. Those ones don't hide their icon, but you might have to go to All 
+Apps to find it.
+
+\subsection{App Quality}
 
 The other category for stalkerware encompasses a large range of quality. Many 
 apps advertised as stalkerware have absolutely no functionality other than 
 advertisement of other apps. The few that are functional are often simplistic 
-in both features and network patterns. Unlike dual-use apps, however, the vast 
+in both features and network patterns. Unlike the overt apps, however, the vast 
 majority are usually free with advertisements. These apps can be easily 
 identified and found with a few keywords such as "spy","track", "locate", or 
 "find". 
@@ -163,48 +235,20 @@ it is enough to prove the false positive rates on any given phone.
 
 The majority of stalkerware apps communicate though HTTP or HTTPS.
 
-\section{temp}
 
-Some examples.  A paginated journal article \cite{Abril07}, an enumerated 
-journal article \cite{Cohen07}, a reference to an entire issue \cite{JCohen96}, 
-a monograph (whole book) \cite{Kosiur01}, a monograph/whole book in a series 
-(see 2a in spec. document)
-\cite{Harel79}, a divisible-book such as an anthology or compilation 
-\cite{Editor00} followed by the same example, however we only output the series 
-if the volume number is given \cite{Editor00a} (so Editor00a's series should 
-NOT be present since it has no vol. no.),
-a chapter in a divisible book \cite{Spector90}, a chapter in a divisible book 
-in a series \cite{Douglass98}, a multi-volume work as book \cite{Knuth97}, an 
-article in a proceedings (of a conference, symposium, workshop for example) 
-(paginated proceedings article) \cite{Andler79}, a proceedings article with all 
-possible elements \cite{Smith10}, an example of an enumerated proceedings 
-article \cite{VanGundy07}, an informally published work \cite{Harel78}, a 
-doctoral dissertation \cite{Clarkson85}, a master's thesis: \cite{anisi03}, an 
-online document / world wide web resource \cite{Thornburg01, Ablamowicz07, 
-Poker06}, a video game (Case 1) \cite{Obama08} and (Case 2) \cite{Novak03} and 
-\cite{Lee05} and (Case 3) a patent \cite{JoeScientist001}, work accepted for 
-publication \cite{rous08}, 'YYYYb'-test for prolific author \cite{SaeediMEJ10} 
-and \cite{SaeediJETC10}. Other cites might contain 'duplicate' DOI and URLs 
-(some SIAM articles) \cite{Kirschmer:2010:AEI:1958016.1958018}. Boris / Barbara 
-Beeton: multi-volume works as books \cite{MR781536} and \cite{MR781537}. A 
-couple of citations with DOIs: 
-\cite{2004:ITE:1009386.1010128,Kirschmer:2010:AEI:1958016.1958018}. Online 
-citations: \cite{TUGInstmem, Thornburg01, CTANacmart}.
+\section{Future Work}
 
+Make machine learning identify stalkerware on the app store, download it, 
+profile it. Then train more ML to pick out the malicious signatures? Would that 
+even work? What would it learn that we can't?
 
+\section{Conclusion}
 
-%
-% The next two lines define the bibliography style to be used, and the 
-%bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{IPS_Measurement.bib}
+\bibliography{IPS_Measurement}
 
-% 
-% If your work has an appendix, this is the place to put it.
 \appendix
 
 \section{Apps and Signatures}
-
-
 
 \end{document}
