@@ -213,7 +213,7 @@ other's site in an attempt to undercut competition. However, if multiple groups
 of stalkerware apps are in fact made by only a few manufacturers, it may 
 facilitate app identification. 
 
-After our investigation on these apps, we can confirm that, at least from the few that we have selected, many stalkerware apps are related in some fashion to each other. The most notable being the group of apps stated above, and a single app called spy2mobile. Spy2mobile is an interesting case because it fits the description of a generic stalkerware app so closely that it is the perfect example of spyware on the Play Store. Moreover, this single app has been repackaged multiple times. We have discovered that there are at least 6 copies of the app on the Play store, all with different developers and different names. While this is still circumstantial evidence that most stalkerware often contains copies of each other, we can at least conclue that our forty-five apps constitute a larger percentage than anticipated.
+After our investigation on these apps, we can confirm that, at least from the few that we have selected, many stalkerware apps are related in some fashion to each other. The most notable being the group of apps stated above, and a single app mentioned before called SpyTomobile. SpyTomobile is an interesting case because it fits the description of a generic stalkerware app so closely that it is the perfect example of spyware on the Play Store. Moreover, this single app has been repackaged multiple times. We have discovered that there are at least 6 copies of the app on the Play store, all with different developers and different names. While this is still circumstantial evidence that most stalkerware often contains copies of each other, we can at least conclude that our forty-five apps constitute a larger percentage than anticipated.
 
 \subsection{App Traffic}
 
@@ -228,7 +228,7 @@ do not have such functionality have all been fake stalkerware apps. The network
 captures themselves contain at least one packet that provides easy manual 
 detection of the related app.
 
-What causes most stalkerware to send packets? Our captures and testing show that there are three main categories of updating tracker state: manual, timed, and on tracked feature. Most free apps fall into the manual update method, where there is a button on a website or on a phone app that will send a signal packet to the stalkerware app that initalizes the upload. Most paid apps also include a timed auto-update feature, where an update will be sent every few minutes. A very small subset of both advertised that it receives a "real time notification" every time email, texts, calls, or GPS, was changed or added to. Our results show that none of the stalkerware apps were able to send in real time.
+What causes most stalkerware to send packets? Our captures and testing show that there are three main categories of updating tracker state: manual, timed, and on tracked feature. Most free apps fall into the manual update method, where there is a button on a website or on a phone app that will send a signal packet to the stalkerware app that initalizes the upload. Most paid apps also include a timed auto-update feature, where an update will be sent every few minutes. A very small subset of both advertised that it receives a "real time notification" every time email, texts, calls, or GPS, was changed or added to. Our results show that none of the stalkerware apps were able to send in real time, all the apps advertised as real time simply updated at a more frequent frequency than other apps.
 
 In addition to the above network captures, we also took twenty-four hours of 
 network traffic of our own phones as a baseline for false positive rates. These 
@@ -239,7 +239,45 @@ it is enough to prove the false positive rates on any given phone.
 
 \subsection{Network Signatures}
 
+When the network traffic is captured and the suspicious packets are identified, the next step would be to form a Network signature that can filter out those packets. But what can we use that isolates stalkerware traffic from normal traffic? To begin with, we must look at the packet identifiers that allow us to find the suspicious packets. 
+\begin{itemize}
+	\item Application Layer
+	\begin{itemize}
+		\item HTTP
+		\begin{itemize}
+			\item packet content
+			\item User agent
+		\end{itemize}
+		\item HTTP and HTTPS headers
+		\item Packet length
+		\item Domain Name
+		\item Host Name
+		\item Location Requests
+	\end{itemize}
+	\item Transport Layer
+	\begin{itemize}
+		\item TLS 1.2
+		\begin{itemize}
+			\item Server Name Indication
+		\end{itemize}
+		\item TCP
+		\begin{itemize}
+			\item Ports
+			\item Sequence number
+		\end{itemize}
+	\end{itemize}
+	\item Internet Layer
+	\begin{itemize}
+		\item IP address
+		\item IP version
+	\end{itemize}
+	\item Other
+	\begin{itemize}
+		\item Packet frequency
+	\end{itemize}
+\end{itemize}
 
+All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, we will explain why we cannot add more to this list.
 \section{Traffic Results}
 
 The majority of stalkerware apps communicate though HTTP or HTTPS.
