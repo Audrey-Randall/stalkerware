@@ -280,7 +280,9 @@ When the network traffic is captured and the suspicious packets are identified, 
 All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, we will explain why we cannot add more to this list.
 \section{Traffic Results}
 
-The majority of stalkerware apps communicate though HTTP or HTTPS.
+The majority of stalkerware apps communicate though HTTP or HTTPS, while some use their own protocols. We examined the domain, SNI, User-Agent, and HTTP host, for each app. The words “spy,” “find,” and “track” appeared frequently in various fields of the traffic. The most common place to find them was in the destination domain, which we found using Wireshark’s reverse DNS lookup tool. 12 of the 26 apps that we eventually found signatures for contained these spyware keywords in their domains. We identified the following generalized signatures that can be used to identify most of our apps given nothing but information available on the Google Play store.
+
+
 
 \section{Future Work}
 
