@@ -170,14 +170,19 @@ For example, the “ILFMobile group” consists of three different companies
 four different apps. Further investigation showed that all three companies had 
 the same physical address in addition to identical websites. Unfortunately, 
 they also had identical bugs in their payment methods, so we were unable to 
-purchase the apps and verify that their network traces were identical. We were 
-able to check the network signatures for the rest of the app groups in the list 
-below (with the exception of one app which we are still confirming). These 
-reskinned programs are potentially a boon to our investigation as the identical 
-network signatures make it more likely that one signature generalizes across 
-multiple apps.
-We have identified the following groups of applications that appear to be 
-reskinned versions of each other.
+purchase the apps and verify that their network traces were identical. Other 
+app sites appear to be similar to each other in other ways, 
+with many having a large panel with a darkened image background extolling the 
+features of the app above two buttons, one for a "live demo" and the other to 
+"buy now." This is somewhat circumstantial evidence - it is entirely possible 
+that these manufacturers simply chose similar web templates, or copied each 
+other's site in an attempt to undercut competition. We therefore confirmed our 
+suspicions by checking if the traffic signatures were also similar. These 
+reskinned programs are potentially a boon to 
+our investigation as the identical network signatures make it more likely that 
+one signature generalizes across multiple apps. We have identified the 
+following groups of applications that appear to be reskinned versions of each 
+other.
 \begin{enumerate}
 	\item \textbf{SpyToMobile group}: Employee Work Spy by Piter Cline, SMS 
 	Tracker by TheHar, Mobile Tracking by Antwat, Cell Phone Tracker by Susdel, 
@@ -202,6 +207,16 @@ particular group. If we have not, it will make other members easier to
 identify, since signatures we have already found will scale to identify more 
 apps than we had time to download and manually examine.
 
+\subsubsection{SpyToMobile}
+SpyToMobile is an interesting case 
+because it fits the description of a generic stalkerware app so closely that it 
+is the perfect example of spyware on the Play Store. Moreover, this single app 
+has been repackaged multiple times. We have discovered that there are at least 
+6 copies of the app on the Play store, all with different developers and 
+different names. While this is still circumstantial evidence that most 
+stalkerware often contains copies of each other, we can at least conclude that 
+our forty-five apps constitute a larger percentage than anticipated.
+
 \subsection{Competition Among Manufacturers}
 
 App manufacturers appear to be well aware of their competition. When the term 
@@ -212,7 +227,9 @@ the download pages for mSpy and SpyMyFone respectively, not the site for
 HelloSpy. Based on network traces and website appearances, we do not believe 
 any of these three apps are made by the same manufacturer. Spyware groups also 
 create “review” websites that review their own products, posing as third party 
-spyware enthusiasts. For example, a member of the ILFMobile group reviews the 
+spyware enthusiasts. At least one blog that is supposedly run by 
+an independent party reviewed apps that coincidentally were all made by the 
+ILFMobile group\cite{noauthor_best_nodate}. This blog reviews the 
 “top 5 cell phone spy apps,” all of which are ILFMobile’s own apps, on a 
 website called “bestcellphonespyapps.com.” We haven’t determined what advantage 
 spyware manufacturers derive from appearing to make more apps and competing 
@@ -276,27 +293,6 @@ ecosystem, so they certainly do not provide a representative sample. Therefore,
 we did not employ any vigorous app selection methods, since we know this is 
 just a starting point. Our hope is to eventually find a way to partially 
 automate the signature identification process.
-
-However, some characteristics of the stalkerware apps themselves may aid us in 
-detecting them. For example, similar to malware, some groups of apps appear to 
-be repackaged versions of each other. For example, PhoneSpector, 
-HighsterMobile, AutoForward, EasySpy and Surepoint Spy all have separate 
-websites, but the appearance of each of these sites is nearly identical. Upon 
-closer inspection, although multiple companies are listed as the makers of the 
-apps (Powerline Group Corp., ILF Mobile Apps, and PhoneSpector LLC), all have 
-the same physical address listed. At least one blog that is supposedly run by 
-an independent party reviewed apps that coincidentally were all made by the 
-same company\cite{noauthor_best_nodate}. Other app sites appear to be similar 
-to each other in other ways, 
-with many having a large panel with a darkened image background extolling the 
-features of the app above two buttons, one for a "live demo" and the other to 
-"buy now." This is somewhat circumstantial evidence - it is entirely possible 
-that these manufacturers simply chose similar web templates, or copied each 
-other's site in an attempt to undercut competition. We therefore confirmed our 
-suspicions by checking if the traffic signatures were also similar. In multiple 
-cases, this was true (see section \ref{app_families}). App identification may 
-be easier to scale since multiple groups of stalkerware apps are in fact made 
-by only a few manufacturers. 
 
 \subsection{Experimental Setup}
 Out of the 45 apps we originally selected from Dr. Ristenpart's ML-curated list 
@@ -475,24 +471,6 @@ destination domain, which we found using Wireshark’s reverse DNS lookup tool.
 spyware keywords in their domains. We identified the following generalized 
 signatures that can be used to identify most of our apps given nothing but 
 information available on the Google Play store.
-
-\subsection{App ``Families''}
-\label{app_families}
-After our investigation on these apps, we can confirm that, at least from the 
-few that we have selected, many stalkerware apps are related in some fashion to 
-each other. The most notable being the group of apps stated above, and a single 
-app mentioned before called SpyToMobile. SpyToMobile is an interesting case 
-because it fits the description of a generic stalkerware app so closely that it 
-is the perfect example of spyware on the Play Store. Moreover, this single app 
-has been repackaged multiple times. We have discovered that there are at least 
-6 copies of the app on the Play store, all with different developers and 
-different names. While this is still circumstantial evidence that most 
-stalkerware often contains copies of each other, we can at least conclude that 
-our forty-five apps constitute a larger percentage than anticipated.
-
-Apps be identify as reskinned by observing their websites. We found several groups with similar dashboards (where users view the communications and locations of the target phones), download sites, and advertisements. Several groups of off-store apps have nearly identical websites, in terms of organization, color, fonts, placement of buttons, prices, and other factors. For example, the “ILFMobile group” consists of three different companies (ILFMobile, PowerLine Group, and PhoneSpector) that claim to make a total of four different apps. Further investigation showed that all three companies had the same physical address in addition to identical websites. Unfortunately, they also had identical bugs in their payment methods, so we were unable to purchase the apps and verify that their network traces were identical.
-
-
 
 
 \section{Future Work}
