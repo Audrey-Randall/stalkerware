@@ -284,6 +284,23 @@ All of the above signatures are able to be filtered out through a Wireshark filt
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some use their own protocols. We examined the domain, SNI, User-Agent, and HTTP host, for each app. The words “spy,” “find,” and “track” appeared frequently in various fields of the traffic. The most common place to find them was in the destination domain, which we found using Wireshark’s reverse DNS lookup tool. 12 of the 26 apps that we eventually found signatures for contained these spyware keywords in their domains. We identified the following generalized signatures that can be used to identify most of our apps given nothing but information available on the Google Play store.
 
+\begin{table*}
+\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+	\toprule
+	Generalized Signature & Unique Apps & Total Apps \\
+	Domain contains “spy,” “track,” “find” & 6 & 12 \\
+	SNI contains “spy,” “track,” “find” & 6 & 6 \\
+	User-Agent contains “spy,” “track,” “find” & 1 & 3 \\
+	User-Agent contains known app name & 1 & 1 \\
+	Domain contains known app name & 3 & 4 \\
+	SNI contains known app name & 1 & 1 \\
+	SNI contains known app manufacturer & 3 & 3 \\
+	Domain contains known app manufacturer & 3 & 3 \\
+	\midrule
+\end{tabular}
+\end{table*}
+
+\section{Reskinned Applications}
 
 
 \section{Future Work}
@@ -385,7 +402,8 @@ even work? What would it learn that we can't?
 	SNI:www.callsmstracker.com & Similar to Call and Message tracker. Sends a post to a separate service. \\
 	
 	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
-\end{tabular}
+\end{tabular}
+
 
 \end{table*}
 \end{document}
