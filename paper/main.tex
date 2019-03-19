@@ -205,24 +205,33 @@ websites, but the appearance of each of these sites is nearly identical. Upon
 closer inspection, although multiple companies are listed as the makers of the 
 apps (Powerline Group Corp., ILF Mobile Apps, and PhoneSpector LLC), all have 
 the same physical address listed. At least one blog that is supposedly run by 
-an independent part reviewed apps that coincidentally were made by the same 
-company\cite{noauthor_best_nodate}. Other app sites appear to be similar to each other in other ways, 
+an independent party reviewed apps that coincidentally were all made by the 
+same company\cite{noauthor_best_nodate}. Other app sites appear to be similar 
+to each other in other ways, 
 with many having a large panel with a darkened image background extolling the 
 features of the app above two buttons, one for a "live demo" and the other to 
 "buy now." This is somewhat circumstantial evidence - it is entirely possible 
 that these manufacturers simply chose similar web templates, or copied each 
-other's site in an attempt to undercut competition. However, if multiple groups 
-of stalkerware apps are in fact made by only a few manufacturers, it may 
-facilitate app identification. 
+other's site in an attempt to undercut competition. We therefore confirmed our 
+suspicions by checking if the traffic signatures were also similar. In multiple 
+cases, this was true (see section \ref{app_families}). App identification may 
+be easier to scale since multiple groups of stalkerware apps are in fact made 
+by only a few manufacturers. 
 
-After our investigation on these apps, we can confirm that, at least from the few that we have selected, many stalkerware apps are related in some fashion to each other. The most notable being the group of apps stated above, and a single app mentioned before called SpyTomobile. SpyTomobile is an interesting case because it fits the description of a generic stalkerware app so closely that it is the perfect example of spyware on the Play Store. Moreover, this single app has been repackaged multiple times. We have discovered that there are at least 6 copies of the app on the Play store, all with different developers and different names. While this is still circumstantial evidence that most stalkerware often contains copies of each other, we can at least conclude that our forty-five apps constitute a larger percentage than anticipated.
+\subsection{Experimental Setup}
+Out of the 45 apps we originally selected from Dr. Ristenpart's ML-curated list 
+of stalkerware, 36 still existed on the app store. We installed these one at a 
+time on one or both of two test phones, a Nexus 5X and a Nexus 6P.These models 
+were chosen simply because they were readily available. Stalkerware user 
+models  fall into two types: either an app is installed on the target phone and 
+a login to a web portal is provided for the attacker to view the results, or 
+the app comes with an ``attacker'' app and a ``target'' app, and the attacker 
+app must be installed on another phone.
 
-\subsection{App Traffic}
-
-Upon identifying the apps and locating them on the app store or app website, we 
-proceeded to install the apps on two phones. One is a (what are our phones). 
-After installing and confirming functionality, we began tracking the phone's 
-network traffic using Wireshark. For the majority of the apps, a network trace 
+After installing an app, we first confirmed that it was functional and capable 
+of acting like stalkerware. 
+We then began tracking the phone's network traffic using Wireshark. For the 
+majority of the apps, a network trace 
 of five to ten minutes is enough to detect traffic going to and from the 
 stalkerware app as long as the app's tracked functions like text or GPS are 
 altered or the tracker app or website has a manual update function. Those that 
@@ -230,7 +239,53 @@ do not have such functionality have all been fake stalkerware apps. The network
 captures themselves contain at least one packet that provides easy manual 
 detection of the related app.
 
-What causes most stalkerware to send packets? Our captures and testing show that there are three main categories of updating tracker state: manual, timed, and on tracked feature. Most free apps fall into the manual update method, where there is a button on a website or on a phone app that will send a signal packet to the stalkerware app that initalizes the upload. Most paid apps also include a timed auto-update feature, where an update will be sent every few minutes. A very small subset of both advertised that it receives a "real time notification" every time email, texts, calls, or GPS, was changed or added to. Our results show that none of the stalkerware apps were able to send in real time, all the apps advertised as real time simply updated at a more frequent frequency than other apps.
+\subsection{Ethical Considerations}
+
+We created two aliases in order to avoid exposing any personal information to 
+an ecosystem that is notorious for mishandling it\cite{ristenpart_ucsd_talk}. 
+It is likely that the privacy of victims is 
+not a high priority for anyone prepared to monetize abusive relationships, and 
+stalkerware manufacturers have leaked victims' information in the past 
+\cite{koebler_stalkerware_2018}. We took precautions by deleting all personal 
+data that had been on the phones at the start of the project. However, we were 
+not quite cautious enough - the app SpyMyFone managed to scrape a list of 
+deleted contacts off of the Nexus 5X. As of this moment, we do not know how. We 
+have deleted the account and requested that SpyMyFone delete all information 
+associated with it from their records, but we have no evidence that they have 
+complied. This served as a valuable and sobering lesson for the future.
+
+The original goal of this project was to identify traffic signatures so that 
+they could be detected by an IDS (Intrusion Detection System) or a network 
+tap in an anonymized fashion. We hoped to use differential privacy techniques 
+such as Google's RAPPOR algorithm \cite{erlingsson_rappor:_2014} to collect 
+aggregated statistics about stalkerware use, without giving ourselves the 
+ability to identify any particular device that had stalkerware installed. Upon 
+further investigation before we began the project, this turned out to be 
+insufficient protection. We as a computer 
+scientists do not have the expertise required to assist victims of abusive 
+relationships or domestic violence. We chose not to take our research in this 
+direction to avoid causing any unintended harm. We limit ourselves to 
+identifying traffic signatures on apps that we installed on personal phones.
+
+Wiretapping the phones was accomplished by setting up our personal computers as 
+WiFi hotspots. Since we controlled the passwords required to connect to our 
+networks, and Windows alerts the user when a device connects to its mobile 
+hotspot, we were able to ensure that we did not tap any traffic other than that 
+of the test phones. 
+
+\subsection{App Traffic}
+
+What causes most stalkerware to send packets? Our captures and testing show 
+that there are three main categories of updating tracker state: manual, timed, 
+and on tracked feature. Most free apps fall into the manual update method, 
+where there is a button on a website or on a phone app that will send a signal 
+packet to the stalkerware app that initializes the upload. Most paid apps also 
+include a timed auto-update feature, where an update will be sent every few 
+minutes. A very small subset of both advertised that it receives a "real time 
+notification" every time email, texts, calls, or GPS, was changed or added to. 
+Our results show that none of the stalkerware apps were able to send in real 
+time, all the apps advertised as real time simply updated at a more frequent 
+frequency than other apps.
 
 In addition to the above network captures, we also took twenty-four hours of 
 network traffic of our own phones as a baseline for false positive rates. These 
@@ -282,12 +337,39 @@ When the network traffic is captured and the suspicious packets are identified, 
 All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, we will explain why we cannot add more to this list.
 \section{Traffic Results}
 
-The majority of stalkerware apps communicate though HTTP or HTTPS, while some use their own protocols. We examined the domain, SNI, User-Agent, and HTTP host, for each app. The words “spy,” “find,” and “track” appeared frequently in various fields of the traffic. The most common place to find them was in the destination domain, which we found using Wireshark’s reverse DNS lookup tool. 12 of the 26 apps that we eventually found signatures for contained these spyware keywords in their domains. We identified the following generalized signatures that can be used to identify most of our apps given nothing but information available on the Google Play store.
+The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
+use their own protocols. We examined the domain, SNI, User-Agent, and HTTP 
+host, for each app. The words “spy,” “find,” and “track” appeared frequently in 
+various fields of the traffic. The most common place to find them was in the 
+destination domain, which we found using Wireshark’s reverse DNS lookup tool. 
+12 of the 26 apps that we eventually found signatures for contained these 
+spyware keywords in their domains. We identified the following generalized 
+signatures that can be used to identify most of our apps given nothing but 
+information available on the Google Play store.
+
+\subsection{App ``Families''}
+\label{app_families}
+After our investigation on these apps, we can confirm that, at least from the 
+few that we have selected, many stalkerware apps are related in some fashion to 
+each other. The most notable being the group of apps stated above, and a single 
+app mentioned before called SpyTomobile. SpyTomobile is an interesting case 
+because it fits the description of a generic stalkerware app so closely that it 
+is the perfect example of spyware on the Play Store. Moreover, this single app 
+has been repackaged multiple times. We have discovered that there are at least 
+6 copies of the app on the Play store, all with different developers and 
+different names. While this is still circumstantial evidence that most 
+stalkerware often contains copies of each other, we can at least conclude that 
+our forty-five apps constitute a larger percentage than anticipated.
+
+
+PUT NOTE HERE ABOUT THE FAMILIES THAT WE DID NOT CONFIRM VIA TRAFFIC, BUT 
+INSTEAD VIA LOOKING AT THE WEBSITES!! Otherwise we're fabricating results. 
 
 \begin{table*}
 \begin{tabular}{p{5cm}p{5cm}p{5cm}}
 	\toprule
 	Generalized Signature & Unique Apps & Total Apps \\
+	\hline
 	Domain contains “spy,” “track,” “find” & 6 & 12 \\
 	SNI contains “spy,” “track,” “find” & 6 & 6 \\
 	User-Agent contains “spy,” “track,” “find” & 1 & 3 \\
@@ -299,8 +381,6 @@ The majority of stalkerware apps communicate though HTTP or HTTPS, while some us
 	\midrule
 \end{tabular}
 \end{table*}
-
-\section{Reskinned Applications}
 
 
 \section{Future Work}
