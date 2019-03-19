@@ -2,6 +2,8 @@
 
 \usepackage{makecell}
 \usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
 \renewcommand\cellalign{tl}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em 
 b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -153,6 +155,27 @@ disabled. Those ones don't hide their icon, but you might have to go to All
 Apps to find it.
 \subsection{The Practice of ``Reskinning''}
 \label{reskinning}
+
+\begin{figure*}
+	\centering
+	\begin{subfigure}{0.8\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/phonespector_small.png}
+		\caption{PhoneSpector's pricing page }
+		\label{fig:phonespector}
+	\end{subfigure}%
+	\begin{subfigure}{0.8\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/highstermobile_small.png}
+		\caption{Highster Mobile's pricing page}
+	\end{subfigure}
+	\caption{PhoneSpector and Highster Mobile's payment pages. Although 
+	PhoneSpector claims to be made by PhoneSpector LLC and HighsterMobile is 
+	supposedly made by the Powerline Group, further investigation proved they 
+	were the same company.}
+	\label{fig:ilfmobiles}
+\end{figure*}
+
 As previously mentioned, spyware has a high turnover rate on the Google Play 
 store, which leads to a practice we refer to as “reskinning:” a single app will 
 be posted under many names, icons, and manufacturer names. Presumably, 
@@ -208,22 +231,46 @@ identify, since signatures we have already found will scale to identify more
 apps than we had time to download and manually examine.
 
 \subsubsection{SpyToMobile}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.5\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/CellPhoneTracker.png}
+		\caption{SpyToMobile's setup page }
+		\label{fig:sub1}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/CoupleTrackerSetup.png}
+		\caption{One of the setup pages for Couple}
+		\label{fig:sub2}
+	\end{subfigure}
+	\caption{SpyToMobile and Couple's similarities. All SpyToMobile copies have 
+	the same setup screen as \ref{fig:sub1} as well as identical signatures. 
+	Couple did not share signatures with SpyToMobile.}
+	\label{fig:spytomobile_couple}
+\end{figure}
+
+
 SpyToMobile is an interesting case 
 because it fits the description of a generic stalkerware app so closely that it 
 is the perfect example of spyware on the Play Store. Moreover, this single app 
-has been repackaged multiple times. We have discovered that there are at least 
-6 copies of the app on the Play store, all with different developers and 
-different names. While this is still circumstantial evidence that most 
-stalkerware often contains copies of each other, we can at least conclude that 
-our forty-five apps constitute a larger percentage than anticipated.
+has been repackaged multiple times. We have discovered that there have been at 
+least six copies of the app on the Play store while our work has been ongoing, 
+all with different developers and 
+different names. We also found that the same image SpyToMobile uses in its 
+"downloading" screen is used in another app, which had no similarities among 
+its network signatures, called Couple. Figure \ref{fig:spytomobile_couple} 
+shows the similarities.
 
 \subsection{Competition Among Manufacturers}
 
 App manufacturers appear to be well aware of their competition. When the term 
-``hello spy'' is typed into Google Search, ads appear labeled ``Hellospy | See 
-All Phone Data Remotely | mSpy.com'' and ``HelloSpy - Free Download | \#1 Phone 
-Tracker Software\&App | spymyfone.com.'' Clicking on these leads the user to 
-the download pages for mSpy and SpyMyFone respectively, not the site for 
+``hello spy'' is typed into Google Search, ads appear captioned ``Hellospy | 
+See All Phone Data Remotely | mSpy.com'' and ``HelloSpy - Free Download | \#1 
+Phone Tracker Software\&App | spymyfone.com.'' Clicking on these leads the user 
+to the download pages for mSpy and SpyMyFone respectively, not the site for 
 HelloSpy. Based on network traces and website appearances, we do not believe 
 any of these three apps are made by the same manufacturer. Spyware groups also 
 create “review” websites that review their own products, posing as third party 
