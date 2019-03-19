@@ -137,7 +137,7 @@ the surveilled phone to contact the surveillant and raise an alarm. They do not
 hide their app icons and generally make an effort to notify the user that the 
 monitoring app is installed on their phone. The spyware that did not notify 
 users of its presence mostly consisted of one app, called SpyToMobile, that was 
-provided on the Play Store under many different names. 
+provided on the Play Store under many different names (see section \ref{}). 
 
 We also identified many apps that were designed to track location or text 
 messages, but were less comprehensive than the overt, off-store spyware. They 
@@ -147,16 +147,81 @@ available on the Google Play Store. Most of these were designed to keep track
 of the locations of the users' friends. 
 
 \section{The Stalkerware Ecosystem}
+Some spyware has a notification that the app is running, but that can be 
+disabled. Those ones don't hide their icon, but you might have to go to All 
+Apps to find it.
 \subsection{The Practice of ``Reskinning''}
 \label{reskinning}
+As previously mentioned, spyware has a high turnover rate on the Google Play 
+store, which leads to a practice we refer to as “reskinning:” a single app will 
+be posted under many names, icons, and manufacturer names. Presumably, 
+manufacturers do this because spyware gets reported frequently and taken down - 
+we have already seen one instance of a spyware app getting removed from the 
+Play store while we were examining it. Overt stalkerware which is not available 
+through Google Play has also turned out to use reskinning, for reasons we 
+haven’t yet discovered. Apps can frequently be identified as copies of each 
+other by observing their dashboards (where users view the communications and 
+locations of the target phones), download sites, and advertisements. Several 
+groups of off-store apps have nearly identical websites, in terms of 
+organization, color, fonts, placement of buttons, prices, and other factors. 
+For example, the “ILFMobile group” consists of three different companies 
+(ILFMobile, PowerLine Group, and PhoneSpector) that claim to make a total of 
+four different apps. Further investigation showed that all three companies had 
+the same physical address in addition to identical websites. Unfortunately, 
+they also had identical bugs in their payment methods, so we were unable to 
+purchase the apps and verify that their network traces were identical. We were 
+able to check the network signatures for the rest of the app groups in the list 
+below (with the exception of one app which we are still confirming). These 
+reskinned programs are potentially a boon to our investigation as the identical 
+network signatures make it more likely that one signature generalizes across 
+multiple apps.
+We have identified the following groups of applications that appear to be 
+reskinned versions of each other.
+\begin{enumerate}
+	\item \textbf{SpyToMobile group}: Employee Work Spy by Piter Cline, SMS 
+	Tracker by TheHar, Mobile Tracking by Antwat, Cell Phone Tracker by Susdel, 
+	and Texting, Chat, 
+	Phone Spy by MaxLo. All of these apps download the same program, which is 
+	called SpyToMobile. Any app from this group installed after the first 
+	states ``SpyToMobile is already installed.''
+	\item \textbf{ILFMobile group}: HighsterMobile, PhoneSpector, Auto Forward 
+	Spy, Surepoint Spy, and EasySpy. We were unable to purchase these and 
+	ensure that they have the same signatures due to a bug in their payment 
+	system that prevented us from purchasing them.
+	\item \textbf{Codero group}: HelloSpy and TheTruthSpy have identical 
+	network signatures as well as nearly identical websites.
+	Spyzie group: Spyzie and SpyMyFone also have identical network signatures 
+	as well as identical websites.
+	\item \textbf{CallSMSTracker group}: Call and Message Tracker by Remote 
+	Karath and Cell Tracker by Trackme. These apps have identical dashboards 
+	and contact the same domains.
+\end{enumerate}
+We cannot guarantee that we have identified all of the members of any 
+particular group. If we have not, it will make other members easier to 
+identify, since signatures we have already found will scale to identify more 
+apps than we had time to download and manually examine.
+
+\subsection{Competition Among Manufacturers}
+
+App manufacturers appear to be well aware of their competition. When the term 
+``hello spy'' is typed into Google Search, ads appear labeled ``Hellospy | See 
+All Phone Data Remotely | mSpy.com'' and ``HelloSpy - Free Download | \#1 Phone 
+Tracker Software\&App | spymyfone.com.'' Clicking on these leads the user to 
+the download pages for mSpy and SpyMyFone respectively, not the site for 
+HelloSpy. Based on network traces and website appearances, we do not believe 
+any of these three apps are made by the same manufacturer. Spyware groups also 
+create “review” websites that review their own products, posing as third party 
+spyware enthusiasts. For example, a member of the ILFMobile group reviews the 
+“top 5 cell phone spy apps,” all of which are ILFMobile’s own apps, on a 
+website called “bestcellphonespyapps.com.” We haven’t determined what advantage 
+spyware manufacturers derive from appearing to make more apps and competing 
+with themselves.
 
 Somewhere: put a note about the weird thing where the paid apps try to make you 
 download stuff again. Maybe it's just us? Maybe they're trying to boost 
 download count?
 
-Some spyware has a notification that the app is running, but that can be 
-disabled. Those ones don't hide their icon, but you might have to go to All 
-Apps to find it.
+
 
 \subsection{App Quality}
 
@@ -415,7 +480,7 @@ information available on the Google Play store.
 After our investigation on these apps, we can confirm that, at least from the 
 few that we have selected, many stalkerware apps are related in some fashion to 
 each other. The most notable being the group of apps stated above, and a single 
-app mentioned before called SpyTomobile. SpyTomobile is an interesting case 
+app mentioned before called SpyToMobile. SpyToMobile is an interesting case 
 because it fits the description of a generic stalkerware app so closely that it 
 is the perfect example of spyware on the Play Store. Moreover, this single app 
 has been repackaged multiple times. We have discovered that there are at least 
