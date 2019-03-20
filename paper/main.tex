@@ -177,18 +177,18 @@ Apps to find it.
 \end{figure*}
 
 As previously mentioned, spyware has a high turnover rate on the Google Play 
-store, which leads to a practice we refer to as “reskinning:” a single app will 
+store, which leads to a practice we refer to as "reskinning:" a single app will 
 be posted under many names, icons, and manufacturer names. Presumably, 
 manufacturers do this because spyware gets reported frequently and taken down - 
 we have already seen one instance of a spyware app getting removed from the 
 Play store while we were examining it. Overt stalkerware which is not available 
 through Google Play has also turned out to use reskinning, for reasons we 
-haven’t yet discovered. Apps can frequently be identified as copies of each 
+haven't yet discovered. Apps can frequently be identified as copies of each 
 other by observing their dashboards (where users view the communications and 
 locations of the target phones), download sites, and advertisements. Several 
 groups of off-store apps have nearly identical websites, in terms of 
 organization, color, fonts, placement of buttons, prices, and other factors. 
-For example, the “ILFMobile group” consists of three different companies 
+For example, the "ILFMobile group" consists of three different companies 
 (ILFMobile, PowerLine Group, and PhoneSpector) that claim to make a total of 
 four different apps. Further investigation showed that all three companies had 
 the same physical address in addition to identical websites. Unfortunately, 
@@ -273,12 +273,12 @@ Phone Tracker Software\&App | spymyfone.com.'' Clicking on these leads the user
 to the download pages for mSpy and SpyMyFone respectively, not the site for 
 HelloSpy. Based on network traces and website appearances, we do not believe 
 any of these three apps are made by the same manufacturer. Spyware groups also 
-create “review” websites that review their own products, posing as third party 
+create "review" websites that review their own products, posing as third party 
 spyware enthusiasts. At least one blog that is supposedly run by 
 an independent party reviewed apps that coincidentally were all made by the 
 ILFMobile group\cite{noauthor_best_nodate}. This blog reviews the 
-“top 5 cell phone spy apps,” all of which are ILFMobile’s own apps, on a 
-website called “bestcellphonespyapps.com.” We haven’t determined what advantage 
+"top 5 cell phone spy apps," all of which are ILFMobile's own apps, on a 
+website called "bestcellphonespyapps.com." We haven't determined what advantage 
 spyware manufacturers derive from appearing to make more apps and competing 
 with themselves.
 
@@ -301,7 +301,7 @@ Previous studies [1,2], the media [3,4], and intimate partner violence (IPV)
 survivors have all reported that spyware is becoming an increasing source of 
 intimate partner surveillance (IPS). Tracking functions supported by spyware 
 allow stalkers to monitor communications, track locations, and remotely 
-activate cameras and microphones [3,4]. In Dr. Ristenpart’s work [5], they 
+activate cameras and microphones [3,4]. In Dr. Ristenpart's work [5], they 
 proposed methods for searching IPS-related apps. By Google search query 
 expansion and unsupervised classification, they collected 9,224 apps possibly 
 related to IPS on Google play and open-web. They manually selected 70 apps for 
@@ -315,7 +315,7 @@ be the case, but we expect to find (based on conversations with authors of
 previous work) that security and best coding practices are not prioritized by 
 stalkerware developers. Malware identification may be of limited use as well, 
 since techniques are available to cluster malware that comes from the same 
-source code into “families.” [8]
+source code into "families." [8]
 
 \section{Methodology}
 \subsection{Finding Apps}
@@ -408,9 +408,9 @@ We picked our three keywords because of xyz reasons outlined in the checkpoint
 		\toprule
 		Generalized Signature & Unique Apps & Total Apps \\
 		\hline
-		Domain contains “spy,” “track,” “find” & 6 & 12 \\
-		SNI contains “spy,” “track,” “find” & 6 & 6 \\
-		User-Agent contains “spy,” “track,” “find” & 1 & 3 \\
+		Domain contains "spy," "track," "find" & 6 & 12 \\
+		SNI contains "spy," "track," "find" & 6 & 6 \\
+		User-Agent contains "spy," "track," "find" & 1 & 3 \\
 		User-Agent contains known app name & 1 & 1 \\
 		Domain contains known app name & 3 & 4 \\
 		SNI contains known app name & 1 & 1 \\
@@ -420,28 +420,28 @@ We picked our three keywords because of xyz reasons outlined in the checkpoint
 	\end{tabular}
 \end{table*}
 
-In the subset of apps we studied, the words “spy,” “find,” and “track” appeared 
+In the subset of apps we studied, the words "spy," "find," and "track" appeared 
 frequently in various fields of the traffic. The most common place to find them 
-was in the destination domain, which we found using Wireshark’s reverse DNS 
+was in the destination domain, which we found using Wireshark's reverse DNS 
 lookup tool. 12 of the 26 apps that we eventually found signatures for 
 contained these spyware keywords in their domains. 
-For the apps whose traffic doesn’t contain “spy,” “find,” or “track,” we will 
+For the apps whose traffic doesn't contain "spy," "find," or "track," we will 
 next check for the app name and manufacturer name or substrings of these two. 
 Using these indicators has a significant disadvantage - we must be certain that 
-the app is stalkerware and that the manufacturer doesn’t make anything except 
+the app is stalkerware and that the manufacturer doesn't make anything except 
 stalkerware. In the case of smaller apps and reskinned apps, this may actually 
 be a reasonable assumption - manufacturer names are generated to fool the 
 Google Play store into thinking the app is new, not to identify a real company, 
 and are therefore unique by necessity. We note that the two apps we identify 
 only by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
 location-tracking apps of all kinds, some of which may be difficult to use as 
-stalkerware, but GeoZilla’s only apps are all designed to track a phone. Since 
+stalkerware, but GeoZilla's only apps are all designed to track a phone. Since 
 only two apps were identified this way, the false positive rate should be 
 investigated further.
 We identified the following generalized signatures that can be used to identify 
 most of our apps given nothing but information available on the Google Play 
 store. The second step of our analysis will be to search for these general 
-signatures in our personal phones’ traffic captures. This will give a better 
+signatures in our personal phones' traffic captures. This will give a better 
 idea of whether it is possible to use general signatures without generating a 
 prohibitive number of false positive stalkerware detections.
 
@@ -513,9 +513,9 @@ All of the above signatures are able to be filtered out through a Wireshark filt
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
 use their own protocols. We examined the domain, SNI, User-Agent, and HTTP 
-host, for each app. The words “spy,” “find,” and “track” appeared frequently in 
+host, for each app. The words "spy," "find," and "track" appeared frequently in 
 various fields of the traffic. The most common place to find them was in the 
-destination domain, which we found using Wireshark’s reverse DNS lookup tool. 
+destination domain, which we found using Wireshark's reverse DNS lookup tool. 
 12 of the 26 apps that we eventually found signatures for contained these 
 spyware keywords in their domains. We identified the following generalized 
 signatures that can be used to identify most of our apps given nothing but 
@@ -536,7 +536,7 @@ domains, SNIs, User-Agents, and HTTP host names for stalkerware traffic. These
 keywords might include the names of the apps, substrings that appear in the app 
 names, and words that seem relevant to tracking apps. A more complicated method 
 would be to set up bots that can download potential spyware by searching 
-various terms on the app store like “tracker app.” The bots would have to run 
+various terms on the app store like "tracker app." The bots would have to run 
 the apps and monitor their traffic, identifying app traffic by eliminating 
 traffic from other sources. The remaining traffic would belong to the app, and 
 the domains, SNIs, user-agents, and any other available identifying features 
