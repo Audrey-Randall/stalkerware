@@ -1,9 +1,19 @@
 \documentclass[acmtog]{acmart}
+\usepackage{listings}
 
 \usepackage{makecell}
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{lmodern} 
+\usepackage{amsmath} 
+\usepackage{xcolor}  
+\lstset{
+	basicstyle=\ttfamily,
+	columns=fullflexible,
+	frame=single,
+	breaklines=true,
+}
 \renewcommand\cellalign{tl}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em 
 b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -398,54 +408,6 @@ networks, and Windows alerts the user when a device connects to its mobile
 hotspot, we were able to ensure that we did not tap any traffic other than that 
 of the test phones. 
 \section{Results}
-
-\subsection{Generalizing Signatures}
-
-We picked our three keywords because of xyz reasons outlined in the checkpoint
-
-\begin{table*}
-	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
-		\toprule
-		Generalized Signature & Unique Apps & Total Apps \\
-		\hline
-		Domain contains "spy," "track," "find" & 6 & 12 \\
-		SNI contains "spy," "track," "find" & 6 & 6 \\
-		User-Agent contains "spy," "track," "find" & 1 & 3 \\
-		User-Agent contains known app name & 1 & 1 \\
-		Domain contains known app name & 3 & 4 \\
-		SNI contains known app name & 1 & 1 \\
-		SNI contains known app manufacturer & 3 & 3 \\
-		Domain contains known app manufacturer & 3 & 3 \\
-		\midrule
-	\end{tabular}
-\end{table*}
-
-In the subset of apps we studied, the words "spy," "find," and "track" appeared 
-frequently in various fields of the traffic. The most common place to find them 
-was in the destination domain, which we found using Wireshark's reverse DNS 
-lookup tool. 12 of the 26 apps that we eventually found signatures for 
-contained these spyware keywords in their domains. 
-For the apps whose traffic doesn't contain "spy," "find," or "track," we will 
-next check for the app name and manufacturer name or substrings of these two. 
-Using these indicators has a significant disadvantage - we must be certain that 
-the app is stalkerware and that the manufacturer doesn't make anything except 
-stalkerware. In the case of smaller apps and reskinned apps, this may actually 
-be a reasonable assumption - manufacturer names are generated to fool the 
-Google Play store into thinking the app is new, not to identify a real company, 
-and are therefore unique by necessity. We note that the two apps we identify 
-only by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
-location-tracking apps of all kinds, some of which may be difficult to use as 
-stalkerware, but GeoZilla's only apps are all designed to track a phone. Since 
-only two apps were identified this way, the false positive rate should be 
-investigated further.
-We identified the following generalized signatures that can be used to identify 
-most of our apps given nothing but information available on the Google Play 
-store. The second step of our analysis will be to search for these general 
-signatures in our personal phones' traffic captures. This will give a better 
-idea of whether it is possible to use general signatures without generating a 
-prohibitive number of false positive stalkerware detections.
-
-
 \subsection{App Traffic}
 
 What causes most stalkerware to send packets? Our captures and testing show 
@@ -459,14 +421,6 @@ notification" every time email, texts, calls, or GPS, was changed or added to.
 Our results show that none of the stalkerware apps were able to send in real 
 time, all the apps advertised as real time simply updated at a more frequent 
 frequency than other apps.
-
-In addition to the above network captures, we also took twenty-four hours of 
-network traffic of our own phones as a baseline for false positive rates. These 
-captures also included periods of time that were deemed high risk for false 
-positives as they emulated behaviour that is most likely to be caught by our 
-signatures. Although this may not be enough to fully emulate an entire network, 
-it is enough to prove the false positive rates on any given phone.
-
 \subsection{Network Signatures}
 \label{network_signatures}
 
@@ -509,17 +463,123 @@ When the network traffic is captured and the suspicious packets are identified, 
 \end{itemize}
 
 All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, we will explain why we cannot add more to this list.
-\section{Traffic Results}
+\subsection{Traffic Results}
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
-use their own protocols. We examined the domain, SNI, User-Agent, and HTTP 
-host, for each app. The words "spy," "find," and "track" appeared frequently in 
+use their own protocols, such as STUN. We examined the domain, SNI, User-Agent, and HTTP 
+host, for each app and tried to isolate some part that we believed would be unique enough to identify that traffic. For the majority of the apps, they have a unique domain that each app connects to, which allowed for an easy method of filtering out their traffic. Some were hosted on shared cloud servers such as AWS, and so do not have a unique domain. These, however had a phrase in user agent or in the SNI that could be used for filtering.
+
+Initially we attempted to add on our filters with an additional check for location requests, as many stalkerware apps will contain features for tracking location. Additionally, when connected to a network a phone may use the router to find its current location. Unfortunately, while we could occasionally see a external service being used, the majority of location requests were not listed in our network captures. That being said, our resultant domain, user agent, and SNI filters managed to achieve full coverage of all stalkerware apps.
+
+All of our filters have been collected and are listed here. These can be directly placed in Wireshark. 
+\begin{lstlisting}
+ip.host contains dedicated.codero.net 
+|| http.host contains hellospy
+|| (ip.host contains data-api.spymyfone.com && ssl.handshake.extension.data contains "my.spymyfone.com") 
+|| (ip.host contains ws.spyzie.com && ssl.handshake.extension.data contains "ws.spyzie.com") 
+|| ip.host contains data-api.spymyfone.com 
+|| ip.host contains ws.spyzie.com 
+|| ip.host contains phonedata.me 
+|| ssl.handshake.extension.data contains "phonedata.me" 
+|| ip.host contains apiv4.alter757.info 
+|| ssl.handshake.extension.data contains "thd.cc" 
+|| ip.host contains thd.cc 
+|| ip.host contains mspyonline.com 
+|| ip.host contains corexchange.com && ssl.handshake.extensions_server_name contains messages02.smstracker.com 
+|| ip.host contains life360.helpshift.com 
+|| ip.host contains antitheft.ns1.ff.avast.com 
+|| (ip.host contains production-finderapps && ssl.handshake.extensions_server_name contains "api.familysafetyproduction.com") || ip.host contains production-finderapps 
+|| ssl.handshake.extensions_server_name contains "celulocen.zendesk.com" 
+|| ip.host contains www.zoemob.com 
+|| ip.host contains unifiedlayer.com 
+|| http.host matches "callsmstracker" 
+|| ip.dst_host matches "onlinehome-server" 
+|| (ip.dst_host matches "spoc-mu(|w|e)1.norton" && http.user_agent matches "(android|ios)")
+|| ssl.handshake.extensions_server_name matches "family.norton" 
+|| (udp && ip.host contains stun.l.google.com) 
+|| http.host == relay.google.com && http.user_agent matches test 
+|| http.host matches "97.logger.mobi" 
+|| ssl.handshake.extensions_server_name matches "gpswox" 
+|| ip.dst_host matches "gpswox" 
+|| ssl.handshake.extensions_server_name matches "geozilla" 
+|| ip.dst_host matches "clients.your-server.de" 
+|| (ip.addr == 66.147.232.135 && tcp.port == 8080 && http.request.uri contains "signalr") 
+|| ip.addr == 66.147.232.135 && tcp.port == 8080 
+|| ssl.handshake.extensions_server_name matches "findmykids" 
+|| ssl.handshake.extension.data contains "findmykids"  
+||  ip.dst_host matches "(trackmyphones.com)" 
+|| http.host matches "callsmstracker" 
+|| ip.dst_host matches "onlinehome-server" 
+ \end{lstlisting}
+ 
+ Unfortunately while this does catch all of the stalkerware apps we have found, it does not catch most of the stalkerware apps we have not found. In this case, we need to generalize our results into a format that can be either catch-all or easily scalable without requiring a network capture.
+
+\subsection{Generalizing Signatures}
+
+The words "spy," "find," and "track" appeared frequently in 
 various fields of the traffic. The most common place to find them was in the 
 destination domain, which we found using Wireshark's reverse DNS lookup tool. 
 12 of the 26 apps that we eventually found signatures for contained these 
 spyware keywords in their domains. We identified the following generalized 
 signatures that can be used to identify most of our apps given nothing but 
 information available on the Google Play store.
+
+\begin{table*}
+	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+		\toprule
+		Generalized Signature & Unique Apps & Total Apps \\
+		\hline
+		Domain contains "spy," "track," "find" & 6 & 12 \\
+		SNI contains "spy," "track," "find" & 6 & 6 \\
+		User-Agent contains "spy," "track," "find" & 1 & 3 \\
+		User-Agent contains known app name & 1 & 1 \\
+		Domain contains known app name & 3 & 4 \\
+		SNI contains known app name & 1 & 1 \\
+		SNI contains known app manufacturer & 3 & 3 \\
+		Domain contains known app manufacturer & 3 & 3 \\
+		\midrule
+	\end{tabular}
+\end{table*}
+
+For the apps whose traffic do not contain "spy," "find," or "track," we will 
+next check for the app name and manufacturer name or substrings of these two. 
+Using these indicators has a significant disadvantage - we must be certain that 
+the app is stalkerware and that the manufacturer doesn't make anything except 
+stalkerware. In the case of smaller apps and reskinned apps, this may actually 
+be a reasonable assumption - manufacturer names are generated to fool the 
+Google Play store into thinking the app is new, not to identify a real company, 
+and are therefore unique by necessity. We note that the two apps we identify 
+only by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
+location-tracking apps of all kinds, some of which may be difficult to use as 
+stalkerware, but GeoZilla's only apps are all designed to track a phone. Since 
+only two apps were identified this way, the false positive rate should be 
+investigated further.
+We identified the following generalized signatures that can be used to identify 
+most of our apps given nothing but information available on the Google Play 
+store. The second step of our analysis will be to search for these general 
+signatures in our personal phones' traffic captures. This will give a better 
+idea of whether it is possible to use general signatures without generating a 
+prohibitive number of false positive stalkerware detections.
+\begin{lstlisting}
+http.host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
+|| ssl.handshake.extensions_server_name matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
+|| http.user_agent matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
+|| ipv6.dst_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+|| ip.dst_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"  
+|| ipv6.src_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+|| ip.src_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+\end{lstlisting}
+
+
+\section{Actual Traffic Testing}
+
+In addition to the above network captures, we also took twenty-four hours of 
+network traffic of our own phones as a baseline for false positive rates. These 
+captures also included periods of time that were deemed high risk for false 
+positives as they emulated behaviour that is most likely to be caught by our 
+signatures. Although this may not be enough to fully emulate an entire network, 
+it is enough to prove the false positive rates on any given phone.
+
 
 
 \section{Future Work}
