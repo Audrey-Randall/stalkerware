@@ -101,23 +101,24 @@ communications, and location, or remotely tamper with the device, as
 ``stalkerware.''  
 
 Stalkerware is not as widely studied as other types of malware, and much less 
-information is available regarding it. Although it is superficially 
-similar to other types of malware, there exist a few key differences. First, 
-stalkerware is meant to be installed 
-deliberately, by someone with physical access to the device that is to be 
-monitored. In the context of intimate partner abuse, this presents an enormous 
-threat. An abuser will often know or be able to coerce passwords to the device 
-from the victim, making traditional defense measures irrelevant. This is one 
-example of how traditional assumptions about security often do not apply in the 
-context of IPV (intimate partner violence). Second, the 
+information about it is available. There are a few key differences between it 
+and other forms of malware. First, stalkerware is meant to be installed 
+by someone with physical access to the target device, not remotely by 
+exploiting vulnerabilities. In the 
+context of intimate partner abuse, this presents an enormous 
+threat, given how frequently the abuser has unfettered access to the target 
+phone. Second, the 
 threat model used by malware developers includes sophisticated antivirus and 
 intrusion detection systems (IDSs). Both malware and stalkerware need to hide 
 their presence on the target device, but malware is much more likely to 
-attempt to obfuscate its network traffic. Stalkerware does not: it does not 
+attempt to obfuscate its network traffic to thwart these adversaries. 
+Stalkerware does not: it does not 
 need to. Most antivirus does not detect apps capable of monitoring a target as 
 potentially dangerous \cite{chatterjee_spyware_2018}. This presents an 
 opportunity to glean information about stalkerware that is not available in the 
-study of other forms of malware. Third, stalkerware falls 
+study of other forms of malware. At the same time, it limits a researcher's 
+ability to use information collected by antivirus as a source of information 
+about stalkerware. Third, stalkerware falls 
 for the most part into two categories: apps that are explicitly advertised for 
 surveilling spouses and partners, and apps that have a different stated use but 
 can be repurposed to stalk a target. These are usually marketed for theft 
@@ -174,47 +175,57 @@ typical app, with monthly
 subscriptions ranging from \$12 to \$70 per month. The exception is an app that 
 we call SpyToMobile, which survives on the app store by frequently 
 ``reskinning'' itself (see section \ref{reskinning}).  
-We selected several of these to test. All of these apps brand themselves as 
-spyware and advertise that their products are undetectable on the target phone, 
-despite also having disclaimers in small text that their software should not be 
-used for any illegal activity. Some use language that appears designed to 
-appeal to abusers. For example, underneath one promotional 
+We selected several of overt apps to test. All of these apps brand themselves 
+as spyware and advertise that their products are undetectable on the target 
+phone, despite also having disclaimers in small text that their software should 
+not be used for any illegal activity. Some use language that appears designed 
+to appeal to abusers. For example, underneath one promotional 
 video, the app TheOneSpy has the disclaimer: ``Note for this video: Don't 
 confuse with the world `Loved Ones' as spouse or Girl friends! Word Loved ones 
-has used for kids and teens.'' Many of these apps also refer to the tracked 
-phone as the ``target'' phone, and advertise that once installed, the app is in 
-``stealth mode,'' meaning completely undetectable. None of these required 
-rooting the phone. When installed, they ask for all the permissions they 
-require, including device administrator privileges. They are capable of 
+has used for kids and teens.''\cite{noauthor_theonespy_2013} All of these apps 
+advertise that once they are installed, they are in ``stealth mode'' and are 
+completely undetectable. This is not entirely the case - they appear in the 
+list of all applications, but take care to name themselves something innocuous 
+such as ``Data Backup'' or ``System Service.'' None of the overt apps that we 
+examined required rooting the phone. When installed, they ask for all the 
+permissions they 
+require, including device administrator privileges. They are then capable of 
 blocking incoming calls, recording messages that have been deleted, recording 
 the screen of the phone using accessibility features, monitoring apps such as 
 Facebook, WhatsApp, Kik, and Viber, and more.
 
-Other apps were overt spyware, but nevertheless available from the Play Store. 
-They fell into two categories: spyware that reskinned itself to appear to be 
-many different apps, and apps designed for parents to keep track of children 
-(or in one case, for adult children to track elderly parents.) For the most 
-part, this latter category was offered by antivirus companies such as Avast and 
-Norton. These apps offered 
+Other apps were explicitly intended as spyware, but nevertheless available from 
+the Play Store. They fell into two categories: spyware that reskinned itself to 
+appear to be many different apps, and apps designed for parents to keep track 
+of children (or in one case, for adult children to track elderly parents.) For 
+the most part, this latter category was offered by antivirus companies such as 
+Avast and Norton. These apps offered 
 multiple features, such as call screening, blocking Google search results, 
 recording text messages and call logs, and ``panic buttons'' that would allow 
 the surveilled phone to contact the surveillant and raise an alarm. They do not 
 hide their app icons and generally make an effort to notify the user that the 
-monitoring app is installed on their phone. The spyware that did not notify 
-users of its presence mostly consisted of one app, called SpyToMobile, that was 
-provided on the Play Store under many different names (see section \ref{}). 
+monitoring app is installed on their phone. The spyware that we found on the 
+Google Play store that did \textit{not} notify users of its presence consisted 
+of one app, which we call SpyToMobile after the title on its loading screen, 
+that was provided on the Play Store under many different names (see section 
+\ref{reskinning}). 
 
 We also identified many apps that were designed to track location or text 
-messages, but were less comprehensive than the overt, off-store spyware. They 
+messages, but were less comprehensive than the overt spyware. They 
 track one feature each instead of tracking location, communication, and 
 browsing history all at once. For the most part, these apps were free and 
-available on the Google Play Store. Most of these were designed to keep track 
-of the locations of the users' friends. 
+available on the Google Play Store. Most of them were designed to keep track 
+of the locations of the users' friends. They tended to be ineffective - nearly 
+all of the apps we found that did not work fell into this category. Most of 
+these apps were unable or unwilling to hide their icons, and some provide an 
+explicit notification that the app is in use, although this notification can be 
+easily disabled in the Android notification settings. 
 
 \section{The Stalkerware Ecosystem}
-Some spyware has a notification that the app is running, but that can be 
-disabled. Those ones don't hide their icon, but you might have to go to All 
-Apps to find it.
+
+We noted several interesting characteristics of the stalkerware ecosystem, some 
+of which are beneficial to researchers attempting to identify stalkerware.
+
 \subsection{The Practice of ``Reskinning''}
 \label{reskinning}
 
@@ -344,19 +355,41 @@ website called "bestcellphonespyapps.com." We haven't determined what advantage
 spyware manufacturers derive from appearing to make more apps and competing 
 with themselves.
 
-Somewhere: put a note about the weird thing where the paid apps try to make you 
-download stuff again. Maybe it's just us? Maybe they're trying to boost 
-download count?
+\subsection{Does Stalkerware Download Other Malware?}
 
+Most free stalkerware appears to exist to serve advertisements. We only saw one 
+instance of an app that came packaged with other malware, which in this case 
+was a cryptominer for a cryptocurrency called Kin Coin.
+
+We also observe a strange phenomenon among at least two of the paid, overt 
+spyware apps. Both claimed that they had stopped working after two or three 
+days even though they still appeared to be updating, and asked the user to 
+click on a link to check if the app was still active. In one case, the URL of 
+this link appeared to indicate that it would always claim the app had stopped 
+working. The site would then request that the user re-download the app. We were 
+confused as to why these apps would do this. 
+The version of the app that was downloaded the second time appeared to be the 
+same as the version downloaded first, and if the manufacturer wanted to 
+download malware onto the phone, they could just do so with the first 
+download. Nevertheless, our strongest explanation for this behavior is still 
+that the false warnings were intended to convince users to download malware. We 
+leave the task of determining if this was truly the case to future work.
 
 
 \subsection{App Quality}
 
-The other category for stalkerware encompasses a large range of quality. Many 
-apps advertised as stalkerware have absolutely no functionality other than 
-advertisement of other apps. The few that are functional are often simplistic 
-in both features and network patterns. Unlike the overt apps, however, the vast 
-majority are usually free with advertisements. 
+Free stalkerware apps vary widely in quality. Many simply don't work, or claim 
+for some reason that they will only begin to work when the SIM card of the 
+phone is replaced. Multiple apps that claim to track location instead just 
+return the location associated with the phone's area code. A pair of others 
+appeared to guess randomly - one reported that a device in San Diego was in 
+Fawn Creek, Kansas, and another reported the same device was in Detroit, 
+Michegan. Another common glitch was for spyware that records texts to only 
+record one participant's side of the conversation. Their main purpose seems to 
+be to serve 
+advertisements - we did not 
+catch any of the non-functional apps contacting domains associated with malware 
+(except when the app itself was marked as malware). 
 
 \section{Related Work}
 Previous studies [1,2], the media [3,4], and intimate partner violence (IPV) 
@@ -628,95 +661,127 @@ Overall, we find that our method provides a much higher chance of detection than
 \begin{table*}
 	
 	\section{Apps and Signatures}
-\begin{tabular}{p{5cm}p{5cm}p{5cm}}
-	\toprule
-	App & Signature & Relevant Info \\
-	\midrule
-	HelloSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net} & Same as TheTruthSpy HTTP \\
-	
-	TheTruthSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net\\ User agent has hellospy in it} & Same as HelloSpy HTTP \\
-	
-	SpyMyFone & \makecell{HTTP 101 Switching Protocols\\ response\\
-	Domain: data-api.spymyfone.com\\SNI my.spymyfone.com.\\
-	Domain: ws.spyzie.com\\SNI ws.spyzie.com\\
-	Domains: app-api.phonedata.me\\ws.phonedata.me\\
-	SNI with unknown domain:\\ app-api.phonedata.me} & Uses WebSocket protocol and HTTP with User agent=aliyun-sdk-android/2.3.0/Dalvik/2.1.0 (Linux; U; Android 7.1.2; Nexus 5X Build/NJH47B \\
-
-	Spyzie & \makecell{The same as SpyMyFone.\\ We are sure that SpyMyPhone\\ talks to spyzie.com} & Same as SpyMyFone \\
-	
-	iSpyoo & probably same signatures as HelloSpy and TheTruthSpy given identical websites, but apk is broken & Nonfunctional \\
-	
-	mSpy & \makecell{POST to pipe.thd.cc\\
-	PUT to a18.dav.mspyonline.com\\
-	Domain: apiv4.alter757.info} & HTTPS \\
-	
-	SMS Tracker (TheHar) & \makecell{Domain:uploads.spy2mobile.com\\ Domain contains sap4mobile} & spytomobile group (does NOT use HTTPS) \\
-	
-	SMS Tracker TM & \makecell{Domain:cust-198-154-111-218.\\corexchange.com \\ SNI:messages02.smstracker.com} & Only tracks text. HTTPS \\
-	
-	Find My Friends & Domain:production-finderapps-lb-1188906093.us-east-1.elb.amazonaws.com & HTTPS\\
-	
-	Avast Anti-Theft & domain:Antitheft.ns1.ff.avast.com& HTTPS. High packet counts\\
-	
-	Family Locator by ZoeMob & SNIs: celulocen.zendesk.com, api.familysafetyproduction.com
-	Domains: proxy.vip.pod5.iad1.zdsys.com, www.zoemob.com & same as Life360
-	HTTPS \\
-	
-	Couple Tracker -Mobile monitor & 162-144-96-67.unifiedlayer.com & HTTPS \\
-	
-	Call and Message Tracker -Remote karanth & \makecell{SNI=www.callsmstracker.com
-	\\Domain contains onlinehome-server} & Similar to Cell Tracker, but uses HTTPS instead of HTTP \\
-	
-
-	
-\end{tabular}
+	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+		\toprule
+		App & Signature & Relevant Info \\
+		\midrule
+		HelloSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net} & 
+		Same as TheTruthSpy HTTP \\
+		
+		TheTruthSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net\\ 
+		User agent has hellospy in it} & Same as HelloSpy HTTP \\
+		
+		SpyMyFone & \makecell{HTTP 101 Switching Protocols\\ response\\
+			Domain: data-api.spymyfone.com\\SNI my.spymyfone.com.\\
+			Domain: ws.spyzie.com\\SNI ws.spyzie.com\\
+			Domains: app-api.phonedata.me\\ws.phonedata.me\\
+			SNI with unknown domain:\\ app-api.phonedata.me} & Uses WebSocket 
+			protocol and HTTP with User 
+			agent=aliyun-sdk-android/2.3.0/Dalvik/2.1.0 (Linux; U; Android 
+			7.1.2; Nexus 5X Build/NJH47B \\
+		
+		Spyzie & \makecell{The same as SpyMyFone.\\ We are sure that 
+		SpyMyPhone\\ talks to spyzie.com} & Same as SpyMyFone \\
+		
+		iSpyoo & probably same signatures as HelloSpy and TheTruthSpy given 
+		identical websites, but apk is broken & Nonfunctional \\
+		
+		mSpy & \makecell{POST to pipe.thd.cc\\
+			PUT to a18.dav.mspyonline.com\\
+			Domain: apiv4.alter757.info} & HTTPS \\
+		
+		SMS Tracker (TheHar) & \makecell{Domain:uploads.spy2mobile.com\\ Domain 
+		contains sap4mobile} & spytomobile group (does NOT use HTTPS) \\
+		
+		SMS Tracker TM & 
+		\makecell{Domain:cust-198-154-111-218.\\corexchange.com \\ 
+		SNI:messages02.smstracker.com} & Only tracks text. HTTPS \\
+		
+		Find My Friends & 
+		Domain:production-finderapps-lb-1188906093.us-east-1.elb.amazonaws.com 
+		& HTTPS\\
+		
+		Avast Anti-Theft & domain:Antitheft.ns1.ff.avast.com& HTTPS. High 
+		packet counts\\
+		
+		Family Locator by ZoeMob & SNIs: celulocen.zendesk.com, 
+		api.familysafetyproduction.com
+		Domains: proxy.vip.pod5.iad1.zdsys.com, www.zoemob.com & same as Life360
+		HTTPS \\
+		
+		Couple Tracker -Mobile monitor & 162-144-96-67.unifiedlayer.com & HTTPS 
+		\\
+		
+		Call and Message Tracker -Remote karanth & 
+		\makecell{SNI=www.callsmstracker.com
+			\\Domain contains onlinehome-server} & Similar to Cell Tracker, but 
+			uses HTTPS instead of HTTP \\
+		
+		
+		
+	\end{tabular}
 \end{table*}
 
 \begin{table*}
-\begin{tabular}{p{5cm}p{5cm}p{5cm}}
-	\toprule
-	App & Signature & Relevant Info \\
-	\midrule
+	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+		\toprule
+		App & Signature & Relevant Info \\
+		\midrule
 		Mobile Surveillance and Security
-	by Trackview & \makecell{HTTP req:\\ "GET /create\_session HTTP/1.1"\\ User agent:test \\Host:relay.google.com\\
-		Domains: relay.l.google.com,\\ stun.l.google.com} & Uses STUN protocol \\
+		by Trackview & \makecell{HTTP req:\\ "GET /create\_session HTTP/1.1"\\ 
+		User agent:test \\Host:relay.google.com\\
+			Domains: relay.l.google.com,\\ stun.l.google.com} & Uses STUN 
+			protocol \\
+		
+		Norton Family parental control & \makecell{domain: 
+		spoc-muw1.norton.com,\\spoc-mue1.norton.com\\
+			User-Agent: NOF/4.9.2.12/Android/8.1.0\\
+			SNI: family.norton.com} & HTTP POST with protobufs, or TLS. \\
+		
+		Senior Safety App & \makecell{POST to 
+		\\97.logger.mobi/signalr\_v1/<stuff>\\
+			97.logger.mobi/auth/token} & requires payment\\
+		
+		Invisible Mobile GPS Tracker by
+		GPSWOX.COM & \makecell{SNI:dn.gpswox.com\\ 
+		Domain:gpswox.\\llcspnavigatio.netdna-cdn.com} & HTTPS \\
+		
+		Family GPS Locator by GeoZilla & 
+		\makecell{Domain=static.<some-ip>.\\clients.your-server.de\\
+			SNI contains geozilla w/ aws domains} & NOT HTTPS (wrong ports), 
+			but TLS \\
+		
+		Phone Tracker By Number/Phone Tracker Family Locator & 
+		http://66.147.232.135:8080/signalr & HTTP \\
+		
+		Automatic Call Recorder & \makecell{Domain: 
+		http://winner-lb2-\\f918b4c7bf5ab40c.\\elb.us-east-1.amazonaws.com/ }& 
+		HTTPS \\
+		
+		Find my Kids: Child GPS-watch and phone tracker & server name 
+		api.findmykids.org & Talks to yandex.net? Russian something. 
+		HTTPS \\
+		
+		Live Mobile Number Tracker & \makecell{GET with host=clk.trkmobi.net\\
+			SNI track.56txs4.com, no domain\\
+			Domain cs156.adn.rhocdn.net\\ with SNI req..startappservice.com,\\
+			domain cs1112.wpc.rhocdn.net\\ with SNI info.startappservice.com} & 
+			No actual tracking functions. Sets your location to Fawn creek, KS 
+			\\
+		
+		track my phone pro & Domain:trackmyphones.com & HTTPS from the website, 
+		HTTP over TLS from the app \\
+		
+		Cell Phone Tracker & Domain:spy2mobile.com & SpyToMobile lookalike \\
+		
+		Cell Tracker - Trackme & Domain:Onlinehome-server.com
+		SNI:www.callsmstracker.com & Similar to Call and Message tracker. Sends 
+		a post to a separate service. \\
+		
+		Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile 
+		lookalike \\
+	\end{tabular}
 	
-	Norton Family parental control & \makecell{domain: spoc-muw1.norton.com,\\spoc-mue1.norton.com\\
-	User-Agent: NOF/4.9.2.12/Android/8.1.0\\
-	SNI: family.norton.com} & HTTP POST with protobufs, or TLS. \\
-	
-	Senior Safety App & \makecell{POST to \\97.logger.mobi/signalr\_v1/<stuff>\\
-	97.logger.mobi/auth/token} & requires payment\\
-	
-	Invisible Mobile GPS Tracker by
-	GPSWOX.COM & \makecell{SNI:dn.gpswox.com\\ Domain:gpswox.\\llcspnavigatio.netdna-cdn.com} & HTTPS \\
-	
-	Family GPS Locator by GeoZilla & \makecell{Domain=static.<some-ip>.\\clients.your-server.de\\
-	SNI contains geozilla w/ aws domains} & NOT HTTPS (wrong ports), but TLS \\
-	
-	Phone Tracker By Number/Phone Tracker Family Locator & http://66.147.232.135:8080/signalr & HTTP \\
-	
-	Automatic Call Recorder & \makecell{Domain: http://winner-lb2-\\f918b4c7bf5ab40c.\\elb.us-east-1.amazonaws.com/ }& HTTPS \\
-	
-	Find my Kids: Child GPS-watch and phone tracker & server name api.findmykids.org & Talks to yandex.net? Russian something. 
-	HTTPS \\
-	
-	Live Mobile Number Tracker & \makecell{GET with host=clk.trkmobi.net\\
-	SNI track.56txs4.com, no domain\\
-	Domain cs156.adn.rhocdn.net\\ with SNI req..startappservice.com,\\
-	domain cs1112.wpc.rhocdn.net\\ with SNI info.startappservice.com} & No actual tracking functions. Sets your location to Fawn creek, KS \\
-	
-	track my phone pro & Domain:trackmyphones.com & HTTPS from the website, HTTP over TLS from the app \\
-	
-	Cell Phone Tracker & Domain:spy2mobile.com & SpyToMobile lookalike \\
-	
-	Cell Tracker - Trackme & Domain:Onlinehome-server.com
-	SNI:www.callsmstracker.com & Similar to Call and Message tracker. Sends a post to a separate service. \\
-	
-	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
-\end{tabular}
-\end{table*}
-
 \end{table*}
 \clearpage
 
@@ -767,23 +832,24 @@ ssl.handshake.extensions_server_name contains "api.familysafetyproduction.com")
 || http.host matches "callsmstracker" 
 || ip.dst_host matches "onlinehome-server" 
 \end{lstlisting}
+
 \section{General Signature Wireshark Display Filters}
 
 \begin{lstlisting}
 http.host matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
- 
+
 || ssl.handshake.extensions_server_name matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
- 
+
 || http.user_agent matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
- 
+
 || ipv6.dst_host matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
 || ip.dst_host matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
-  
+
 || ipv6.src_host matches 
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
 || ip.src_host matches 
