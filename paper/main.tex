@@ -421,6 +421,8 @@ notification" every time email, texts, calls, or GPS, was changed or added to.
 Our results show that none of the stalkerware apps were able to send in real 
 time, all the apps advertised as real time simply updated at a more frequent 
 frequency than other apps.
+
+Where do these stalkerware apps send their traffic? In general, all of our apps tested connected to a third party server that aggregated the information for display in either a website or a similar app for a separate phone. We had anticipated that at least one app would send tracking data directly to the abuser's phone, however this was not the case in testing. Perhaps setting up such a connection would be too difficult for someone who initiates intimate partner violence, or simply because it is easier to collect phone data in a dedicated server and use it for other purposes as well. Either way, all of the apps we found connected to a specific domain that was not the abuser's phone. This was both good and bad news. While it is much easier to find network signatures for packets being sent to a single destination with its own domain name, it also means that we will not be able to find an abuser through our method. This would have been an interesting tangent, unfortunately it does not work.
 \subsection{Network Signatures}
 \label{network_signatures}
 
@@ -462,7 +464,7 @@ When the network traffic is captured and the suspicious packets are identified, 
 	\end{itemize}
 \end{itemize}
 
-All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, we will explain why we cannot add more to this list.
+All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, and we will explain why we cannot add more to this list in a later section.
 \subsection{Traffic Results}
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
@@ -571,7 +573,7 @@ http.host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.
 \end{lstlisting}
 
 
-\section{Actual Traffic Testing}
+\section{Real world Traffic Testing}
 
 In addition to the above network captures, we also took twenty-four hours of 
 network traffic of our own phones as a baseline for false positive rates. These 
@@ -579,6 +581,10 @@ captures also included periods of time that were deemed high risk for false
 positives as they emulated behaviour that is most likely to be caught by our 
 signatures. Although this may not be enough to fully emulate an entire network, 
 it is enough to prove the false positive rates on any given phone.
+
+Using our specific signatures, our filters did not catch any packet that could be used as stalkerware. This is to be expected as we are very sure that there are no stalkerware apps installed on our personal phones and the filters used are quite specific to the apps that we looked at. Again, these filters are very specific with their requirements and does not scale when we add more apps to our study. However, we can confirm that stalkerware traffic is unique, and we have a filter that very accurately catches stalkerware.
+
+
 
 
 
