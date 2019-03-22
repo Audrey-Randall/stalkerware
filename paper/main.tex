@@ -576,9 +576,7 @@ Using our specific signatures, our filters did not catch any packet that could b
 
 \section{Future Work}
 
-Make machine learning identify stalkerware on the app store, download it, 
-profile it. Then train more ML to pick out the malicious signatures? Would that 
-even work? What would it learn that we can't?
+In the future, we would like to automate our process. Ideally we would like to use machine learning to produce signatures for apps we have deemed stalkerware and any of it's copies. Moreover, when we have enough signatures to comprise a training and validation set, we can apply machine learning to fuse these signatures into a compact filter. This would likely be a good amount of work, but if it could be created it would make most stalkerware not in our dataset easily detectable.
 
 Previously, we had expressed an interest in seeing if the signatures we found 
 by hand could identify more apps without manual inspection. There are (as far 
@@ -596,7 +594,13 @@ could be recorded. However, the most difficult problem in this case becomes
 determining which apps are actually stalkerware on the app store, which is 
 beyond the scope of this project. 
 
+Additionally, we would like to actually test our signature on real word traffic. We are unable to do so currently since our method currently requires a network capture, and we do not have nor are able to get consent from everyone who uses a given network router. Hopefully we would be able to clear away these considerations in order to find the actual false positive rate of our packet filters.
+
 \section{Conclusion}
+
+Stalkerware is a problem, in the context of both society and security. As a tool for partner abuse, its use needs to be prevented before it can cause physical or mental harm, otherwise people cannot trust cell phones for their safety. As a software, current methods are unable to detect stalkerware on any given phone, the method of installation also exposes a security vulnerability that can be exploited for other purposes. In this paper, we have created a method that uses the intrinsic requirement of stalkerware, network communication, to detect it's presence on any device we can link to an IP address. This novel method is able to distinguish stalkerware traffic despite its relative simplicity.
+
+Overall, we find that our method provides a much higher chance of detection than current antivirus software or IDS. We believe that this method can be expanded upon to be either more accurate or more inclusive. This method does have issues that prevent it from actual deployment, however it provides a good step forward in detecting stalkerware.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{IPS_Measurement}
@@ -614,7 +618,7 @@ beyond the scope of this project.
 	
 	TheTruthSpy & \makecell{HTTP Post to\\ <numbers>.dedicated.codero.net\\ User agent has hellospy in it} & Same as HelloSpy HTTP \\
 	
-	SpyMyFone & \makecell{HTTP 101 Switching Protocols response\\
+	SpyMyFone & \makecell{HTTP 101 Switching Protocols\\ response\\
 	Domain: data-api.spymyfone.com\\SNI my.spymyfone.com.\\
 	Domain: ws.spyzie.com\\SNI ws.spyzie.com\\
 	Domains: app-api.phonedata.me\\ws.phonedata.me\\
@@ -643,7 +647,7 @@ beyond the scope of this project.
 	Couple Tracker -Mobile monitor & 162-144-96-67.unifiedlayer.com & HTTPS \\
 	
 	Call and Message Tracker -Remote karanth & \makecell{SNI=www.callsmstracker.com
-	\\Domain contains onlinehome-server.com} & Similar to Cell Tracker, but uses HTTPS instead of HTTP \\
+	\\Domain contains onlinehome-server} & Similar to Cell Tracker, but uses HTTPS instead of HTTP \\
 	
 
 	
