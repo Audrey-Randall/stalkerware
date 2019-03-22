@@ -72,15 +72,33 @@ for how we could move forward.
 \maketitle
 
 \section{Introduction}
-One in four women and one in six men will be subject to some sort of intimate 
+Intimate partner violence, or IPV, is a pervasive problem in the United States 
+and elsewhere. One in four women and one in six men will be subject to some 
+sort of intimate 
 partner abuse during their lifetimes, where ``intimate partner abuse'' can 
 include physical, emotional, or sexual abuse, as well as stalking or rape. In a 
 world where technology now pervades every aspect of our lives, some 
-aspects of IPV have recently changed too. Specifically, there are more options 
-available to the abuser for attempting to retain control over their partner. 
-One of these options is the ability to install monitoring software on their 
-partner's phone or computer to record their online activity, communications, 
-and location. We refer to such software as ``stalkerware.''  
+aspects of IPV have changed too. Technology can now be abused in a variety of 
+ways that harm survivors of IPV. Previous work \cite{ristenpart_ucsd_talk} has 
+classified these into four categories of attacks: ownership-based, account or 
+device compromise, harmful messages or posts, and exposure of private 
+information. Ownership-based attacks are possible when the abuser owns the 
+device used by the victim or the victim's children. They are then capable 
+of installing software on it that can remotely destroy the device or prevent or 
+monitor access and usage. Attacks based on account or device compromise are 
+possible when the abuser does not own the device but nevertheless can guess 
+passwords or compel the victim to reveal them, or has access to the unlocked 
+device, or can remotely ``hack'' it using knowledge of security questions or 
+passwords. Some examples of a ``harmful message'' attack include messaging the 
+victim from a spoofed account, messaging the victim's family or friends, or 
+impersonating the victim using their own accounts. Finally, attacks that expose 
+private information can involve ``revenge pornography,'' revealing an HIV 
+status, creating fake profiles offering sexual services, and blackmail. While 
+some of these options (such as tracking a victim's location) are available to 
+an abuser without installing any extra software on the phone, others are not. 
+We refer to monitoring software that can record online activity, 
+communications, and location, or remotely tamper with the device, as 
+``stalkerware.''  
 
 Stalkerware is not as widely studied as other types of malware, and much less 
 information is available regarding it. Although it is superficially 
@@ -286,8 +304,8 @@ apps than we had time to download and manually examine.
 	\end{subfigure}%
 	\begin{subfigure}{0.5\columnwidth}
 		\centering
-		\includegraphics[width=0.9\linewidth]{../images/CoupleTrackerSetup.png}
-		\caption{One of the setup pages for Couple}
+		\includegraphics[width=0.9\linewidth]{../images/Couple_like_spy2mobile.png}
+		\caption{A setup page for Couple}
 		\label{fig:sub2}
 	\end{subfigure}
 	\caption{SpyToMobile and Couple's similarities. All SpyToMobile copies have 
@@ -690,6 +708,7 @@ beyond the scope of this project.
 	
 	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
 \end{tabular}
+\end{table*}
 
 \section{Wireshark Display Filters for Specific Signatures}
 \begin{lstlisting}
@@ -738,7 +757,6 @@ ssl.handshake.extensions_server_name contains "api.familysafetyproduction.com")
 || http.host matches "callsmstracker" 
 || ip.dst_host matches "onlinehome-server" 
 \end{lstlisting}
-
 \section{General Signature Wireshark Display Filters}
 
 \begin{lstlisting}
@@ -762,5 +780,5 @@ http.host matches
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
 \end{lstlisting}
 
-\end{table*}
+
 \end{document}
