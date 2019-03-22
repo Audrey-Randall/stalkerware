@@ -602,9 +602,10 @@ beyond the scope of this project.
 \bibliography{IPS_Measurement}
 
 \appendix
-
-\section{Apps and Signatures}
+\clearpage
 \begin{table*}
+	
+	\section{Apps and Signatures}
 \begin{tabular}{p{5cm}p{5cm}p{5cm}}
 	\toprule
 	App & Signature & Relevant Info \\
@@ -644,9 +645,7 @@ beyond the scope of this project.
 	Call and Message Tracker -Remote karanth & \makecell{SNI=www.callsmstracker.com
 	\\Domain contains onlinehome-server.com} & Similar to Cell Tracker, but uses HTTPS instead of HTTP \\
 	
-	Mobile Surveillance and Security
-	by Trackview & \makecell{HTTP req:\\ "GET /create\_session HTTP/1.1"\\ User agent:test \\Host:relay.google.com\\
-	Domains: relay.l.google.com,\\ stun.l.google.com} & Uses STUN protocol \\
+
 	
 \end{tabular}
 \end{table*}
@@ -656,6 +655,10 @@ beyond the scope of this project.
 	\toprule
 	App & Signature & Relevant Info \\
 	\midrule
+		Mobile Surveillance and Security
+	by Trackview & \makecell{HTTP req:\\ "GET /create\_session HTTP/1.1"\\ User agent:test \\Host:relay.google.com\\
+		Domains: relay.l.google.com,\\ stun.l.google.com} & Uses STUN protocol \\
+	
 	Norton Family parental control & \makecell{domain: spoc-muw1.norton.com,\\spoc-mue1.norton.com\\
 	User-Agent: NOF/4.9.2.12/Android/8.1.0\\
 	SNI: family.norton.com} & HTTP POST with protobufs, or TLS. \\
@@ -690,6 +693,9 @@ beyond the scope of this project.
 	
 	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
 \end{tabular}
+
+\end{table*}
+\clearpage
 
 \section{Wireshark Display Filters for Specific Signatures}
 \begin{lstlisting}
@@ -762,5 +768,4 @@ http.host matches
 "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
 \end{lstlisting}
 
-\end{table*}
 \end{document}
