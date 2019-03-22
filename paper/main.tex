@@ -184,7 +184,7 @@ the surveilled phone to contact the surveillant and raise an alarm. They do not
 hide their app icons and generally make an effort to notify the user that the 
 monitoring app is installed on their phone. The spyware that did not notify 
 users of its presence mostly consisted of one app, called SpyToMobile, that was 
-provided on the Play Store under many different names (see section \ref{}). 
+provided on the Play Store under many different names (see section \ref{subsec:The Practice of ``Reskinning''}). 
 
 We also identified many apps that were designed to track location or text 
 messages, but were less comprehensive than the overt, off-store spyware. They 
@@ -457,6 +457,22 @@ time, all the apps advertised as real time simply updated at a more frequent
 frequency than other apps.
 
 Where do these stalkerware apps send their traffic? In general, all of our apps tested connected to a third party server that aggregated the information for display in either a website or a similar app for a separate phone. We had anticipated that at least one app would send tracking data directly to the abuser's phone, however this was not the case in testing. Perhaps setting up such a connection would be too difficult for someone who initiates intimate partner violence, or simply because it is easier to collect phone data in a dedicated server and use it for other purposes as well. Either way, all of the apps we found connected to a specific domain that was not the abuser's phone. This was both good and bad news. While it is much easier to find network signatures for packets being sent to a single destination with its own domain name, it also means that we will not be able to find an abuser through our method. This would have been an interesting tangent, unfortunately it does not work.
+\begin{table*}
+	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+		\toprule
+		Generalized Signature & Unique Apps & Total Apps \\
+		\hline
+		Domain contains "spy," "track," "find" & 6 & 12 \\
+		SNI contains "spy," "track," "find" & 6 & 6 \\
+		User-Agent contains "spy," "track," "find" & 1 & 3 \\
+		User-Agent contains known app name & 1 & 1 \\
+		Domain contains known app name & 3 & 4 \\
+		SNI contains known app name & 1 & 1 \\
+		SNI contains known app manufacturer & 3 & 3 \\
+		Domain contains known app manufacturer & 3 & 3 \\
+		\midrule
+	\end{tabular}
+\end{table*}
 \subsection{Network Signatures}
 \label{network_signatures}
 
@@ -499,6 +515,7 @@ When the network traffic is captured and the suspicious packets are identified, 
 \end{itemize}
 
 All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, and we will explain why we cannot add more to this list in a later section.
+
 \subsection{Traffic Results}
 
 The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
@@ -521,22 +538,7 @@ spyware keywords in their domains. We identified the following generalized
 signatures that can be used to identify most of our apps given nothing but 
 information available on the Google Play store.
 
-\begin{table*}
-	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
-		\toprule
-		Generalized Signature & Unique Apps & Total Apps \\
-		\hline
-		Domain contains "spy," "track," "find" & 6 & 12 \\
-		SNI contains "spy," "track," "find" & 6 & 6 \\
-		User-Agent contains "spy," "track," "find" & 1 & 3 \\
-		User-Agent contains known app name & 1 & 1 \\
-		Domain contains known app name & 3 & 4 \\
-		SNI contains known app name & 1 & 1 \\
-		SNI contains known app manufacturer & 3 & 3 \\
-		Domain contains known app manufacturer & 3 & 3 \\
-		\midrule
-	\end{tabular}
-\end{table*}
+
 
 For the apps whose traffic do not contain "spy," "find," or "track," we will 
 next check for the app name and manufacturer name or substrings of these two. 
@@ -564,11 +566,15 @@ prohibitive number of false positive stalkerware detections.
 In addition to the above network captures, we also took twenty-four hours of 
 network traffic of our own phones as a baseline for false positive rates. These 
 captures also included periods of time that were deemed high risk for false 
-positives as they emulated behaviour that is most likely to be caught by our 
+positives as they emulated behavior that is most likely to be caught by our 
 signatures. Although this may not be enough to fully emulate an entire network, 
 it is enough to prove the false positive rates on any given phone.
 
 Using our specific signatures, our filters did not catch any packet that could be used as stalkerware. This is to be expected as we are very sure that there are no stalkerware apps installed on our personal phones and the filters used are quite specific to the apps that we looked at. Again, these filters are very specific with their requirements and does not scale when we add more apps to our study. However, we can confirm that stalkerware traffic is unique, and we have a filter that very accurately catches stalkerware.
+
+Using the generic filters, we unfortunately wrongly caught 2 TCP streams and 3 domains out of our total of 2869 streams and 1756 domains in our self network capture. In addition, these filters will only catch 21 out of the 24 apps that comprise the specific filter. This is an issue as it does infer that our generic filters are too generic. Upon looking at the specified domains, we see that these are most likely adware services that track user browsing data. Although there is a possibility that these can be considered malicious enough to add to our results, these are not stalkerware and as such count towards our false positive rate. Also while the percent of false positives is quite low, if we were to deploy this filter in an actual router, it would undoubtedly collect far more domains than we should be catching.
+
+While looking at domains and TCP streams gets a good sense of how our filters work in a router, ideally we would also want to see how many apps we misclassify using our generic method. This is because our study is based on stalkerware in phones, and we make no assumption that stalkerware is only on cellular devices. Since we currently cannot connect each domain or TCP stream with a single app without identifying and tracking the traffic for all of our own apps, we make the assumption that each app will connect to only one domain, with the exception of the web browser. Using this assumption, we see that none of the apps on our phones are caught by our filter. Moreover, even apps meant for tracking buses do not get caught by the filter, despite the obvious connection that one could make. 
 
 
 
@@ -609,7 +615,7 @@ Overall, we find that our method provides a much higher chance of detection than
 \clearpage
 \begin{table*}
 	
-	\section{Apps and Signatures}
+\section{Apps and Signatures}
 \begin{tabular}{p{5cm}p{5cm}p{5cm}}
 	\toprule
 	App & Signature & Relevant Info \\
