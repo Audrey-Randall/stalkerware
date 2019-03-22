@@ -507,46 +507,7 @@ host, for each app and tried to isolate some part that we believed would be uniq
 
 Initially we attempted to add on our filters with an additional check for location requests, as many stalkerware apps will contain features for tracking location. Additionally, when connected to a network a phone may use the router to find its current location. Unfortunately, while we could occasionally see a external service being used, the majority of location requests were not listed in our network captures. That being said, our resultant domain, user agent, and SNI filters managed to achieve full coverage of all stalkerware apps.
 
-All of our filters have been collected and are listed here. These can be directly placed in Wireshark. 
-\begin{lstlisting}
-ip.host contains dedicated.codero.net 
-|| http.host contains hellospy
-|| (ip.host contains data-api.spymyfone.com && ssl.handshake.extension.data contains "my.spymyfone.com") 
-|| (ip.host contains ws.spyzie.com && ssl.handshake.extension.data contains "ws.spyzie.com") 
-|| ip.host contains data-api.spymyfone.com 
-|| ip.host contains ws.spyzie.com 
-|| ip.host contains phonedata.me 
-|| ssl.handshake.extension.data contains "phonedata.me" 
-|| ip.host contains apiv4.alter757.info 
-|| ssl.handshake.extension.data contains "thd.cc" 
-|| ip.host contains thd.cc 
-|| ip.host contains mspyonline.com 
-|| ip.host contains corexchange.com && ssl.handshake.extensions_server_name contains messages02.smstracker.com 
-|| ip.host contains life360.helpshift.com 
-|| ip.host contains antitheft.ns1.ff.avast.com 
-|| (ip.host contains production-finderapps && ssl.handshake.extensions_server_name contains "api.familysafetyproduction.com") || ip.host contains production-finderapps 
-|| ssl.handshake.extensions_server_name contains "celulocen.zendesk.com" 
-|| ip.host contains www.zoemob.com 
-|| ip.host contains unifiedlayer.com 
-|| http.host matches "callsmstracker" 
-|| ip.dst_host matches "onlinehome-server" 
-|| (ip.dst_host matches "spoc-mu(|w|e)1.norton" && http.user_agent matches "(android|ios)")
-|| ssl.handshake.extensions_server_name matches "family.norton" 
-|| (udp && ip.host contains stun.l.google.com) 
-|| http.host == relay.google.com && http.user_agent matches test 
-|| http.host matches "97.logger.mobi" 
-|| ssl.handshake.extensions_server_name matches "gpswox" 
-|| ip.dst_host matches "gpswox" 
-|| ssl.handshake.extensions_server_name matches "geozilla" 
-|| ip.dst_host matches "clients.your-server.de" 
-|| (ip.addr == 66.147.232.135 && tcp.port == 8080 && http.request.uri contains "signalr") 
-|| ip.addr == 66.147.232.135 && tcp.port == 8080 
-|| ssl.handshake.extensions_server_name matches "findmykids" 
-|| ssl.handshake.extension.data contains "findmykids"  
-||  ip.dst_host matches "(trackmyphones.com)" 
-|| http.host matches "callsmstracker" 
-|| ip.dst_host matches "onlinehome-server" 
- \end{lstlisting}
+
  
  Unfortunately while this does catch all of the stalkerware apps we have found, it does not catch most of the stalkerware apps we have not found. In this case, we need to generalize our results into a format that can be either catch-all or easily scalable without requiring a network capture.
 
@@ -596,15 +557,6 @@ store. The second step of our analysis will be to search for these general
 signatures in our personal phones' traffic captures. This will give a better 
 idea of whether it is possible to use general signatures without generating a 
 prohibitive number of false positive stalkerware detections.
-\begin{lstlisting}
-http.host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
-|| ssl.handshake.extensions_server_name matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
-|| http.user_agent matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)" 
-|| ipv6.dst_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
-|| ip.dst_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"  
-|| ipv6.src_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
-|| ip.src_host matches "(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
-\end{lstlisting}
 
 
 \section{Real world Traffic Testing}
@@ -739,6 +691,76 @@ beyond the scope of this project.
 	Texting, Chat, Phone Spy by Maxlo & Domain:spy2mobile.com & SpyToMobile lookalike \\
 \end{tabular}
 
+\section{Wireshark Display Filters for Specific Signatures}
+\begin{lstlisting}
+ip.host contains dedicated.codero.net 
+|| http.host contains hellospy
+|| (ip.host contains data-api.spymyfone.com && ssl.handshake.extension.data 
+contains "my.spymyfone.com") 
+|| (ip.host contains ws.spyzie.com && ssl.handshake.extension.data contains 
+"ws.spyzie.com") 
+|| ip.host contains data-api.spymyfone.com 
+|| ip.host contains ws.spyzie.com 
+|| ip.host contains phonedata.me 
+|| ssl.handshake.extension.data contains "phonedata.me" 
+|| ip.host contains apiv4.alter757.info 
+|| ssl.handshake.extension.data contains "thd.cc" 
+|| ip.host contains thd.cc 
+|| ip.host contains mspyonline.com 
+|| ip.host contains corexchange.com && ssl.handshake.extensions_server_name 
+contains messages02.smstracker.com 
+|| ip.host contains life360.helpshift.com 
+|| ip.host contains antitheft.ns1.ff.avast.com 
+|| (ip.host contains production-finderapps && 
+ssl.handshake.extensions_server_name contains "api.familysafetyproduction.com") 
+|| ip.host contains production-finderapps 
+|| ssl.handshake.extensions_server_name contains "celulocen.zendesk.com" 
+|| ip.host contains www.zoemob.com 
+|| ip.host contains unifiedlayer.com 
+|| http.host matches "callsmstracker" 
+|| ip.dst_host matches "onlinehome-server" 
+|| (ip.dst_host matches "spoc-mu(|w|e)1.norton" && http.user_agent matches 
+"(android|ios)")
+|| ssl.handshake.extensions_server_name matches "family.norton" 
+|| (udp && ip.host contains stun.l.google.com) 
+|| http.host == relay.google.com && http.user_agent matches test 
+|| http.host matches "97.logger.mobi" 
+|| ssl.handshake.extensions_server_name matches "gpswox" 
+|| ip.dst_host matches "gpswox" 
+|| ssl.handshake.extensions_server_name matches "geozilla" 
+|| ip.dst_host matches "clients.your-server.de" 
+|| (ip.addr == 66.147.232.135 && tcp.port == 8080 && http.request.uri contains 
+"signalr") 
+|| ip.addr == 66.147.232.135 && tcp.port == 8080 
+|| ssl.handshake.extensions_server_name matches "findmykids" 
+|| ssl.handshake.extension.data contains "findmykids"  
+||  ip.dst_host matches "(trackmyphones.com)" 
+|| http.host matches "callsmstracker" 
+|| ip.dst_host matches "onlinehome-server" 
+\end{lstlisting}
+
+\section{General Signature Wireshark Display Filters}
+
+\begin{lstlisting}
+http.host matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+ 
+|| ssl.handshake.extensions_server_name matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+ 
+|| http.user_agent matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+ 
+|| ipv6.dst_host matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+|| ip.dst_host matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+  
+|| ipv6.src_host matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+|| ip.src_host matches 
+"(spy|track|find|antitheft.ns1.ff.avast|zoemob|life360|family.norton|gpswox|geozilla)"
+\end{lstlisting}
 
 \end{table*}
 \end{document}
