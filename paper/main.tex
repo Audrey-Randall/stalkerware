@@ -29,20 +29,54 @@ b}\kern-.08emT\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \affiliation{\institution{UCSD}}
 
 \begin{abstract}
-Spyware is known as unwanted software that sends user state and information to 
-an external party. Often these apps are not inherently malicious to the 
-operating system and are thus difficult to detect. We explore a subset of 
-spyware that are available in the Android Play store intended for spying on 
-another person though his or her cell phone and create a new method of 
-identifying their presence through network signatures.  
+Intimate partner violence (IPV) is a pervasive problem that has been changed by 
+the advent of the digital age. The ubiquity of smartphones has made it easy 
+even for someone with no technical skills to perform surveillance of a device 
+that they have access to. In the context of IPV, abusers often have access to 
+the devices of their partners, and either know or can coerce the passwords to 
+those devices. With such unrestricted access, an abundance of surveillance 
+options exist, 
+whether the goal is to track location, remotely block incoming calls or 
+messages, record all communications, monitor browsing history, or lock a 
+survivor out of their accounts. For some types of information, no extra 
+software is required to gather it. For example, Facebook can reveal a user's 
+location to their friends. Another example is Apple's backup service, which can 
+make copies of text messages and call logs accessible to anyone with the iCloud 
+credentials of the phone. Other types of control that might be attractive to an 
+abuser, such as the ability to block incoming communication from certain 
+people, require software to be installed on the target device. We refer to such 
+software as ``stalkerware.'' Stalkerware is dissimilar to other forms of 
+malware because of how easily the adversary can access the target device. 
+Consequently, traditional assumptions about security do not apply to it, and 
+traditional methods of studying it are ineffective. Antivirus, which can 
+normally provide information about malware, is poor at detecting 
+stalkerware.\cite{chatterjee_spyware_2018} Network Intrusion Detection Systems 
+(IDSs) also have low detection rates. This lack of information results in many 
+unanswered questions about the use of stalkerware in the context of IPV.
+
+This work takes a step towards answering one of those questions: namely, 
+\textit{how prevalent is stalkerware today?} We identify the traffic signatures 
+of 24 stalkerware apps, with the goal of being able to identify it from a 
+network operator's vantage point. We show that our signatures identify 
+stalkerware with few false positives. Additionally, we present a simple method 
+of generalizing the signatures we identify, and show that our generalized 
+signatures also give few false positives. We also show that peculiarities of 
+the stalkerware ecosystem may aid researchers in detecting it, and in 
+generalizing specific network signatures to apps that have not been manually 
+identified. The ethical and bureaucratic issues inherent in doing a large-scale 
+measurement study on real traffic prevented us from using our signatures to 
+estimate how much stalkerware exists in the wild. However, we present a plan 
+for how we could move forward. 
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
-In a world where technology now pervades every aspect of our lives, some 
-aspects of our relationships with intimate partners have changed too. 
-Specifically, when these relationships become abusive, there are more options 
+One in four women and one in six men will be subject to some sort of intimate 
+partner abuse during their lifetimes, where ``intimate partner abuse'' can 
+include physical, emotional, or sexual abuse, as well as stalking or rape. In a 
+world where technology now pervades every aspect of our lives, some 
+aspects of IPV have recently changed too. Specifically, there are more options 
 available to the abuser for attempting to retain control over their partner. 
 One of these options is the ability to install monitoring software on their 
 partner's phone or computer to record their online activity, communications, 
