@@ -638,8 +638,9 @@ the app is stalkerware and that the manufacturer doesn't make anything except
 stalkerware. In the case of smaller apps and reskinned apps, this may actually 
 be a reasonable assumption. Manufacturer names are generated to fool the 
 Google Play store into thinking the app is new, not to identify a real company, 
-and are therefore unique by necessity. We note that the two apps we can only 
-identify by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
+and are therefore unique by necessity. We note that the two apps whose only 
+general signature is their manufacturer are made by GPSWOX and GeoZilla. GPSWOX 
+makes 
 location-tracking apps of all kinds, some of which may be difficult to use as 
 stalkerware, but GeoZilla's only apps are all designed to track a phone. Since 
 only two apps were identified this way, the false positive rate should be 
@@ -656,65 +657,80 @@ signatures.
 
 \section{Evaluation}
 
-We evaluated both specific and general signatures by taking twenty-four hours 
+We evaluated both specific and general signatures by taking 24 hours 
 of network traffic captures on our own personal phones. Our goal was to 
 determine a lower bound for our false positive rates. These 
-captures also included periods of time that were deemed high risk for false 
-positives as they emulated behavior that is most likely to be caught by our 
-signatures. Given the relatively small amount of data we have to work with, our 
+captures also included periods of time where we attempted to trigger false 
+positives by emulating behavior that might match our 
+signatures. For example, we used the UCSD shuttle tracking app in the hopes 
+that it would get caught by the keyword method for containing the word 
+``track.'' Given the relatively small 
+amount of data we have to work with, our 
 results should be considered extremely conservative lower bounds on the true 
-false positive rates of our signatures. TODO: explain how we got false pos rate
+false positive rates of our signatures. Ideally, we would determine the false 
+positive rate by counting how many apps our method misclassifies. However, 
+separating traffic by the originating application is a nontrivial problem that 
+we were not able to solve in the time available. We settled for two 
+approximations: the number of misclassifed TCP streams and the number of 
+misclassified domains.
 
 Using the specific signatures, our false positive rate was zero. This is to be 
 expected as we are very sure that there 
 are no stalkerware apps installed on our personal phones and the filters used 
 are quite specific to the apps that we looked at. 
 
-Using the generic filters, we identified two TCP streams and 3 domains out of 
-our total of 2869 streams and 1756 domains in our self network capture. In 
-addition, these filters will only catch 21 out of the 24 apps that comprise the 
-specific filter. This is an issue as it does infer that our generic filters are 
-too generic. Upon looking at the specified domains, we see that these are most 
-likely adware services that track user browsing data. Although there is a 
-possibility that these can be considered malicious enough to add to our 
-results, these are not stalkerware and as such count towards our false positive 
-rate. Also while the percent of false positives is quite low, if we were to 
-deploy this filter in an actual router, it would undoubtedly collect far more 
-domains than we should be catching.
-
-While looking at domains and TCP streams gets a good sense of how our filters work in a router, ideally we would also want to see how many apps we misclassify using our generic method. This is because our study is based on stalkerware in phones, and we make no assumption that stalkerware is only on cellular devices. Since we currently cannot connect each domain or TCP stream with a single app without identifying and tracking the traffic for all of our own apps, we make the assumption that each app will connect to only one domain, with the exception of the web browser. Using this assumption, we see that none of the apps on our phones are caught by our filter. Moreover, even apps meant for tracking buses do not get caught by the filter, despite the obvious connection that one could make. 
-
-
-
-
+Using the general filters, we identified two TCP streams and three domains out 
+of our total of 2,869 streams (0.07\%) and 1,756 domains (0.2\%) in our 24 
+hours of personal traffic. In addition, these filters will only catch 21 out of 
+our 24 apps, making the general filetrs' false negative rate 12.5\%. The 
+misclassified domains are all advertisement services that 
+track user browsing data. While the percentage of false positives is quite low, 
+we are wary of assigning it too much significance. We predict that if we were 
+to deploy this filter in a real router, it 
+would undoubtedly collect far more domains than we did with our personal 
+traffic.
 
 \section{Future Work}
 
-In the future, we would like to automate our process. Ideally we would like to use machine learning to produce signatures for apps we have deemed stalkerware and any of it's copies. Moreover, when we have enough signatures to comprise a training and validation set, we can apply machine learning to fuse these signatures into a compact filter. This would likely be a good amount of work, but if it could be created it would make most stalkerware not in our dataset easily detectable.
-
-Previously, we had expressed an interest in seeing if the signatures we found 
-by hand could identify more apps without manual inspection. There are (as far 
-as we can see) two possible methods of doing this. The first is to 
-auto-generate signatures based on a list of keywords that commonly appear in 
-domains, SNIs, User-Agents, and HTTP host names for stalkerware traffic. These 
-keywords might include the names of the apps, substrings that appear in the app 
-names, and words that seem relevant to tracking apps. A more complicated method 
+In the future, we would like to automate our signature identification process. 
+If we could acquire enough signatures to comprise a training and validation 
+set, we could determine whether machine learning could help us accurately 
+distinguish stalkerware from innocent apps. A more complicated method 
 would be to set up bots that can download potential spyware by searching 
 various terms on the app store like "tracker app." The bots would have to run 
 the apps and monitor their traffic, identifying app traffic by eliminating 
 traffic from other sources. The remaining traffic would belong to the app, and 
 the domains, SNIs, user-agents, and any other available identifying features 
 could be recorded. However, the most difficult problem in this case becomes 
-determining which apps are actually stalkerware on the app store, which is 
-beyond the scope of this project. 
+determining which apps are actually stalkerware on the app store without 
+examining their traffic first.
 
-Additionally, we would like to actually test our signature on real word traffic. We are unable to do so currently since our method currently requires a network capture, and we do not have nor are able to get consent from everyone who uses a given network router. Hopefully we would be able to clear away these considerations in order to find the actual false positive rate of our packet filters.
+Additionally, we would like to actually test our signatures on real word 
+traffic. We are unable to do so currently since our method currently requires a 
+network capture, and we do not have nor are able to get consent from everyone 
+who uses a given network router. We would like to find a way to use 
+differential privacy (such as RAPPOR \cite{erlingsson_rappor:_2014}) to ensure 
+that we can only collect aggregate statistics on 
+stalkerware usage, without identifying any device as having it, but have yet to 
+find a way to set that up.
 
 \section{Conclusion}
 
-Stalkerware is a problem, in the context of both society and security. As a tool for partner abuse, its use needs to be prevented before it can cause physical or mental harm, otherwise people cannot trust cell phones for their safety. As a software, current methods are unable to detect stalkerware on any given phone, the method of installation also exposes a security vulnerability that can be exploited for other purposes. In this paper, we have created a method that uses the intrinsic requirement of stalkerware, network communication, to detect it's presence on any device we can link to an IP address. This novel method is able to distinguish stalkerware traffic despite its relative simplicity.
-
-Overall, we find that our method provides a much higher chance of detection than current antivirus software or IDS. We believe that this method can be expanded upon to be either more accurate or more inclusive. This method does have issues that prevent it from actual deployment, however it provides a good step forward in detecting stalkerware.
+Stalkerware is a pervasive and troubling problem, in the context of both 
+society and security. As a tool for partner abuse, its use needs to be 
+prevented before it can cause physical or mental harm, otherwise people cannot 
+trust cell phones for their safety. Current methods of stalkerware detection 
+are unreliable, leading to a lack of data on their use. The context in which 
+stalkerware is used also invalidates many assumptions about computer security, 
+such as the idea that strong passwords and antivirus can keep a phone free of 
+malware. We have taken a step towards answering the question of how much 
+stalkerware is in existence by creating signatures for network traffic. This 
+novel method is able to distinguish stalkerware traffic despite 
+its relative simplicity. We also describe several findings about the 
+stalkerware ecosystem, the most interesting of which is the knowledge of how 
+many apparently unique apps are actually copies of one another. Our methods 
+can certainly be expanded upon to be either more accurate or more 
+inclusive, but they provide a good step forward in detecting stalkerware.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{IPS_Measurement}
