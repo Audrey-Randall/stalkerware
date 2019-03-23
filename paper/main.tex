@@ -221,6 +221,31 @@ these apps were unable or unwilling to hide their icons, and some provide an
 explicit notification that the app is in use, although this notification can be 
 easily disabled in the Android notification settings. 
 
+\section{Related Work}
+Previous studies \cite{stories_from_survivors, burke_using_2011}, the media 
+\cite{shahani_smartphones_nodate, chatterjee_spyware_2018}, and intimate 
+partner violence (IPV) survivors \cite{ristenpart_ucsd_talk} have all reported 
+that spyware is becoming an increasingly utilized means of performing
+intimate partner surveillance (IPS). Tracking functions supported by spyware 
+allow stalkers to monitor communications, track locations, and remotely 
+activate cameras and microphones \cite{shahani_smartphones_nodate, 
+chatterjee_spyware_2018}. Chatterjee et al. propose methods for searching for 
+IPS-capable apps. By Google search query expansion and unsupervised 
+classification, they collected 9,224 apps possibly related to IPS on Google 
+play and the open Internet. They manually selected 70 apps for investigation. 
+They observed the most fundamental functions of these apps are 
+monitoring locations, communication logs and data, media contents, and phone 
+usages. They also found that existing anti-spyware tools cannot effectively 
+detect IPS-related apps \cite{chatterjee_spyware_2018}.
+Mobile apps are often identified via the User-Agent string of the HTTP request, 
+when one is available \cite{xu_identifying_2011}. With the increased use of 
+HTTPS this may not always 
+be the case, but we expect to find (based on conversations with authors of 
+previous work) that security and best coding practices are not prioritized by 
+stalkerware developers. Malware identification may be of use as well, 
+since techniques are available to cluster malware that comes from the same 
+source code into "families." \cite{hutchison_firma_2013}
+
 \section{The Stalkerware Ecosystem}
 
 We noted several interesting characteristics of the stalkerware ecosystem, some 
@@ -249,6 +274,26 @@ of which are beneficial to researchers attempting to identify stalkerware.
 	\label{fig:ilfmobiles}
 \end{figure*}
 
+\begin{figure*}
+	\centering
+	\begin{subfigure}{0.8\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/hellospy.png}
+		\caption{HelloSpy's dashboard (cut off at bottom)}
+		\label{fig:hellospy}
+	\end{subfigure}%
+	\begin{subfigure}{0.8\columnwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{../images/thetruthspy.png}
+		\caption{TheTruthSpy's dashboard}
+		\label{fig:truthspy}
+	\end{subfigure}
+	\caption{HelloSpy and TheTruthSpy have remarkably similar websites. Their 
+	traffic signatures also turned out to be identical, leading us to believe 
+	they are made by the same manufacturer.}
+	\label{fig:hellospy_thetruthspy}
+\end{figure*}
+
 As previously mentioned, spyware has a high turnover rate on the Google Play 
 store, which leads to a practice we refer to as "reskinning:" a single app will 
 be posted under many names, icons, and manufacturer names. Presumably, 
@@ -263,18 +308,18 @@ groups of off-store apps have nearly identical websites, in terms of
 organization, color, fonts, placement of buttons, prices, and other factors. 
 For example, the "ILFMobile group" consists of three different companies 
 (ILFMobile, PowerLine Group, and PhoneSpector) that claim to make a total of 
-four different apps. Further investigation showed that all three companies had 
-the same physical address in addition to identical websites. Unfortunately, 
+four different apps. Their websites, however, were remarkably similar (Figure 
+\ref{fig:ilfmobiles}). Further investigation showed that all three companies 
+had the same physical address in addition to identical websites. Unfortunately, 
 they also had identical bugs in their payment methods, so we were unable to 
-purchase the apps and verify that their network traces were identical. Other 
-app sites appear to be similar to each other in other ways, 
-with many having a large panel with a darkened image background extolling the 
-features of the app above two buttons, one for a "live demo" and the other to 
-"buy now." This is somewhat circumstantial evidence - it is entirely possible 
+purchase the apps and verify that their network traces were identical. Another 
+example of stalkerware websites that appear to be strangely similar to each 
+other in other ways is shown in Figure \ref{hellospy_thetruthspy}. This is 
+admittedly somewhat circumstantial evidence - it is entirely possible 
 that these manufacturers simply chose similar web templates, or copied each 
 other's site in an attempt to undercut competition. We therefore confirmed our 
-suspicions by checking if the traffic signatures were also similar. These 
-reskinned programs are potentially a boon to 
+suspicions by checking if the traffic signatures were also similar, and found 
+that they were. These reskinned programs are potentially a boon to 
 our investigation as the identical network signatures make it more likely that 
 one signature generalizes across multiple apps. We have identified the 
 following groups of applications that appear to be reskinned versions of each 
@@ -386,65 +431,45 @@ appeared to guess randomly - one reported that a device in San Diego was in
 Fawn Creek, Kansas, and another reported the same device was in Detroit, 
 Michegan. Another common glitch was for spyware that records texts to only 
 record one participant's side of the conversation. Their main purpose seems to 
-be to serve 
-advertisements - we did not 
+be to serve advertisements - we did not 
 catch any of the non-functional apps contacting domains associated with malware 
 (except when the app itself was marked as malware). 
 
-\section{Related Work}
-Previous studies [1,2], the media [3,4], and intimate partner violence (IPV) 
-survivors have all reported that spyware is becoming an increasing source of 
-intimate partner surveillance (IPS). Tracking functions supported by spyware 
-allow stalkers to monitor communications, track locations, and remotely 
-activate cameras and microphones [3,4]. In Dr. Ristenpart's work [5], they 
-proposed methods for searching IPS-related apps. By Google search query 
-expansion and unsupervised classification, they collected 9,224 apps possibly 
-related to IPS on Google play and open-web. They manually selected 70 apps for 
-investigation. They observed the most fundamental functions of these apps are 
-monitoring locations, communication logs and data, media contents, and phone 
-usages. They also found that existing anti-spyware tools cannot effectively 
-detect IPS-related apps.
-Mobile apps are often identified via the User-Agent string of the HTTP request, 
-when one is available [7]. With the increased use of HTTPS this may not always 
-be the case, but we expect to find (based on conversations with authors of 
-previous work) that security and best coding practices are not prioritized by 
-stalkerware developers. Malware identification may be of limited use as well, 
-since techniques are available to cluster malware that comes from the same 
-source code into "families." [8]
-
 \section{Methodology}
+
 \subsection{Finding Apps}
 We selected thirty apps from a list provided by the team of Cornell researchers 
 who performed the original large scale study of 
 stalkerware\cite{chatterjee_spyware_2018}. An 
-additional fifteen apps were included as they were recently added to the Google 
-Play store. We found these apps by searching for keywords such as 
-"spy","track", "locate", or "find". Encouragingly, IPV-related search terms 
+additional fifteen apps were included because they were recently added to the 
+Google Play store, or to replace apps that were found not to function. We found 
+these apps simply by searching for them using keywords such as "spy" or 
+"track." Encouragingly, specifically IPV-related search terms 
 such as "track girlfriend" return no results on the Play store. On the other 
 hand, that did not mean stalking apps were not available on the play store, it 
-just meant that different search terms had to be used to find them. Apps were 
-chosen for their diversity of purpose and the probability that 
-they can be used as stalkerware. These apps are the most likely to be 
+just meant that different search terms had to be used to find them. We selected 
+a diverse set of purposes, from explicit spyware to innocuous dual-use apps. We 
+predict that the apps we chose are likely to be 
 downloaded when an abuser without deep technical knowledge tries to install 
-stalkerware since they are either the first result upon searching for 
-stalkerware, or are well known spyware apps due to advertisements.
+stalkerware, since they are either among the first results upon searching for 
+stalkerware, or are well advertised as spyware.
 
-We recognize that there are thousands of apps on the market that can be 
+We recognize that there are possibly hundreds of apps on the market that can be 
 repurposed as stalkerware. Therefore, any useful process for identifying 
 network signatures will eventually have to cover far more apps than we are 
 starting out with. Our mere forty-five apps barely scratch the surface of the 
-ecosystem, so they certainly do not provide a representative sample. Therefore, 
+ecosystem, so they may not provide a representative sample. Therefore, 
 we did not employ any vigorous app selection methods, since we know this is 
 just a starting point. Our hope is to eventually find a way to partially 
 automate the signature identification process.
 
 \subsection{Experimental Setup}
-Out of the 45 apps we originally selected from Dr. Ristenpart's ML-curated list 
-of stalkerware, 36 still existed on the app store. We installed these one at a 
-time on one or both of two test phones, a Nexus 5X and a Nexus 6P.These models 
+Out of the 45 apps we searched for for, 36 still existed on the app store. We 
+installed these one at a 
+time on one or both of two test phones, a Nexus 5X and a Nexus 6P. These phones 
 were chosen simply because they were readily available. Stalkerware user 
-models  fall into two types: either an app is installed on the target phone and 
-a login to a web portal is provided for the attacker to view the results, or 
+models  fall into two types: either 
+a login to a web portal is provided for the attacker to view the data, or 
 the app comes with an ``attacker'' app and a ``target'' app, and the attacker 
 app must be installed on another phone.
 
@@ -453,11 +478,10 @@ of acting like stalkerware.
 We then began tracking the phone's network traffic using Wireshark. For the 
 majority of the apps, a network trace 
 of five to ten minutes is enough to detect traffic going to and from the 
-stalkerware app as long as the app's tracked functions like text or GPS are 
-altered or the tracker app or website has a manual update function. Those that 
-do not have such functionality have all been fake stalkerware apps. The network 
-captures themselves contain at least one packet that provides easy manual 
-detection of the related app.
+stalkerware app as long as the functions the app tracks like text or GPS are 
+in use or the tracker app has manual update capabilities. We then manually 
+examined the traffic, isolated that which belonged to the app, and determined 
+the signature.
 
 \subsection{Ethical Considerations}
 
@@ -466,7 +490,8 @@ an ecosystem that is notorious for mishandling it\cite{ristenpart_ucsd_talk}.
 It is likely that the privacy of victims is 
 not a high priority for anyone prepared to monetize abusive relationships, and 
 stalkerware manufacturers have leaked victims' information in the past 
-\cite{koebler_stalkerware_2018}. We took precautions by deleting all personal 
+\cite{koebler_stalkerware_2018, franceschi-bicchierai_this_2019}. We took 
+precautions by deleting all personal 
 data that had been on the phones at the start of the project. However, we were 
 not quite cautious enough - the app SpyMyFone managed to scrape a list of 
 deleted contacts off of the Nexus 5X. As of this moment, we do not know how. We 
@@ -478,14 +503,18 @@ The original goal of this project was to identify traffic signatures so that
 they could be detected by an IDS (Intrusion Detection System) or a network 
 tap in an anonymized fashion. We hoped to use differential privacy techniques 
 such as Google's RAPPOR algorithm \cite{erlingsson_rappor:_2014} to collect 
-aggregated statistics about stalkerware use, without giving ourselves the 
+aggregated statistics about stalkerware use, while denying ourselves the 
 ability to identify any particular device that had stalkerware installed. Upon 
 further investigation before we began the project, this turned out to be 
-insufficient protection. We as a computer 
-scientists do not have the expertise required to assist victims of abusive 
-relationships or domestic violence. We chose not to take our research in this 
+insufficient protection. We do not have the expertise required to assist 
+victims of abusive 
+relationships or domestic violence. If we were to uncover evidence of 
+stalkerware, it is unclear what we should or could do with that information. We 
+chose not to take our research in this 
 direction to avoid causing any unintended harm. We limit ourselves to 
-identifying traffic signatures on apps that we installed on personal phones.
+identifying traffic signatures on apps that we installed on personal phones. We 
+leave the question of deploying our signatures to later work, once we have 
+developed partnerships with experts who can advise us.
 
 Wiretapping the phones was accomplished by setting up our personal computers as 
 WiFi hotspots. Since we controlled the passwords required to connect to our 
@@ -493,23 +522,87 @@ networks, and Windows alerts the user when a device connects to its mobile
 hotspot, we were able to ensure that we did not tap any traffic other than that 
 of the test phones. 
 \section{Results}
-\subsection{App Traffic}
 
-What causes most stalkerware to send packets? Our captures and testing show 
-that there are three main categories of updating tracker state: manual, timed, 
-and on tracked feature. Most free apps fall into the manual update method, 
-where there is a button on a website or on a phone app that will send a signal 
-packet to the stalkerware app that initializes the upload. Most paid apps also 
-include a timed auto-update feature, where an update will be sent every few 
-minutes. A very small subset of both advertised that it receives a "real time 
-notification" every time email, texts, calls, or GPS, was changed or added to. 
-Our results show that none of the stalkerware apps were able to send in real 
-time, all the apps advertised as real time simply updated at a more frequent 
-frequency than other apps.
+\subsection{Network Signatures}
+\label{network_signatures}
 
-Where do these stalkerware apps send their traffic? In general, all of our apps tested connected to a third party server that aggregated the information for display in either a website or a similar app for a separate phone. We had anticipated that at least one app would send tracking data directly to the abuser's phone, however this was not the case in testing. Perhaps setting up such a connection would be too difficult for someone who initiates intimate partner violence, or simply because it is easier to collect phone data in a dedicated server and use it for other purposes as well. Either way, all of the apps we found connected to a specific domain that was not the abuser's phone. This was both good and bad news. While it is much easier to find network signatures for packets being sent to a single destination with its own domain name, it also means that we will not be able to find an abuser through our method. This would have been an interesting tangent, unfortunately it does not work.
+We identified the following traffic features as candidates for network 
+signatures.
+\begin{itemize}
+	\item Application Layer
+	\begin{itemize}
+		\item HTTP
+		\begin{itemize}
+			\item Packet content
+			\item User-Agent
+			\item Presence of unique header fields 
+			\item Packet length
+			\item URI
+			\item Host Name
+		\end{itemize}
+		\item Presence of excessive number of location requests
+	\end{itemize}
+	\item Transport Layer
+	\begin{itemize}
+		\item TLS 1.2
+		\begin{itemize}
+			\item Server Name Indicator
+		\end{itemize}
+		\item TCP
+		\begin{itemize}
+			\item Ports
+		\end{itemize}
+	\end{itemize}
+	\item Internet Layer
+	\begin{itemize}
+		\item IP address
+		\item Reverse-DNS-lookup domain name
+	\end{itemize}
+	\item Other
+	\begin{itemize}
+		\item Packet frequency
+	\end{itemize}
+\end{itemize} 
+
+Some of these features did not prove to be easy to use as signatures.
+For example, different types of stalkerware exhibit wide variance in how often 
+they send updates back to their servers. Some apps advertise 
+``real time'' tracking, where new texts are uploaded to the service as soon as 
+they are sent by or arrive at the phone, and location is updated as soon as the 
+phone moves. In our experiments, very few of the apps who claimed this ability 
+actually delivered on their promise. Texts were uploaded anywhere between ten 
+minutes to a day after they were sent. Some of the stalkerware dashboards 
+included a button that would update or refresh the data, but this usually did 
+not trigger traffic to be sent from the phone.
+
+Another feature we failed to identify was the presence of unusually high 
+numbers of location requests. Since phones can (if GPS is not available) get 
+information about their location by seeing which WiFi AP they are connected to, 
+we attempted to identify packets that were requesting location from the AP, but 
+were unsuccessful.
+
+All of the other features proved to be useful in identifying some subset of the 
+apps we examined. 
+
+\subsection{Traffic Results}
+
+The majority of stalkerware apps communicate though HTTP or HTTPS. A minority 
+use less common protocols, such as the app that could turn a phone into a live 
+video camera remotely, which used STUN. We examined the features listed above 
+for each app and tried to isolate some subset of them that we believed would be 
+unique enough to identify that traffic. For the majority of the apps, the 
+domain provided by a reverse DNS lookup was sufficient. This supported our 
+assumption that most stalkerware does not attempt to obfuscate its traffic. 
+Even servers hosted on Amazon's AWS had unique domain names, which usually 
+consisted of some string identifying the app prepended to a string identifying 
+which AWS datacenter the app is hosted by. We found signatures for 24 out of 
+the 45 apps we examined. Of the remainder, nine were removed from the Google 
+Play store before we began the project, and twelve either didn't work as 
+stalkerware or didn't work at all.
+
+\subsection{Generalizing Signatures}
 \begin{table*}
-	\begin{tabular}{p{5cm}p{5cm}p{5cm}}
+	\begin{tabular}{p{6cm}p{4cm}p{4cm}}
 		\toprule
 		Generalized Signature & Unique Apps & Total Apps \\
 		\hline
@@ -523,107 +616,71 @@ Where do these stalkerware apps send their traffic? In general, all of our apps 
 		Domain contains known app manufacturer & 3 & 3 \\
 		\midrule
 	\end{tabular}
+	\caption{Generalized signatures, created by identifying the similarities 
+		between specific signatures}
+	\label{tab:gen}
 \end{table*}
-\subsection{Network Signatures}
-\label{network_signatures}
-
-When the network traffic is captured and the suspicious packets are identified, the next step would be to form a Network signature that can filter out those packets. But what can we use that isolates stalkerware traffic from normal traffic? To begin with, we must look at the packet identifiers that allow us to find the suspicious packets. 
-\begin{itemize}
-	\item Application Layer
-	\begin{itemize}
-		\item HTTP
-		\begin{itemize}
-			\item packet content
-			\item User agent
-		\end{itemize}
-		\item HTTP and HTTPS headers
-		\item Packet length
-		\item Domain Name
-		\item Host Name
-		\item Location Requests
-	\end{itemize}
-	\item Transport Layer
-	\begin{itemize}
-		\item TLS 1.2
-		\begin{itemize}
-			\item Server Name Indication
-		\end{itemize}
-		\item TCP
-		\begin{itemize}
-			\item Ports
-			\item Sequence number
-		\end{itemize}
-	\end{itemize}
-	\item Internet Layer
-	\begin{itemize}
-		\item IP address
-		\item IP version
-	\end{itemize}
-	\item Other
-	\begin{itemize}
-		\item Packet frequency
-	\end{itemize}
-\end{itemize}
-
-All of the above signatures are able to be filtered out through a Wireshark filter or made into a rule for a Network Intrusion Detection System such as Snort. There are many other parts of the packets that we could attempt to match signatures for, and we will explain why we cannot add more to this list in a later section.
-
-\subsection{Traffic Results}
-
-The majority of stalkerware apps communicate though HTTP or HTTPS, while some 
-use their own protocols, such as STUN. We examined the domain, SNI, User-Agent, and HTTP 
-host, for each app and tried to isolate some part that we believed would be unique enough to identify that traffic. For the majority of the apps, they have a unique domain that each app connects to, which allowed for an easy method of filtering out their traffic. Some were hosted on shared cloud servers such as AWS, and so do not have a unique domain. These, however had a phrase in user agent or in the SNI that could be used for filtering.
-
-Initially we attempted to add on our filters with an additional check for location requests, as many stalkerware apps will contain features for tracking location. Additionally, when connected to a network a phone may use the router to find its current location. Unfortunately, while we could occasionally see a external service being used, the majority of location requests were not listed in our network captures. That being said, our resultant domain, user agent, and SNI filters managed to achieve full coverage of all stalkerware apps.
-
-
- 
- Unfortunately while this does catch all of the stalkerware apps we have found, it does not catch most of the stalkerware apps we have not found. In this case, we need to generalize our results into a format that can be either catch-all or easily scalable without requiring a network capture.
-
-\subsection{Generalizing Signatures}
-
-The words "spy," "find," and "track" appeared frequently in 
+Since the 24 apps that we manually identified signatures for undoubtedly 
+represent a small proportion of all of the stalkerware available, we next 
+attempted to look for patterns our signatures had in common that would allow us 
+to generalize them. To our surprise, this was relatively straightforward.  
+For example, the words "spy," "find," and "track" appeared frequently in 
 various fields of the traffic. The most common place to find them was in the 
 destination domain, which we found using Wireshark's reverse DNS lookup tool. 
-12 of the 26 apps that we eventually found signatures for contained these 
-spyware keywords in their domains. We identified the following generalized 
-signatures that can be used to identify most of our apps given nothing but 
-information available on the Google Play store.
+12 of the 24 apps that we eventually found signatures for contained these 
+spyware keywords in their domains. We therefore labeled this signature the 
+``keyword method.''
 
-
-
-For the apps whose traffic do not contain "spy," "find," or "track," we will 
-next check for the app name and manufacturer name or substrings of these two. 
+For the apps whose traffic do not contain "spy," "find," or "track," we 
+next check for the app name, the manufacturer name, or substrings of either. 
 Using these indicators has a significant disadvantage - we must be certain that 
 the app is stalkerware and that the manufacturer doesn't make anything except 
 stalkerware. In the case of smaller apps and reskinned apps, this may actually 
-be a reasonable assumption - manufacturer names are generated to fool the 
+be a reasonable assumption. Manufacturer names are generated to fool the 
 Google Play store into thinking the app is new, not to identify a real company, 
-and are therefore unique by necessity. We note that the two apps we identify 
-only by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
+and are therefore unique by necessity. We note that the two apps we can only 
+identify by manufacturer are made by GPSWOX and GeoZilla. GPSWOX makes 
 location-tracking apps of all kinds, some of which may be difficult to use as 
 stalkerware, but GeoZilla's only apps are all designed to track a phone. Since 
 only two apps were identified this way, the false positive rate should be 
-investigated further.
-We identified the following generalized signatures that can be used to identify 
-most of our apps given nothing but information available on the Google Play 
-store. The second step of our analysis will be to search for these general 
-signatures in our personal phones' traffic captures. This will give a better 
-idea of whether it is possible to use general signatures without generating a 
-prohibitive number of false positive stalkerware detections.
+investigated further. 
+
+The generalized signatures shown in Table \ref{tab:gen} can be used to identify 
+all but three (12.5\%) of our apps given nothing but information available on 
+the Google Play store. This means that if we were able to reliably identify 
+apps on the 
+Play Store than can be used as stalkerware, it would be possible to identify 
+the traffic of a large fraction of them without having to manually find their 
+signatures.
 
 
-\section{Real world Traffic Testing}
+\section{Evaluation}
 
-In addition to the above network captures, we also took twenty-four hours of 
-network traffic of our own phones as a baseline for false positive rates. These 
+We evaluated both specific and general signatures by taking twenty-four hours 
+of network traffic captures on our own personal phones. Our goal was to 
+determine a lower bound for our false positive rates. These 
 captures also included periods of time that were deemed high risk for false 
 positives as they emulated behavior that is most likely to be caught by our 
-signatures. Although this may not be enough to fully emulate an entire network, 
-it is enough to prove the false positive rates on any given phone.
+signatures. Given the relatively small amount of data we have to work with, our 
+results should be considered extremely conservative lower bounds on the true 
+false positive rates of our signatures. TODO: explain how we got false pos rate
 
-Using our specific signatures, our filters did not catch any packet that could be used as stalkerware. This is to be expected as we are very sure that there are no stalkerware apps installed on our personal phones and the filters used are quite specific to the apps that we looked at. Again, these filters are very specific with their requirements and does not scale when we add more apps to our study. However, we can confirm that stalkerware traffic is unique, and we have a filter that very accurately catches stalkerware.
+Using the specific signatures, our false positive rate was zero. This is to be 
+expected as we are very sure that there 
+are no stalkerware apps installed on our personal phones and the filters used 
+are quite specific to the apps that we looked at. 
 
-Using the generic filters, we unfortunately wrongly caught 2 TCP streams and 3 domains out of our total of 2869 streams and 1756 domains in our self network capture. In addition, these filters will only catch 21 out of the 24 apps that comprise the specific filter. This is an issue as it does infer that our generic filters are too generic. Upon looking at the specified domains, we see that these are most likely adware services that track user browsing data. Although there is a possibility that these can be considered malicious enough to add to our results, these are not stalkerware and as such count towards our false positive rate. Also while the percent of false positives is quite low, if we were to deploy this filter in an actual router, it would undoubtedly collect far more domains than we should be catching.
+Using the generic filters, we identified two TCP streams and 3 domains out of 
+our total of 2869 streams and 1756 domains in our self network capture. In 
+addition, these filters will only catch 21 out of the 24 apps that comprise the 
+specific filter. This is an issue as it does infer that our generic filters are 
+too generic. Upon looking at the specified domains, we see that these are most 
+likely adware services that track user browsing data. Although there is a 
+possibility that these can be considered malicious enough to add to our 
+results, these are not stalkerware and as such count towards our false positive 
+rate. Also while the percent of false positives is quite low, if we were to 
+deploy this filter in an actual router, it would undoubtedly collect far more 
+domains than we should be catching.
 
 While looking at domains and TCP streams gets a good sense of how our filters work in a router, ideally we would also want to see how many apps we misclassify using our generic method. This is because our study is based on stalkerware in phones, and we make no assumption that stalkerware is only on cellular devices. Since we currently cannot connect each domain or TCP stream with a single app without identifying and tracking the traffic for all of our own apps, we make the assumption that each app will connect to only one domain, with the exception of the web browser. Using this assumption, we see that none of the apps on our phones are caught by our filter. Moreover, even apps meant for tracking buses do not get caught by the filter, despite the obvious connection that one could make. 
 
