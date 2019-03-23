@@ -38,8 +38,8 @@ those devices. With such unrestricted access, an abundance of surveillance
 options exist, 
 whether the goal is to track location, remotely block incoming calls or 
 messages, record all communications, monitor browsing history, or lock a 
-survivor out of their accounts. For some types of information, no extra 
-software is required to gather it. For example, Facebook can reveal a user's 
+survivor out of their accounts. No extra software is required to gather some 
+types of information. For example, Facebook can reveal a user's 
 location to their friends. Another example is Apple's backup service, which can 
 make copies of text messages and call logs accessible to anyone with the iCloud 
 credentials of the phone. Other types of control that might be attractive to an 
@@ -56,14 +56,14 @@ unanswered questions about the use of stalkerware in the context of IPV.
 
 This work takes a step towards answering one of those questions: namely, 
 \textit{how prevalent is stalkerware today?} We identify the traffic signatures 
-of 24 stalkerware apps, with the goal of being able to identify it from a 
+of 24 stalkerware apps, with the goal of being able to identify them from a 
 network operator's vantage point. We show that our signatures identify 
 stalkerware with few false positives. Additionally, we present a simple method 
 of generalizing the signatures we identify, and show that our generalized 
 signatures also give few false positives. We also show that peculiarities of 
-the stalkerware ecosystem may aid researchers in detecting it, and in 
+the stalkerware ecosystem may aid researchers in detecting stalkerware, and in 
 generalizing specific network signatures to apps that have not been manually 
-identified. The ethical and bureaucratic issues inherent in doing a large-scale 
+identified. The ethical issues inherent in doing a large-scale 
 measurement study on real traffic prevented us from using our signatures to 
 estimate how much stalkerware exists in the wild. However, we present a plan 
 for how we could move forward. 
@@ -79,9 +79,10 @@ partner abuse during their lifetimes, where ``intimate partner abuse'' can
 include physical, emotional, or sexual abuse, as well as stalking or rape. In a 
 world where technology now pervades every aspect of our lives, some 
 aspects of IPV have changed too. Technology can now be abused in a variety of 
-ways that harm survivors of IPV. Previous work \cite{ristenpart_ucsd_talk} has 
-classified these into four categories of attacks: ownership-based, account or 
-device compromise, harmful messages or posts, and exposure of private 
+ways that harm victims of IPV. Previous work \cite{ristenpart_ucsd_talk} has 
+classified these into four categories of attacks: ownership-based attacks, 
+account or device compromise, harmful messages or posts, and exposure of 
+private 
 information. Ownership-based attacks are possible when the abuser owns the 
 device used by the victim or the victim's children. They are then capable 
 of installing software on it that can remotely destroy the device or prevent or 
@@ -123,8 +124,8 @@ for the most part into two categories: apps that are explicitly advertised for
 surveilling spouses and partners, and apps that have a different stated use but 
 can be repurposed to stalk a target. These are usually marketed for theft 
 prevention, finding lost devices, parental control of children, and employer 
-control of employees. Previous literature refers to these as "dual-use" 
-apps\cite{chatterjee_spyware_2018}. Some dual-use apps are ones that the 
+control of employees. Previous literature refers to these as ``dual-use'' 
+apps \cite{chatterjee_spyware_2018}. Some dual-use apps are ones that the 
 victim wants to keep installed, such as 
 ``find my phone'' apps or social media apps that leak the user's location. The 
 most troubling example of this is Facebook, which most victims want to keep 
@@ -141,7 +142,8 @@ they have limitations. For example, in a survey of 72
 domestic violence shelters performed by NPR in 2014, 85\% said they worked with 
 survivors whose abusers had tracked their location using their smartphone's 
 GPS. 75\% said they have worked with clients who have had their conversations 
-monitored by hidden stalkerware apps.\cite{shahani_smartphones_nodate} However, 
+monitored by hidden stalkerware apps \cite{shahani_smartphones_nodate}. 
+However, 
 this study does not report how many individual clients experienced being 
 digitally stalked. Additionally, it and similar work relies on 
 reports from domestic violence shelters and health workers, which do not give 
@@ -154,7 +156,7 @@ websites themselves claim to have hundreds of thousands of downloads per app,
 but these numbers are not likely to be trustworthy. The goal of this work is 
 therefore to identify a means of identifying stalkerware in the wild so that it 
 can be enumerated. We identified unique signatures in the traffic of 24 
-stalkerware apps, by examining a traffic features such as domain names, HTTP 
+stalkerware apps, by examining traffic features such as domain names, HTTP 
 header fields, protocol, and server name indicators (SNIs). For a complete 
 list, see section \ref{network_signatures}. These signatures can be used by 
 antivirus software and IDSs to determine how widespread stalkerware is. We show 
@@ -166,16 +168,16 @@ to spyware that we did not manually examine, and evaluate its robustness.
 We began by identifying a set of apps that appear to be 
 marketed primarily for IPS. We focused exclusively on Android apps, since our 
 two test phones were both Androids. Apps that appear in Google searches for 
-terms like 
-"catch a cheating spouse," use vague language that appear to be marketed 
-towards IPS, and label themselves as "spyware" became candidates that we 
-considered. Overt spyware is not generally available from the app store - it 
-must be downloaded from the manufacturer sites. It also costs much more than a 
-typical app, with monthly 
+terms like ``catch a cheating spouse,'' use vague language that appear to be 
+marketed towards IPS, and label themselves as ``spyware'' became candidates 
+that we considered. Stalkerware marketed for tracking a romantic partner is not 
+generally available from the app store - it must be downloaded from the 
+manufacturer sites. It also costs much more than a typical app, with monthly 
 subscriptions ranging from \$12 to \$70 per month. The exception is an app that 
 we call SpyToMobile, which survives on the app store by frequently 
 ``reskinning'' itself (see section \ref{reskinning}).  
-We selected several of overt apps to test. All of these apps brand themselves 
+We selected several of the most overt apps to test. All of these apps brand 
+themselves 
 as spyware and advertise that their products are undetectable on the target 
 phone, despite also having disclaimers in small text that their software should 
 not be used for any illegal activity. Some use language that appears designed 
@@ -205,8 +207,9 @@ recording text messages and call logs, and ``panic buttons'' that would allow
 the surveilled phone to contact the surveillant and raise an alarm. They do not 
 hide their app icons and generally make an effort to notify the user that the 
 monitoring app is installed on their phone. The spyware that we found on the 
-Google Play store that did \textit{not} notify users of its presence consisted 
-of one app, which we call SpyToMobile after the title on its loading screen, 
+Google Play store that did \textit{not} notify users of its presence mostly 
+consisted of copies of one app, which we call SpyToMobile after the title on 
+its loading screen, 
 that was provided on the Play Store under many different names (see section 
 \ref{reskinning}). 
 
@@ -218,33 +221,36 @@ available on the Google Play Store. Most of them were designed to keep track
 of the locations of the users' friends. They tended to be ineffective - nearly 
 all of the apps we found that did not work fell into this category. Most of 
 these apps were unable or unwilling to hide their icons, and some provide an 
-explicit notification that the app is in use, although this notification can be 
+explicit notification that the app is in use, although this notification can 
+usually be 
 easily disabled in the Android notification settings. 
 
 \section{Related Work}
 Previous studies \cite{stories_from_survivors, burke_using_2011}, the media 
-\cite{shahani_smartphones_nodate, chatterjee_spyware_2018}, and intimate 
-partner violence (IPV) survivors \cite{ristenpart_ucsd_talk} have all reported 
+\cite{shahani_smartphones_nodate, chatterjee_spyware_2018}, and IPV survivors 
+\cite{ristenpart_ucsd_talk} have all reported 
 that spyware is becoming an increasingly utilized means of performing
-intimate partner surveillance (IPS). Tracking functions supported by spyware 
+IPS. Tracking functions supported by spyware 
 allow stalkers to monitor communications, track locations, and remotely 
 activate cameras and microphones \cite{shahani_smartphones_nodate, 
 chatterjee_spyware_2018}. Chatterjee et al. propose methods for searching for 
-IPS-capable apps. By Google search query expansion and unsupervised 
-classification, they collected 9,224 apps possibly related to IPS on Google 
-play and the open Internet. They manually selected 70 apps for investigation. 
+IPS-capable apps. Using Google search query expansion and unsupervised 
+classification, they collected 9,224 apps possibly related to IPS on the Google 
+Play store and the open Internet. They manually selected 70 apps for 
+investigation. 
 They observed the most fundamental functions of these apps are 
 monitoring locations, communication logs and data, media contents, and phone 
 usages. They also found that existing anti-spyware tools cannot effectively 
-detect IPS-related apps \cite{chatterjee_spyware_2018}.
-Mobile apps are often identified via the User-Agent string of the HTTP request, 
+detect IPS-related apps \cite{chatterjee_spyware_2018}. In terms of previous 
+work on app detection, mobile apps are often identified via the User-Agent 
+string of the HTTP request, 
 when one is available \cite{xu_identifying_2011}. With the increased use of 
 HTTPS this may not always 
 be the case, but we expect to find (based on conversations with authors of 
 previous work) that security and best coding practices are not prioritized by 
 stalkerware developers. Malware identification may be of use as well, 
 since techniques are available to cluster malware that comes from the same 
-source code into "families." \cite{hutchison_firma_2013}
+source code into ``families'' \cite{hutchison_firma_2013}.
 
 \section{The Stalkerware Ecosystem}
 
