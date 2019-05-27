@@ -1,0 +1,40 @@
+[{"af":4,
+    "dst_addr":"8.8.8.8",
+    "dst_port":"53",
+    "from":"92.46.84.127",
+    "fw":4970,
+    "group_id":21347590,
+    "lts":60,
+    "msm_id":21347590,
+    "msm_name":"Tdig",
+    "prb_id":20111,
+    "proto":"UDP",
+    "result":{
+        "ANCOUNT":6,
+        "ARCOUNT":0,
+        "ID":344,
+        "NSCOUNT":0,
+        "QDCOUNT":1,
+        "abuf":"AViAgAABAAYAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAABUAARA6aFowAwAAQABAAAAVAAEQOmhY8AMAAEAAQAAAFQABEDpoZPADAABAAEAAABUAARA6aFpwAwAAQABAAAAVAAEQOmhasAMAAEAAQAAAFQABEDpoWc=",
+        "rt":75.898,
+        "size":128
+    },
+    "src_addr":"192.168.1.88",
+    "stored_timestamp":1557501420,
+    "timestamp":1557501411,
+    "type":"dns"
+},
+
+
+{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"95.93.111.133","fw":4970,"group_id":21347590,"lts":20,"msm_id":21347590,"msm_name":"Tdig",
+    "prb_id":21242,"proto":"UDP",
+    "result":{"ANCOUNT":1,"ARCOUNT":0,"ID":23922,"NSCOUNT":0,"QDCOUNT":1,"abuf":"XXKAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAABwAATYOtMk",
+        "rt":16.189,"size":48},"src_addr":"192.168.1.10","stored_timestamp":1557501429,"timestamp":1557501413,"type":"dns"},
+{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"80.61.160.246","fw":4970,"group_id":21347590,"lts":26,"msm_id":21347590,"msm_name":"Tdig",
+    "prb_id":21690,"proto":"UDP",
+    "result":{"ANCOUNT":1,"ARCOUNT":0,"ID":50840,"NSCOUNT":0,"QDCOUNT":1,"abuf":"xpiAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAAAuAATYOtBk",
+        "rt":5.846,"size":48},"src_addr":"192.168.2.59","stored_timestamp":1557501422,"timestamp":1557501410,"type":"dns"},
+
+
+
+{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"93.178.232.218","fw":4970,"group_id":21347590,"lts":21,"msm_id":21347590,"msm_name":"Tdig","prb_id":22690,"proto":"UDP","result":{"ANCOUNT":1,"ARCOUNT":0,"ID":20738,"NSCOUNT":0,"QDCOUNT":1,"abuf":"UQKAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAADcAATYOtdE","rt":21.982,"size":48},"src_addr":"93.178.232.218","stored_timestamp":1557501420,"timestamp":1557501412,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"91.242.168.99","fw":4940,"group_id":21347590,"lts":8,"msm_id":21347590,"msm_name":"Tdig","prb_id":23960,"proto":"UDP","result":{"ANCOUNT":0,"ARCOUNT":0,"ID":28244,"NSCOUNT":0,"QDCOUNT":1,"abuf":"blSAggABAAAAAAAAA3d3dwZnb29nbGUDY29tAAABAAE=","rt":29.876,"size":32},"src_addr":"91.242.168.99","stored_timestamp":1557501433,"timestamp":1557501415,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"103.197.213.2","fw":4970,"group_id":21347590,"lts":130,"msm_id":21347590,"msm_name":"Tdig","prb_id":31476,"proto":"UDP","result":{"ANCOUNT":1,"ARCOUNT":0,"ID":9768,"NSCOUNT":0,"QDCOUNT":1,"abuf":"JiiAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAAErAATYOshk","rt":29.192,"size":48},"src_addr":"192.168.150.93","stored_timestamp":1557501422,"timestamp":1557501408,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","from":"94.34.226.219","fw":4780,"group_id":21347590,"lts":41,"msm_id":21347590,"msm_name":"Tdig","prb_id":35346,"proto":"UDP","result":{"ANCOUNT":1,"ARCOUNT":0,"ID":3873,"NSCOUNT":0,"QDCOUNT":1,"abuf":"DyGAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAADXAATYOsYE","rt":16.411,"size":48},"src_addr":"192.168.1.152","stored_timestamp":1557501429,"timestamp":1557501411,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"96.255.218.17","fw":4970,"group_id":21347590,"lts":75,"msm_id":21347590,"msm_name":"Tdig","prb_id":50164,"proto":"UDP","result":{"ANCOUNT":1,"ARCOUNT":0,"ID":21732,"NSCOUNT":0,"QDCOUNT":1,"abuf":"VOSAgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAABOAASs2aSE","rt":5.44,"size":48},"src_addr":"172.19.74.147","stored_timestamp":1557501437,"timestamp":1557501412,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","error":{"timeout":5000},"from":"217.19.18.239","fw":4960,"group_id":21347590,"lts":50,"msm_id":21347590,"msm_name":"Tdig","prb_id":50376,"proto":"UDP","src_addr":"192.168.179.23","stored_timestamp":1557501438,"timestamp":1557501417,"type":"dns"},{"af":4,"dst_addr":"8.8.8.8","dst_port":"53","from":"99.41.206.232","fw":4970,"group_id":21347590,"lts":9,"msm_id":21347590,"msm_name":"Tdig","prb_id":50773,"proto":"UDP","result":{"ANCOUNT":1,"ARCOUNT":0,"ID":17246,"NSCOUNT":0,"QDCOUNT":1,"abuf":"Q16AgAABAAEAAAAAA3d3dwZnb29nbGUDY29tAAABAAHADAABAAEAAACoAASs2QIk","rt":10.613,"size":48},"src_addr":"192.168.9.152","stored_timestamp":1557501436,"timestamp":1557501422,"type":"dns"}]

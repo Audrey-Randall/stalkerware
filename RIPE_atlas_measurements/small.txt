@@ -1,0 +1,63 @@
+; <<>> DiG 9.11.3-1ubuntu1.1-Ubuntu <<>> @8.8.8.8 facebook.com +norecurse
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55131
+;; flags: qr ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;facebook.com.                  IN      A
+
+;; ANSWER SECTION:
+facebook.com.           299     IN      A       157.240.22.35
+
+;; Query time: 35 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Wed May 15 13:36:41 DST 2019
+;; MSG SIZE  rcvd: 57
+
+google.com
+
+; <<>> DiG 9.11.3-1ubuntu1.1-Ubuntu <<>> @8.8.8.8 baidu.com +norecurse
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 16289
+;; flags: qr ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;baidu.com.                     IN      A
+
+;; ANSWER SECTION:
+baidu.com.              324     IN      A       220.181.57.216
+baidu.com.              324     IN      A       123.125.114.144
+
+;; Query time: 7 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Wed May 15 13:36:41 DST 2019
+;; MSG SIZE  rcvd: 70
+
+google.com
+
+; <<>> DiG 9.11.3-1ubuntu1.1-Ubuntu <<>> @8.8.8.8 wikipedia.org +norecurse
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: SERVFAIL, id: 978
+;; flags: qr ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;wikipedia.org.                 IN      A
+
+;; Query time: 34 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Wed May 15 13:36:41 DST 2019
+;; MSG SIZE  rcvd: 42
+
+google.com
