@@ -4,4 +4,11 @@ paper/main.bbl
 paper/main.blg
 paper/main.log
 paper/main.out
+paper/main.pdf
+paper/main.synctex.gz
+paper/texput.log
+.venv/
+.vscode/
+fb_pcaps/
 pcaps_for_signatures/audrey_phone_pcaps
+hive_query_results
