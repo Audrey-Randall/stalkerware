@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+
 import csv
 from matplotlib import pyplot as plt
 import numpy as np
@@ -61,7 +64,7 @@ def readDigResults(filename):
 
             # Horrible hack for separating servers
             resp_col = map_column_to_idx['response_time']
-            if int(row[resp_col]) > 20:
+            if int(row[resp_col]) < 20:
                 continue
 
             # Store items in appropriate columns
@@ -113,5 +116,5 @@ def makeDigGraph(filename):
     print(query_results['response_time'])
     plotWallTimeVsTTLs()
 
-filename = "timing_attack_3.csv"
+filename = "bash_scripts/timing_attack_rate_limited.csv"
 makeDigGraph(filename)
