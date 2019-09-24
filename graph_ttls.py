@@ -76,8 +76,29 @@ def readFindStalkerwareResults(filename):
         print("Missing values: " + str(missingValues))
         return missingValues
 
-def calculateTTLLines(ts, ttls):
-    print("placeholder")
+def calculateTTLLines(timestamps, ttls):
+    intercepts = []
+    unique_intercepts = 0
+    for idx, ttl in enumerate(ttls):
+        ts = timestamps[idx]
+
+        # Calculate the intercept. Slope is always -1, so if y1 = ttl and x1 = ts:
+        # y = y1 = m(x - x1)
+        # y - y1 = x1 - x
+        # y = x1 + y1 + 0 
+        #   = x1 + y1
+        intercept = ts + ttl
+        intercepts.append(intercept)
+    # Figure out how many unique intercepts there are
+    intercepts.sort()
+    # print(intercepts[0:100])
+    for i in range(0, len(intercepts)-1):
+        if intercepts[i] != intercepts[i+1]:
+            unique_intercepts += 1
+    if intercepts[-1] != intercepts[-2]:
+        unique_intercepts += 1
+    print("Total intercepts: " + str(len(intercepts)))
+    return unique_intercepts
 
 def sortByDomain():
     readFindStalkerwareResults("kim_results/kim_results_small.txt")
@@ -102,7 +123,8 @@ def sortByDomain():
         np_ts = np_ts - np_ts[0]
 
         # Determine how many unique TTL lines exist.
-        calculateTTLLines(np_ts, np.array(ttls_by_domain[d]))
+        unique_intercepts = calculateTTLLines(np_ts, np.array(ttls_by_domain[d]))
+        print("Unique intercepts for " + d + ": " + str(unique_intercepts))
 
         # Determine what range of points to display to easily see the TTL lines.
         start_time = 0
