@@ -91,7 +91,6 @@ def calculateTTLLines(timestamps, ttls):
         intercepts.append(intercept)
     # Figure out how many unique intercepts there are
     intercepts.sort()
-    # print(intercepts[0:100])
     for i in range(0, len(intercepts)-1):
         if intercepts[i] != intercepts[i+1]:
             unique_intercepts += 1
@@ -100,8 +99,22 @@ def calculateTTLLines(timestamps, ttls):
     print("Total intercepts: " + str(len(intercepts)))
     return unique_intercepts
 
+def getPointRange(start_time, end_time, ts):
+    # Take the first index where the timestamp is larger than the start time,
+    # and the last index where the timestamp is smaller than the end time.
+    # Works because the timestamps are sorted.
+    start_idx = 0
+    end_idx = len(ts)
+    start_idxs = np.where(ts >= start_time)[0]
+    if len(start_idxs) != 0:
+        start_idx = start_idxs[0]
+    end_idxs = np.where(ts > end_time)[0]
+    if len(end_idxs) != 0:
+        end_idx = end_idxs[0]
+    return np.arange(start_idx, end_idx, 1)
+
 def sortByDomain():
-    readFindStalkerwareResults("kim_results/kim_results_small.txt")
+    readFindStalkerwareResults("kim_results/kim_results_9-24-19.txt")
     ttls_by_domain = {}
     ts_by_domain = {}
     max_ttls_by_domain = {}
@@ -127,27 +140,14 @@ def sortByDomain():
         print("Unique intercepts for " + d + ": " + str(unique_intercepts))
 
         # Determine what range of points to display to easily see the TTL lines.
-        start_time = 0
-        end_time = 20 * max_ttl
-
-        # Take the first index where the timestamp is larger than the start time,
-        # and the last index where the timestamp is smaller than the end time.
-        # Works because the timestamps are sorted.
-        start_idx = 0
-        end_idx = len(np_ts)-1
-        start_idxs = np.where(np_ts >= start_time)[0]
-        if len(start_idxs) != 0:
-            start_idx = start_idxs[0]
-        end_idxs = np.where(np_ts >= end_time)[0]
-        if len(end_idxs) != 0:
-            end_idx = end_idxs[0]
-        idx_range = np.arange(start_idx, end_idx, 1)
+        start_time = 864000
+        end_time = 20 * max_ttl + start_time
+        idx_range = getPointRange(start_time, end_time, np_ts)
 
         # Get the chunks of the arrays to plot, and plot them.
         ts_in_range = np_ts[idx_range]
         ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
-        plotTsVsTTLs(ts_in_range, ttls_in_range, 0, len(ts_in_range), max_ttl, d)
-
+        plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d)
 
 '''
 Assumes the csv looks like this:
@@ -198,13 +198,13 @@ def plotTsVsTTLs(start, end, filename):
     plt.show()
 
 def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain):
-    np_ts = np.array(ts) - ts[0]
-    plt.plot(np_ts[start:end], ttls[start:end], linestyle="",marker="o", markersize=2.0)
+    plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0)
     plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
-    plt.xticks(np.arange(0, 20*max_ttl, max_ttl))
+    plt.xticks(np.arange(0, end-start, max_ttl))
     plt.axes().xaxis.set_major_locator(plt.MaxNLocator(10))
     plt.axes().xaxis.set_minor_locator(plt.MaxNLocator(20))
-    plt.xlabel('Timestamp (seconds since first timestamp)')
+    xlabel = 'Timestamp (seconds after ' + str(start) +'s)'
+    plt.xlabel(xlabel)
     plt.ylabel('TTL (seconds)')
     title = 'TTL lines for ' + domain
     plt.title(title)
