@@ -78,7 +78,7 @@ def readFindStalkerwareResults(filename):
 
 def calculateTTLLines(timestamps, ttls):
     intercepts = []
-    unique_intercepts = 0
+    unique_intercepts = []
     for idx, ttl in enumerate(ttls):
         ts = timestamps[idx]
 
@@ -89,13 +89,14 @@ def calculateTTLLines(timestamps, ttls):
         #   = x1 + y1
         intercept = ts + ttl
         intercepts.append(intercept)
+    
     # Figure out how many unique intercepts there are
     intercepts.sort()
     for i in range(0, len(intercepts)-1):
         if intercepts[i] != intercepts[i+1]:
-            unique_intercepts += 1
+            unique_intercepts.append(intercepts[i])
     if intercepts[-1] != intercepts[-2]:
-        unique_intercepts += 1
+        unique_intercepts.append(intercepts[-1])
     print("Total intercepts: " + str(len(intercepts)))
     return unique_intercepts
 
@@ -113,41 +114,97 @@ def getPointRange(start_time, end_time, ts):
         end_idx = end_idxs[0]
     return np.arange(start_idx, end_idx, 1)
 
-def sortByDomain():
-    readFindStalkerwareResults("kim_results/kim_results_9-24-19.txt")
-    ttls_by_domain = {}
-    ts_by_domain = {}
-    max_ttls_by_domain = {}
+def sortByDomain(ttls_by_domain, ts_by_domain, max_ttls_by_domain):
+    start_ts = query_results["ts"][0]
     for i, d in enumerate(query_results["domain"]):
         if d not in ttls_by_domain:
             ttls_by_domain[d] = []
             ts_by_domain[d] = []
             max_ttls_by_domain[d] = 0
         else:
-            ts_by_domain[d].append(query_results["ts"][i])
+            ts_by_domain[d].append(query_results["ts"][i] - start_ts)
             ttl = query_results["ttls"][i]
             ttls_by_domain[d].append(ttl)
             if ttl > max_ttls_by_domain[d]:
                 max_ttls_by_domain[d] = ttl
     for d in ts_by_domain:
-        max_ttl = max_ttls_by_domain[d]+ 1
-        # Normalize the timestamps and convert to numpy array.
-        np_ts = np.array(ts_by_domain[d])
-        np_ts = np_ts - np_ts[0]
+        # Assume in most cases that the max TTL we see is one less than the actual TTL:
+        # for example, if we see a largest TTL of 59, the max TTL will be 60. This 
+        # relies on the assumption that our measurements have been occurring long enough
+        # to see the highest TTL. 
+        max_ttls_by_domain[d] = max_ttls_by_domain[d]+ 1
 
+def plotReplicasOverTime(domain, unique_intercepts, start_time, end_time, max_ttl):
+    # Given the set of y-intercepts of all the TTL lines, plot the number of replicas 
+    # active at a time.
+    lowest_intercept_idx = 0
+    active_replicas = []
+    for t in np.arange(start_time, end_time):
+        # Let y_int be the y-intercept of the TTL line.
+        # The relevant TTL lines at time t will have intercepts between y=t and y=t + max_ttl,
+        # because the slope is -1.
+        low_bound = t
+        high_bound = t + max_ttl
+
+        while unique_intercepts[lowest_intercept_idx] < t:
+            lowest_intercept_idx += 1
+
+        intercept_idx = lowest_intercept_idx
+        num_active_ttl_lines = 0
+        # Find all intercepts in unique_intercept that are between low_bound and high_bound
+        while unique_intercepts[intercept_idx] < high_bound:
+            num_active_ttl_lines += 1
+            intercept_idx += 1
+
+        active_replicas.append(num_active_ttl_lines)
+
+    plt.plot(np.arange(start_time, end_time), active_replicas)
+    figname = 'kim_results/active_replicas/' + domain + '_active_replicas.png'
+    xlabel = "Timestamp. (TTL = " + str(max_ttl) + ")"
+    plt.xlabel(xlabel)
+    plt.ylabel("Number of active replicas")
+    title = "Active replicas for " + domain
+    plt.title(title)
+    plt.savefig(figname)
+    plt.show()
+    plt.close()
+
+def performAnalysis():
+    ttls_by_domain = {}
+    ts_by_domain = {}
+    max_ttls_by_domain = {}
+    
+    # Read the result file from Kim and record data by column.
+    readFindStalkerwareResults("kim_results/kim_results_9-24-19.txt")
+    
+    # Separate out data by domain.
+    sortByDomain(ttls_by_domain, ts_by_domain, max_ttls_by_domain)
+
+    for d in ts_by_domain:
         # Determine how many unique TTL lines exist.
-        unique_intercepts = calculateTTLLines(np_ts, np.array(ttls_by_domain[d]))
-        print("Unique intercepts for " + d + ": " + str(unique_intercepts))
+        unique_intercepts = calculateTTLLines(np.array(ts_by_domain[d]), np.array(ttls_by_domain[d]))
+        print("Unique intercepts for " + d + ": " + str(len(unique_intercepts)))
 
-        # Determine what range of points to display to easily see the TTL lines.
-        start_time = 864000
-        end_time = 20 * max_ttl + start_time
-        idx_range = getPointRange(start_time, end_time, np_ts)
+        max_ttl = max_ttls_by_domain[d]
+        start_time = 0
+        # end_time = 20 * max_ttl + start_time
+        end_time = 60 * 60 * 24
+        plotReplicasOverTime(d, unique_intercepts, start_time, end_time, max_ttl)
 
-        # Get the chunks of the arrays to plot, and plot them.
-        ts_in_range = np_ts[idx_range]
-        ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
-        plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d)
+        # # Normalize the timestamps so they start at 0
+        # np_ts = np.array(ts_by_domain[d])
+        # np_ts = np_ts - np_ts[0]
+
+        # # Determine what range of points to display to easily see the TTL lines.
+        # idx_range = getPointRange(start_time, end_time, np_ts)
+
+        # # Get the chunks of the arrays to plot, and plot them.
+        # ts_in_range = np_ts[idx_range]
+        # ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
+        # plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d)
+
+
+
 
 '''
 Assumes the csv looks like this:
@@ -245,4 +302,4 @@ def makeDigGraph(filename):
 
 # filename = "bash_scripts/timing_attack_rate_limited.csv"
 # makeDigGraph(filename)
-sortByDomain()
+performAnalysis()
