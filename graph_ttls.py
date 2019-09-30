@@ -182,7 +182,7 @@ def performAnalysis():
     sortByDomain(ttls_by_domain, ts_by_domain, max_ttls_by_domain)
 
     for d in ts_by_domain:
-        # Normalize the timestamps so they start at 0. Also normalize the intercepts.
+        # Normalize the timestamps so they start at 0, and convert everything to ndarrays
         first_ts = ts_by_domain[d][0]
         np_ts = np.array(ts_by_domain[d]) - first_ts
         np_ttls = np.array(ttls_by_domain[d])
@@ -192,35 +192,38 @@ def performAnalysis():
         print("Unique intercepts for " + d + ": " + str(len(unique_intercepts)))
 
         max_ttl = max_ttls_by_domain[d]
-        start_time = 0
+        start_time = max_ttl * 4
         # end_time = 20 * max_ttl + start_time
-        end_time = max_ttl
+        end_time = max_ttl * 5
+        time_interval = end_time - start_time
 
         if d == "amplitude.life360.com":
             plotReplicasOverTime(d, unique_intercepts, start_time, end_time, max_ttl)
 
             # Determine what range of points to display to easily see the TTL lines.
-            idx_range = getPointRange(start_time, end_time, np_ts)
+            idx_range = np.where(np.logical_and(np_ts >= start_time, np_ts <= end_time))[0]
+            intercept_range = np.where(np.logical_and(unique_intercepts < end_time + time_interval, unique_intercepts >= start_time))[0]
 
             # Get the chunks of the arrays to plot, and plot them.
             ts_in_range = np_ts[idx_range]
             ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
-            np_intercepts_in_range = unique_intercepts[np.where(np.logical_and(unique_intercepts < 2 * end_time, unique_intercepts > start_time))[0]]
+            np_intercepts_in_range = unique_intercepts[intercept_range]
             print("np_intercepts: ", np_intercepts_in_range)
             for i in range(0, len(ts_in_range)):
                 print(ts_in_range[i], ttls_in_range[i])
+            
             plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d, np_intercepts_in_range)
 
 def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, unique_intercepts=[]):
+    plt.xlim(0, end-start)
+    plt.ylim(0, max_ttl)
     for i in unique_intercepts:
-        plt.plot([i - max_ttl, i], [max_ttl, 0], color="orange", linewidth=0.5)
+        plt.plot([i - max_ttl - start, i - start], [max_ttl, 0], color="orange", linewidth=0.5)
     plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0)
     plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
     plt.xticks(np.arange(0, end-start, max_ttl))
     plt.axes().xaxis.set_major_locator(plt.MaxNLocator(10))
     plt.axes().xaxis.set_minor_locator(plt.MaxNLocator(20))
-    plt.xlim(start, end)
-    plt.ylim(0, max_ttl)
     xlabel = 'Timestamp (seconds after ' + str(start) +'s)'
     plt.xlabel(xlabel)
     plt.ylabel('TTL (seconds)')
