@@ -138,12 +138,12 @@ def plotReplicasOverTime(domain, unique_intercepts, start_time, end_time, max_tt
     # active at a time.
     lowest_intercept_idx = 0
     active_replicas = []
-    time_intervals = np.arange(start_time, end_time, max_ttl)
-    np_intercepts = np.array(unique_intercepts)
+    # end_time + 1 so that if you're graphing one TTL segment, you get a line.
+    time_intervals = np.arange(start_time, end_time + 1, max_ttl)
     ttl_scaling_factor = 1.0
     if scale_ttls:
         ttl_scaling_factor = 60.0 / float(max_ttl)
-    # print(time_intervals)
+    print(time_intervals)
     for t in time_intervals:
         # Let y_int be the y-intercept of the TTL line.
         # The relevant TTL lines at time t will have intercepts between y=t and y=t + max_ttl,
@@ -152,16 +152,17 @@ def plotReplicasOverTime(domain, unique_intercepts, start_time, end_time, max_tt
         high_bound = t + max_ttl
 
         # Get the intercepts that are between the bounds
-        active_ttl_line_idxs = np.where(np.logical_and(np_intercepts > low_bound, np_intercepts < high_bound))[0]
+        active_ttl_line_idxs = np.where(np.logical_and(unique_intercepts > low_bound, unique_intercepts < high_bound))[0]
         active_replicas.append(len(active_ttl_line_idxs) * ttl_scaling_factor)
 
-    plt.plot(time_intervals, active_replicas)
-    figname = 'kim_results/test_active_replicas/' + domain
+    plt.plot(time_intervals - start_time, active_replicas)
+    plt.xlim(0, end_time - start_time)
+    figname = 'kim_results/popular/active_replicas/' + domain
     if scale_ttls:
         figname += '_adjusted_active_replicas.png'
     else:
         figname += '_active_replicas.png'
-    xlabel = "Timestamp (TTL = " + str(max_ttl) + ")"
+    xlabel = "Timestamp (seconds since " + str(start_time) +"). TTL = " + str(max_ttl)
     plt.xlabel(xlabel)
     plt.ylabel("Number of active replicas")
     title = "Active replicas for " + domain
@@ -170,13 +171,13 @@ def plotReplicasOverTime(domain, unique_intercepts, start_time, end_time, max_tt
     plt.show()
     plt.close()
 
-def performAnalysis():
+def performAnalysis(results_file):
     ttls_by_domain = {}
     ts_by_domain = {}
     max_ttls_by_domain = {}
     
     # Read the result file from Kim and record data by column.
-    readFindStalkerwareResults("kim_results/kim_results_9-24-19.txt")
+    readFindStalkerwareResults(results_file)
     
     # Separate out data by domain.
     sortByDomain(ttls_by_domain, ts_by_domain, max_ttls_by_domain)
@@ -189,7 +190,6 @@ def performAnalysis():
 
         # Determine how many unique TTL lines exist.
         unique_intercepts = calculateTTLLines(np_ts, np_ttls)
-        print("Unique intercepts for " + d + ": " + str(len(unique_intercepts)))
 
         max_ttl = max_ttls_by_domain[d]
         start_time = max_ttl * 4
@@ -197,28 +197,28 @@ def performAnalysis():
         end_time = max_ttl * 5
         time_interval = end_time - start_time
 
-        if d == "amplitude.life360.com":
-            plotReplicasOverTime(d, unique_intercepts, start_time, end_time, max_ttl)
+        # Plot the number of active replicas per TTL over the course of the second day of measurements
+        plotReplicasOverTime(d, unique_intercepts, 60*60*24, 60*60*24*2, max_ttl)
 
-            # Determine what range of points to display to easily see the TTL lines.
-            idx_range = np.where(np.logical_and(np_ts >= start_time, np_ts <= end_time))[0]
-            intercept_range = np.where(np.logical_and(unique_intercepts < end_time + time_interval, unique_intercepts >= start_time))[0]
+        # Determine what range of points to display to easily see the TTL lines.
+        idx_range = np.where(np.logical_and(np_ts >= start_time, np_ts <= end_time))[0]
+        intercept_range = np.where(np.logical_and(unique_intercepts < end_time + time_interval, unique_intercepts >= start_time))[0]
 
-            # Get the chunks of the arrays to plot, and plot them.
-            ts_in_range = np_ts[idx_range]
-            ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
-            np_intercepts_in_range = unique_intercepts[intercept_range]
-            print("np_intercepts: ", np_intercepts_in_range)
-            for i in range(0, len(ts_in_range)):
-                print(ts_in_range[i], ttls_in_range[i])
-            
-            plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d, np_intercepts_in_range)
+        # Get the chunks of the arrays to plot, and plot them.
+        ts_in_range = np_ts[idx_range]
+        ttls_in_range = np.array(ttls_by_domain[d])[idx_range]
+        np_intercepts_in_range = unique_intercepts[intercept_range]
+        print("np_intercepts: ", np_intercepts_in_range)
+        for i in range(0, len(ts_in_range)):
+            print(ts_in_range[i], ttls_in_range[i])
+        
+        plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d, np_intercepts_in_range)
 
 def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, unique_intercepts=[]):
     plt.xlim(0, end-start)
     plt.ylim(0, max_ttl)
     for i in unique_intercepts:
-        plt.plot([i - max_ttl - start, i - start], [max_ttl, 0], color="orange", linewidth=0.5)
+        plt.plot([i - max_ttl - start, i - start], [max_ttl, 0], linewidth=0.5)
     plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0)
     plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
     plt.xticks(np.arange(0, end-start, max_ttl))
@@ -229,7 +229,7 @@ def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, unique_intercepts=[]):
     plt.ylabel('TTL (seconds)')
     title = 'TTL lines for ' + domain
     plt.title(title)
-    figname = 'kim_results/kim_result_graphs/' + domain + '_ttls.png'
+    figname = 'kim_results/popular/ttls_with_lines/' + domain + '_ttls.png'
     plt.savefig(figname)
     plt.show()
     plt.close()
@@ -314,11 +314,4 @@ def makeDigGraph(filename):
 
 # filename = "bash_scripts/timing_attack_rate_limited.csv"
 # makeDigGraph(filename)
-performAnalysis()
-# xs = [1,2,3,4,5,6,7,8,9,10]
-# ys = [5,4,3,2,1,3,2,1,5,4]
-# unique_intercepts = calculateTTLLines(xs, ys)
-# print(unique_intercepts)
-# plt.plot(xs, ys, linestyle="",marker="o", markersize=2.0)
-# plt.savefig("kim_results/test_active_replicas/test.png")
-# plt.show()
+performAnalysis("kim_results/kim_results_popular_10-1-2019.txt")
