@@ -109,7 +109,7 @@ def aaronsControlledExp(resolver, target):
     # Next, see if the TTLs line up with +norecurse.
     ts = []
     ttls = []
-    measurement_length = max_ttl
+    measurement_length = 200
     for i in range(0, measurement_length):
         req = makeDigRequest(resolver, target, False)
         req.printSerialized()
@@ -118,7 +118,7 @@ def aaronsControlledExp(resolver, target):
             continue
         ts.append(i)
         ttls.append(req.ttl)
-        time.sleep(1)
+        time.sleep(0.5)
     
     if not ttls:
         print('No ttls to plot.')
@@ -129,5 +129,7 @@ def aaronsControlledExp(resolver, target):
     graph_ttls.plotTsVsTTLs(np.array(ts), np.array(ttls), 0, measurement_length, max_ttl, target, figname, unique_intercepts)
     
 resolver = '8.8.8.8'
-target = 'bvsd.org'
+target = 'holyfamilyhs.com'
 aaronsControlledExp(resolver, target)
+# for d in ['aaronschulman.name','ecomuseum.kz', 'svarka.kz', '95kvartal.business.site']:
+#     aaronsControlledExp(resolver, d)

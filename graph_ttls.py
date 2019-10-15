@@ -219,7 +219,7 @@ def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, figname, unique_intercep
     plt.ylim(0, max_ttl)
     for i in unique_intercepts:
         plt.plot([i - max_ttl - start, i - start], [max_ttl, 0], linewidth=0.5)
-    plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0)
+    plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0,color="orange")
     # plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
     plt.xticks(np.arange(0, end-start, max_ttl))
     plt.axes().xaxis.set_major_locator(plt.MaxNLocator(10))
