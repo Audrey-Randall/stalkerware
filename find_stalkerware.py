@@ -112,7 +112,6 @@ def aaronsControlledExp(resolver, target):
     measurement_length = 200
     for i in range(0, measurement_length):
         req = makeDigRequest(resolver, target, False)
-        req.printSerialized()
         if req.status == 'SERVFAIL':
             time.sleep(1)
             continue
@@ -124,12 +123,12 @@ def aaronsControlledExp(resolver, target):
         print('No ttls to plot.')
         return
     unique_intercepts = graph_ttls.calculateTTLLines(ts, ttls)
-    print(unique_intercepts)
-    figname = 'controlled_exp/' + target + '.svg'
+    print(target, unique_intercepts)
+    figname = 'controlled_exp/small_wait/' + target + '.svg'
     graph_ttls.plotTsVsTTLs(np.array(ts), np.array(ttls), 0, measurement_length, max_ttl, target, figname, unique_intercepts)
     
 resolver = '8.8.8.8'
-target = 'holyfamilyhs.com'
-aaronsControlledExp(resolver, target)
-# for d in ['aaronschulman.name','ecomuseum.kz', 'svarka.kz', '95kvartal.business.site']:
-#     aaronsControlledExp(resolver, d)
+# target = 'holyfamilyhs.com'
+# aaronsControlledExp(resolver, target)
+for d in ['aaronschulman.name', 'holyfamilyhs.com', 'svarka.kz', '95kvartal.business.site', 'bvsd.org']:
+    aaronsControlledExp(resolver, d)
