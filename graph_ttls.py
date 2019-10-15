@@ -96,7 +96,6 @@ def calculateTTLLines(timestamps, ttls):
     for i in range(0, len(intercepts)-1):
         if intercepts[i] != intercepts[i+1]:
             unique_intercepts.append(intercepts[i+1])
-    print("Total intercepts: " + str(len(intercepts)))
     return np.array(unique_intercepts)
 
 def getPointRange(start_time, end_time, ts):
@@ -212,15 +211,16 @@ def performAnalysis(results_file):
         for i in range(0, len(ts_in_range)):
             print(ts_in_range[i], ttls_in_range[i])
         
-        plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d, np_intercepts_in_range)
+        figname = 'kim_results/popular/ttls_with_lines/' + domain + '_ttls.png'
+        plotTsVsTTLs(ts_in_range, ttls_in_range, start_time, end_time, max_ttl, d, figname, np_intercepts_in_range)
 
-def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, unique_intercepts=[]):
+def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, figname, unique_intercepts=[]):
     plt.xlim(0, end-start)
     plt.ylim(0, max_ttl)
     for i in unique_intercepts:
         plt.plot([i - max_ttl - start, i - start], [max_ttl, 0], linewidth=0.5)
     plt.plot(ts - start, ttls, linestyle="",marker="o", markersize=2.0)
-    plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
+    # plt.grid(axis='x', linewidth=0.5, linestyle = 'dashed', which='minor')
     plt.xticks(np.arange(0, end-start, max_ttl))
     plt.axes().xaxis.set_major_locator(plt.MaxNLocator(10))
     plt.axes().xaxis.set_minor_locator(plt.MaxNLocator(20))
@@ -229,7 +229,6 @@ def plotTsVsTTLs(ts, ttls, start, end, max_ttl, domain, unique_intercepts=[]):
     plt.ylabel('TTL (seconds)')
     title = 'TTL lines for ' + domain
     plt.title(title)
-    figname = 'kim_results/popular/ttls_with_lines/' + domain + '_ttls.png'
     plt.savefig(figname)
     plt.show()
     plt.close()
@@ -314,4 +313,4 @@ def makeDigGraph(filename):
 
 # filename = "bash_scripts/timing_attack_rate_limited.csv"
 # makeDigGraph(filename)
-performAnalysis("kim_results/kim_results_popular_10-1-2019.txt")
+# performAnalysis("kim_results/kim_results_popular_10-1-2019.txt")
